@@ -35,9 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
     updateStatusBar();
     initKeyboardShortcuts();
     loadAutosave();
+    updatePageDropdowns(); // Füllt die Auswahllisten für Seiten im Editor & Inspector
 });
 
-// Falls Script erst nach DOMContentLoaded lädt (defer/inline-Reihenfolge), trotzdem initialisieren:
+// Falls Script erst nach DOMContentLoaded lädt, trotzdem initialisieren:
 if (document.readyState === 'interactive' || document.readyState === 'complete') {
     registerCanvasEvents();
     updateCanvasEmptyState();
@@ -193,6 +194,12 @@ function selectElement(el) {
         const paddingPx = parseFloat(el.style.padding) || 0;
         if (paddingInput) paddingInput.value = Math.min(60, Math.round(paddingPx));
 
+        // Link und Ziel-Inputs befüllen
+        const linkInput = document.getElementById('inspectLink');
+        if (linkInput) {
+            linkInput.value = el.getAttribute('href') || el.dataset.href || '';
+        }
+
         document.querySelectorAll('.align-row button').forEach(b => b.classList.remove('active'));
         const align = el.style.textAlign || 'left';
         const alignBtn = document.querySelector(`.align-row button[data-align="${align}"]`);
@@ -290,8 +297,7 @@ function confirmDeleteElement(el) {
 }
 
 /* ======================================================================
-   COMPONENT LIBRARY — addComponent für einfache Elemente,
-   addBlock für komplexe HTML-Bausteine
+   COMPONENT LIBRARY
    ====================================================================== */
 function addComponent(tag, className, defaultText) {
     const el = document.createElement(tag);
@@ -346,7 +352,7 @@ function addVideoComponent() {
     appendToCanvas(wrap);
 }
 
-/* Vorgefertigte HTML-Snippets für komplexere Bausteine */
+/* Vorgefertigte HTML-Snippets */
 const BLOCKS = {
     navbar: `<div class="web-navbar" draggable="true"><span class="nav-logo" contenteditable="true">Marke</span><div class="nav-links"><span contenteditable="true">Start</span><span contenteditable="true">Leistungen</span><span contenteditable="true">Kontakt</span></div></div>`,
     subtitle: `<p class="web-subtitle" contenteditable="true" draggable="true">Ein aussagekräftiger Unter­titel, der den Wert deines Angebots erklärt.</p>`,
@@ -375,6 +381,7 @@ function adjustSelected(property, value) {
     selectedElement.style[property] = value;
     markDirty();
 }
+
 // Schließt die History-Schreibung beim Loslassen von Slidern/Color-Pickern ab
 function commitInspectorChange() {
     pushHistory();
@@ -394,6 +401,21 @@ function applySwatch(hex) {
     selectedElement.style.color = hex;
     const colorInput = document.getElementById('inspectColor');
     if (colorInput) colorInput.value = hex;
+    markDirty();
+    pushHistory();
+}
+
+// Speichert einen Link auf das selektierte Element ab
+function applyLink(value) {
+    if (!selectedElement) return;
+    
+    if (selectedElement.tagName.toLowerCase() === 'a') {
+        selectedElement.setAttribute('href', value);
+    } else {
+        selectedElement.dataset.href = value; 
+        // Falls wir den Link-Klick im Live-Betrieb simulieren wollen, verpacken wir ihn in den Daten
+    }
+    
     markDirty();
     pushHistory();
 }
@@ -457,7 +479,8 @@ function createNewPage() {
                 html: `<h1 class="web-hero-title" contenteditable="true" draggable="true">Neue Seite: ${escapeHtml(filename)}</h1><p class="web-paragraph" contenteditable="true" draggable="true">Beginne hier mit dem Aufbau dieser Seite.</p>`,
                 theme: "style-clean"
             };
-            addPageOption(filename);
+            
+            updatePageDropdowns();
             const select = document.getElementById('pageSelect');
             if (select) select.value = filename;
             switchPage(filename);
@@ -466,13 +489,31 @@ function createNewPage() {
     );
 }
 
-function addPageOption(filename) {
-    const select = document.getElementById('pageSelect');
-    if (!select) return;
-    const opt = document.createElement('option');
-    opt.value = filename;
-    opt.innerText = filename;
-    select.appendChild(opt);
+// Aktualisiert alle Dropdowns im HTML, die die verfügbaren Seiten auflisten
+function updatePageDropdowns() {
+    const pageSelect = document.getElementById('pageSelect');
+    const inspectPageLink = document.getElementById('inspectPageLink');
+    
+    if (pageSelect) {
+        pageSelect.innerHTML = '';
+        Object.keys(pages).forEach(filename => {
+            const opt = document.createElement('option');
+            opt.value = filename;
+            opt.innerText = filename === 'index.html' ? 'index.html (Home)' : filename;
+            pageSelect.appendChild(opt);
+        });
+        pageSelect.value = currentPage;
+    }
+
+    if (inspectPageLink) {
+        inspectPageLink.innerHTML = '<option value="">Seiten...</option>';
+        Object.keys(pages).forEach(filename => {
+            const opt = document.createElement('option');
+            opt.value = filename;
+            opt.innerText = filename;
+            inspectPageLink.appendChild(opt);
+        });
+    }
 }
 
 function deleteCurrentPage() {
@@ -485,14 +526,9 @@ function deleteCurrentPage() {
         `"${currentPage}" wird endgültig entfernt. Dies kann nicht über Strg+Z rückgängig gemacht werden.`,
         () => {
             delete pages[currentPage];
-            const select = document.getElementById('pageSelect');
-            if (select) {
-                const opt = [...select.options].find(o => o.value === currentPage);
-                if (opt) opt.remove();
-            }
             const nextPage = Object.keys(pages)[0];
-            if (select) select.value = nextPage;
-            currentPage = nextPage; 
+            currentPage = nextPage;
+            updatePageDropdowns();
             loadPageIntoCanvas(nextPage);
             showToast('Seite gelöscht', 'danger');
         }
@@ -738,13 +774,7 @@ function handleProjectFileSelected(input) {
             pages = data.pages;
             currentPage = data.currentPage && pages[data.currentPage] ? data.currentPage : Object.keys(pages)[0];
 
-            const select = document.getElementById('pageSelect');
-            if (select) {
-                select.innerHTML = '';
-                Object.keys(pages).forEach(name => addPageOption(name));
-                select.value = currentPage;
-            }
-
+            updatePageDropdowns();
             loadPageIntoCanvas(currentPage);
             markClean();
             showToast('Projekt erfolgreich geladen', 'success');
