@@ -9,50 +9,173 @@
 <body>
 
     <div class="sidebar">
-        <div class="group">
-            <h2>📁 Seiten-Manager</h2>
-            <select id="pageSelect" class="tool-btn" onchange="switchPage(this.value)">
-                <option value="index.html">index.html (Home)</option>
-            </select>
-            <button class="tool-btn" style="background: #10b981;" onclick="createNewPage()">➕ Neue Seite erstellen</button>
+        <div class="brand">
+            <div class="brand-logo">UB</div>
+            <div>
+                <div class="brand-name">Ultimate Web Builder</div>
+                <div class="brand-sub">v2.0 · pro</div>
+            </div>
         </div>
 
-        <div class="group">
-            <h2>🧱 Bausteine (In Canvas ziehen)</h2>
-            <button class="tool-btn" onclick="addComponent('h1', 'web-hero-title', 'Epische Überschrift')">⚡ Überschrift</button>
-            <button class="tool-btn" onclick="addComponent('p', 'web-paragraph', 'Schreibe hier deinen interessanten Text hinein.')">📝 Textblock</button>
-            <button class="tool-btn" onclick="addComponent('button', 'web-btn', 'Jetzt klicken')">🔘 Button</button>
-            <button class="tool-btn" onclick="addImageComponent()">🖼️ Bild (mit URL)</button>
+        <div class="sidebar-body">
+
+            <div class="group">
+                <h2>📁 Seiten-Manager</h2>
+                <select id="pageSelect" class="tool-btn" onchange="switchPage(this.value)">
+                    <option value="index.html">index.html (Home)</option>
+                </select>
+                <div class="btn-row">
+                    <button class="tool-btn small" style="background:#10b981; border-color:#10b981; color:#fff;" onclick="createNewPage()"><span class="ic">➕</span>Neue Seite</button>
+                    <button class="tool-btn small danger-outline" onclick="deleteCurrentPage()"><span class="ic">🗑️</span>Löschen</button>
+                </div>
+            </div>
+
+            <div class="group">
+                <h2>🧱 Bausteine</h2>
+                <div class="tab-row">
+                    <button class="tab-btn active" data-tab="basics" onclick="switchTab('basics')">Basis</button>
+                    <button class="tab-btn" data-tab="layout" onclick="switchTab('layout')">Layout</button>
+                    <button class="tab-btn" data-tab="content" onclick="switchTab('content')">Inhalt</button>
+                    <button class="tab-btn" data-tab="media" onclick="switchTab('media')">Medien</button>
+                </div>
+
+                <div class="tab-panel active" data-tab="basics">
+                    <button class="tool-btn" onclick="addComponent('h1', 'web-hero-title', 'Epische Überschrift')"><span class="ic">⚡</span>Überschrift</button>
+                    <button class="tool-btn" onclick="addBlockByKey('subtitle')"><span class="ic">🔹</span>Untertitel</button>
+                    <button class="tool-btn" onclick="addComponent('p', 'web-paragraph', 'Schreibe hier deinen interessanten Text hinein.')"><span class="ic">📝</span>Textblock</button>
+                    <button class="tool-btn" onclick="addComponent('button', 'web-btn', 'Jetzt klicken')"><span class="ic">🔘</span>Button</button>
+                    <button class="tool-btn" onclick="addBlockByKey('badge')"><span class="ic">🏷️</span>Badge / Label</button>
+                </div>
+
+                <div class="tab-panel" data-tab="layout">
+                    <button class="tool-btn" onclick="addBlockByKey('navbar')"><span class="ic">🧭</span>Navigationsleiste</button>
+                    <button class="tool-btn" onclick="addBlockByKey('columns2')"><span class="ic">▥</span>2 Spalten</button>
+                    <button class="tool-btn" onclick="addBlockByKey('columns3')"><span class="ic">▦</span>3 Spalten</button>
+                    <button class="tool-btn" onclick="addBlockByKey('divider')"><span class="ic">―</span>Trennlinie</button>
+                    <button class="tool-btn" onclick="addBlockByKey('spacer')"><span class="ic">↕️</span>Abstandshalter</button>
+                    <button class="tool-btn" onclick="addBlockByKey('footer')"><span class="ic">🔚</span>Footer</button>
+                </div>
+
+                <div class="tab-panel" data-tab="content">
+                    <button class="tool-btn" onclick="addBlockByKey('card')"><span class="ic">🗂️</span>Karte</button>
+                    <button class="tool-btn" onclick="addBlockByKey('iconbox')"><span class="ic">💡</span>Icon-Box</button>
+                    <button class="tool-btn" onclick="addBlockByKey('quote')"><span class="ic">❝</span>Zitat</button>
+                    <button class="tool-btn" onclick="addBlockByKey('list')"><span class="ic">☰</span>Liste</button>
+                    <button class="tool-btn" onclick="addBlockByKey('form')"><span class="ic">📋</span>Kontaktformular</button>
+                </div>
+
+                <div class="tab-panel" data-tab="media">
+                    <button class="tool-btn" onclick="addImageComponent()"><span class="ic">🖼️</span>Bild (per URL)</button>
+                    <button class="tool-btn" onclick="addVideoComponent()"><span class="ic">🎬</span>Video einbetten</button>
+                </div>
+            </div>
+
+            <div class="group">
+                <h2>🎨 Design-Thema</h2>
+                <select id="themeSelect" class="tool-btn" onchange="updateTheme()">
+                    <option value="style-clean">Minimalist Clean</option>
+                    <option value="style-darkmode">Deep Dark Mode</option>
+                    <option value="style-brutal">Neo-Brutalism</option>
+                    <option value="style-soft">Soft Pastell</option>
+                </select>
+            </div>
+
+            <div class="group inspector" id="inspector" style="display: none;">
+                <h2>⚙️ Element-Inspector <span class="kbd-hint" id="elTagLabel" style="margin-left:auto; text-transform:none; letter-spacing:0;"></span></h2>
+
+                <label>Ausrichtung:</label>
+                <div class="align-row">
+                    <button data-align="left" onclick="setAlign('left')">⯇</button>
+                    <button data-align="center" onclick="setAlign('center')">☰</button>
+                    <button data-align="right" onclick="setAlign('right')">⯈</button>
+                </div>
+
+                <label>Textfarbe:</label>
+                <input type="color" id="inspectColor" oninput="adjustSelected('color', this.value)" onchange="commitInspectorChange()">
+                <div class="swatch-row">
+                    <div class="swatch" style="background:#0f172a" onclick="applySwatch('#0f172a')"></div>
+                    <div class="swatch" style="background:#3b82f6" onclick="applySwatch('#3b82f6')"></div>
+                    <div class="swatch" style="background:#22d3ee" onclick="applySwatch('#22d3ee')"></div>
+                    <div class="swatch" style="background:#10b981" onclick="applySwatch('#10b981')"></div>
+                    <div class="swatch" style="background:#f59e0b" onclick="applySwatch('#f59e0b')"></div>
+                    <div class="swatch" style="background:#f43f5e" onclick="applySwatch('#f43f5e')"></div>
+                    <div class="swatch" style="background:#ffffff; border-color:#999" onclick="applySwatch('#ffffff')"></div>
+                </div>
+
+                <label>Hintergrundfarbe:</label>
+                <input type="color" id="inspectBg" oninput="adjustSelected('backgroundColor', this.value)" onchange="commitInspectorChange()">
+
+                <label>Schriftgröße: <span id="fontSizeValue" class="kbd-hint">16px</span></label>
+                <input type="range" min="10" max="80" id="inspectFontSize" oninput="adjustSelected('fontSize', this.value + 'px'); document.getElementById('fontSizeValue').textContent = this.value + 'px';" onchange="commitInspectorChange()">
+
+                <label>Innenabstand (Padding):</label>
+                <input type="range" min="0" max="60" id="inspectPadding" oninput="adjustSelected('padding', this.value + 'px')" onchange="commitInspectorChange()">
+
+                <label>Abstand unten:</label>
+                <input type="range" min="0" max="100" id="inspectMargin" oninput="adjustSelected('marginBottom', this.value + 'px')" onchange="commitInspectorChange()">
+
+                <div class="help-text">Tipp: Rechtsklick löscht das Element, die Symbolleiste über dem Element verschiebt oder dupliziert es.</div>
+            </div>
+
         </div>
 
-        <div class="group">
-            <h2>🎨 Design-Thema</h2>
-            <select id="themeSelect" class="tool-btn" onchange="updateTheme()">
-                <option value="style-clean">Minimalist Clean</option>
-                <option value="style-darkmode">Deep Dark Mode</option>
-                <option value="style-brutal">Neo-Brutalism</option>
-            </select>
+        <div class="sidebar-footer">
+            <button class="tool-btn export-btn" onclick="exportCurrentPage()"><span class="ic">💾</span>Seite exportieren</button>
         </div>
-
-        <div class="group inspector" id="inspector" style="display: none;">
-            <h2>⚙️ Element-Inspector</h2>
-            <label>Textfarbe:</label>
-            <input type="color" id="inspectColor" oninput="adjustSelected('color', this.value)">
-            
-            <label>Abstand unten:</label>
-            <input type="range" min="0" max="100" id="inspectMargin" oninput="adjustSelected('marginBottom', this.value + 'px')">
+        <div class="sidebar-footer" style="border-top:none; padding-top:0;">
+            <button class="tool-btn small ghost" style="flex:1; justify-content:center;" onclick="exportAllPagesAsZip()"><span class="ic">📦</span>Alle als ZIP</button>
         </div>
-
-        <button class="tool-btn export-btn" onclick="exportCurrentPage()">💾 Aktuelle Seite exportieren</button>
     </div>
 
-    <div class="canvas-container">
-        <div id="canvas" class="style-clean" ondragover="allowDrop(e)">
-            <h1 class="web-hero-title" contenteditable="true" draggable="true">Willkommen im Pro-Builder!</h1>
-            <p class="web-paragraph" contenteditable="true" draggable="true">Halte ein Element gedrückt, um es nach oben oder unten zu verschieben (Drag & Drop). Klicke es an, um es links zu färben.</p>
+    <div class="main-area">
+        <div class="topbar">
+            <div class="topbar-left">
+                <span class="page-pill" id="currentPageLabel">index.html</span>
+                <span class="stat-chip"><span class="dot" id="saveDot"></span><span id="elementCountLabel">0 Elemente</span></span>
+            </div>
+            <div class="topbar-right">
+                <button class="icon-btn" id="undoBtn" title="Rückgängig (Strg+Z)" onclick="undo()" disabled>↶</button>
+                <button class="icon-btn" id="redoBtn" title="Wiederholen (Strg+Y)" onclick="redo()" disabled>↷</button>
+                <div class="divider-v"></div>
+                <div class="viewport-toggle">
+                    <button class="active" data-vp="desktop" title="Desktop" onclick="setViewport('desktop')">🖥️</button>
+                    <button data-vp="tablet" title="Tablet" onclick="setViewport('tablet')">📱</button>
+                    <button data-vp="mobile" title="Mobile" onclick="setViewport('mobile')">📲</button>
+                </div>
+                <div class="divider-v"></div>
+                <button class="icon-btn" title="Vorschau (Esc zum Beenden)" onclick="togglePreview()">👁️</button>
+                <button class="icon-btn" title="Projekt laden" onclick="triggerProjectLoad()">📂</button>
+                <button class="icon-btn" title="Projekt speichern (Strg+S)" onclick="saveProjectToFile()">💾</button>
+            </div>
+        </div>
+
+        <div class="canvas-container">
+            <div id="canvas" class="style-clean">
+                <div class="web-navbar" draggable="true"><span class="nav-logo" contenteditable="true">MeineSeite</span><div class="nav-links"><span contenteditable="true">Start</span><span contenteditable="true">Über</span><span contenteditable="true">Kontakt</span></div></div>
+                <span class="web-badge" contenteditable="true" draggable="true">✨ Neu hier</span>
+                <h1 class="web-hero-title" contenteditable="true" draggable="true">Willkommen im Pro-Builder!</h1>
+                <p class="web-paragraph" contenteditable="true" draggable="true">Halte ein Element gedrückt, um es zu verschieben. Klicke es an, um es im Inspector links zu bearbeiten. Rechtsklick zum Löschen.</p>
+            </div>
         </div>
     </div>
 
+    <input type="file" id="projectFileInput" accept=".json" style="display:none" onchange="handleProjectFileSelected(this)">
+
+    <div class="modal-overlay" id="modalOverlay" style="display:none;">
+        <div class="modal-box">
+            <h3 id="modalTitle">Titel</h3>
+            <p id="modalText">Text</p>
+            <input type="text" id="modalPromptInput" style="display:none; margin-bottom: 6px;">
+            <div class="btn-row">
+                <button class="tool-btn ghost" onclick="closeModal()">Abbrechen</button>
+                <button class="tool-btn primary" id="modalConfirmBtn">Bestätigen</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-stack" id="toastStack"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
