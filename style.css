@@ -1,13 +1,12 @@
 :root {
-    --bg-editor: #0f172a;
-    --bg-sidebar: #1e293b;
-    --accent: #38bdf8;
-    --text-main: #f8fafc;
-    --canvas-bg: #ffffff;
+    --bg-editor: #0b0f19;
+    --bg-sidebar: #151f32;
+    --accent: #3b82f6;
+    --text-main: #f1f5f9;
 }
 
 body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: system-ui, -apple-system, sans-serif;
     margin: 0;
     display: flex;
     height: 100vh;
@@ -16,73 +15,70 @@ body {
     overflow: hidden;
 }
 
-/* SIDEBAR & CODES */
 .sidebar {
     width: 340px;
     background-color: var(--bg-sidebar);
-    padding: 24px;
+    padding: 20px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
     overflow-y: auto;
-    border-right: 1px solid #334155;
+    border-right: 1px solid #1e293b;
 }
 
-h2 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; margin: 0 0 10px 0; }
-.group { display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid #334155; padding-bottom: 15px; }
-.inspector label { font-size: 0.8rem; color: #cbd5e1; margin-top: 5px; }
+h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; margin: 0 0 5px 0; }
+.group { display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid #1e293b; padding-bottom: 15px; }
+.inspector label { font-size: 0.75rem; color: #94a3b8; margin-top: 5px; }
 
 .tool-btn {
-    background-color: #334155;
+    background-color: #1e293b;
     color: #e2e8f0;
-    border: 1px solid #475569;
-    padding: 12px 16px;
-    border-radius: 8px;
+    border: 1px solid #334155;
+    padding: 10px 14px;
+    border-radius: 6px;
     cursor: pointer;
     font-weight: 500;
     text-align: left;
-    transition: all 0.2s;
 }
-.tool-btn:hover { background-color: #475569; border-color: var(--accent); color: white; }
-.export-btn { background-color: #0284c7; color: white; border: none; margin-top: auto; text-align: center; font-weight: bold; }
-.export-btn:hover { background-color: #0ea5e9; }
+.tool-btn:hover { border-color: var(--accent); background-color: #24344d; }
+.export-btn { background-color: var(--accent); color: white; border: none; margin-top: auto; text-align: center; font-weight: bold; }
+.export-btn:hover { background-color: #2563eb; }
 
-/* CANVAS PREVIEW */
-.canvas-container { flex-grow: 1; padding: 40px; overflow-y: auto; display: flex; justify-content: center; }
+.canvas-container { flex-grow: 1; padding: 30px; overflow-y: auto; display: flex; justify-content: center; }
 #canvas {
     width: 100%;
-    max-width: 940px;
-    min-height: 700px;
-    background-color: var(--canvas-bg);
+    max-width: 900px;
+    min-height: 100%;
+    background-color: #fff;
     color: #1e293b;
-    border-radius: 16px;
-    padding: 60px;
+    border-radius: 12px;
+    padding: 50px;
     box-sizing: border-box;
-    transition: all 0.3s ease;
 }
 
-/* INTERACTION & HIGHLIGHTS (Nur im Editor aktiv) */
-#canvas [contenteditable="true"] { outline: none; border: 1px transparent dashed; border-radius: 4px; }
-#canvas [contenteditable="true"]:hover { border-color: #0ea5e9; background-color: rgba(14, 165, 233, 0.03); }
-#canvas .selected-element { border: 2px solid var(--accent) !important; background-color: rgba(14, 165, 233, 0.07); }
+/* DRAG & DROP STYLING & INTERACTION */
+#canvas * { relative: position; }
+#canvas [draggable="true"] { cursor: grab; }
+#canvas [draggable="true"]:active { cursor: grabbing; opacity: 0.5; }
+#canvas *:hover { outline: 2px dashed #3b82f6; }
+#canvas .selected-element { outline: 2px solid #2563eb !important; background-color: rgba(59, 130, 246, 0.05); }
 
-/* GRID SYSTEM (SPALTEN) */
-.web-grid { display: grid; gap: 20px; margin-bottom: 30px; border: 1px dashed #cbd5e1; padding: 10px; border-radius: 8px; }
-.grid-2 { grid-template-columns: 1fr 1fr; }
-.grid-3 { grid-template-columns: 1fr 1fr 1fr; }
-.web-col { min-height: 100px; border: 1px dotted #94a3b8; padding: 10px; border-radius: 6px; }
+/* DRAG OVER INDICATOR */
+.drag-over { border-top: 4px solid #3b82f6 !important; }
 
-/* DESIGN SYSTEM STYLES */
+/* WEBSITEN-ELEMENTE STYLES */
+.web-hero-title { font-size: 3rem; font-weight: 800; margin-bottom: 15px; line-height: 1.2; }
+.web-paragraph { font-size: 1.1rem; line-height: 1.6; color: #475569; margin-bottom: 25px; }
+.web-btn { display: inline-block; background: #1e293b; color: white; padding: 12px 24px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; }
+.web-img { max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px; display: block; }
+
+/* THEMES */
 .style-clean { background-color: #ffffff !important; color: #0f172a !important; }
-.style-clean .web-hero-title { font-size: 3.2rem; font-weight: 800; margin-bottom: 20px; }
-.style-clean .web-paragraph { font-size: 1.15rem; line-height: 1.6; color: #475569; }
-.style-clean .web-btn { background: #0f172a; color: white; padding: 12px 24px; border-radius: 50px; border: none; cursor: pointer; }
-
-.style-brutal { background-color: #ffe600 !important; color: #000000 !important; }
-.style-brutal .web-hero-title { font-size: 3.5rem; font-weight: 900; text-transform: uppercase; border: 4px solid #000; padding: 10px; background: #fff; box-shadow: 6px 6px 0 #000; }
-.style-brutal .web-btn { background: #ff0055; color: white; font-weight: 900; border: 3px solid #000; box-shadow: 4px 4px 0 #000; padding: 12px 24px; cursor: pointer; }
-
 .style-darkmode { background-color: #0f172a !important; color: #f8fafc !important; }
 .style-darkmode .web-paragraph { color: #94a3b8; }
-.style-darkmode .web-btn { background: #38bdf8; color: #0f172a; font-weight: bold; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; }
+.style-darkmode .web-btn { background: #3b82f6; }
+
+.style-brutal { background-color: #ffe600 !important; color: #000000 !important; }
+.style-brutal .web-hero-title { font-weight: 900; text-transform: uppercase; border: 3px solid #000; padding: 10px; background: #fff; box-shadow: 5px 5px 0 #000; }
+.style-brutal .web-btn { background: #ff0055; border: 3px solid #000; box-shadow: 4px 4px 0 #000; color: white; }
