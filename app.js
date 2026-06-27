@@ -7,6 +7,7 @@ let selectedElement = null;
 let draggedElement = null;
 let isDirty = false;
 
+// Multi-Seiten Datenspeicher: { "index.html": { html: "...", theme: "style-clean" } }
 let pages = {
     "index.html": {
         html: `<div class="web-navbar" draggable="true"><span class="nav-logo" contenteditable="true">MeineSeite</span><div class="nav-links"><span contenteditable="true">Start</span><span contenteditable="true">Über</span><span contenteditable="true">Kontakt</span></div></div>
@@ -18,6 +19,7 @@ let pages = {
 };
 let currentPage = "index.html";
 
+// History (Undo/Redo) – pro Seite getrennt geführt, global gestapelt anhand von Snapshots
 let undoStack = [];
 let redoStack = [];
 const MAX_HISTORY = 50;
@@ -29,19 +31,13 @@ let isRestoringHistory = false;
 document.addEventListener('DOMContentLoaded', () => {
     registerCanvasEvents();
     updateCanvasEmptyState();
-    pushHistory(); 
+    pushHistory(); // initial snapshot
     updateStatusBar();
     initKeyboardShortcuts();
     loadAutosave();
-
-    document.getElementById('canvas').addEventListener('click', (e) => {
-        const link = e.target.closest('a');
-        if (link && !document.body.classList.contains('preview-mode')) {
-            e.preventDefault();
-        }
-    });
 });
 
+// Falls Script erst nach DOMContentLoaded lädt (defer/inline-Reihenfolge), trotzdem initialisieren:
 if (document.readyState === 'interactive' || document.readyState === 'complete') {
     registerCanvasEvents();
     updateCanvasEmptyState();
@@ -56,12 +52,13 @@ function registerCanvasEvents() {
     canvas.querySelectorAll(':scope > *').forEach(el => attachElementEvents(el));
     canvas.querySelectorAll('.web-col').forEach(col => {
         attachContainerDropEvents(col);
+        // Elemente, die per Drag&Drop in eine Spalte verschoben wurden, brauchen ebenfalls Events
         Array.from(col.children).forEach(child => attachElementEvents(child));
     });
 }
 
 function attachElementEvents(el) {
-    if (el.dataset.boundEvents === '1') return;
+    if (el.dataset.boundEvents === '1') return; // verhindert doppelte Listener
     el.dataset.boundEvents = '1';
     el.setAttribute('draggable', 'true');
 
@@ -122,6 +119,7 @@ function attachElementEvents(el) {
         draggedElement = null;
     });
 
+    // contenteditable Änderungen sollen die History aktualisieren (entprellt)
     if (el.isContentEditable || el.hasAttribute('contenteditable')) {
         el.addEventListener('blur', () => { markDirty(); pushHistory(); });
     }
@@ -133,6 +131,7 @@ function attachElementEvents(el) {
     });
 }
 
+// Spalten-Container (web-col) erlauben Drop von Elementen HINEIN
 function attachContainerDropEvents(col) {
     if (col.dataset.dropBound === '1') return;
     col.dataset.dropBound = '1';
@@ -168,22 +167,6 @@ function selectElement(el) {
 
     const inspector = document.getElementById('inspector');
     inspector.style.display = 'flex';
-
-    const linkInput = document.getElementById('inspectLink');
-    const pageSelect = document.getElementById('inspectPageLink');
-    if (el.tagName.toLowerCase() === 'a') {
-        linkInput.value = el.getAttribute('href') || '';
-    } else {
-        linkInput.value = '';
-    }
-    
-    pageSelect.innerHTML = '<option value="">Seiten...</option>';
-    Object.keys(pages).forEach(p => {
-        const opt = document.createElement('option');
-        opt.value = p;
-        opt.innerText = p;
-        pageSelect.appendChild(opt);
-    });
 
     const computed = window.getComputedStyle(el);
     document.getElementById('inspectColor').value = rgbToHex(computed.color);
@@ -290,7 +273,8 @@ function confirmDeleteElement(el) {
 }
 
 /* ======================================================================
-   COMPONENT LIBRARY
+   COMPONENT LIBRARY — addComponent für einfache Elemente,
+   addBlock für komplexe HTML-Bausteine
    ====================================================================== */
 function addComponent(tag, className, defaultText) {
     const el = document.createElement(tag);
@@ -344,6 +328,7 @@ function addVideoComponent() {
     appendToCanvas(wrap);
 }
 
+/* Vorgefertigte HTML-Snippets für komplexere Bausteine */
 const BLOCKS = {
     navbar: `<div class="web-navbar" draggable="true"><span class="nav-logo" contenteditable="true">Marke</span><div class="nav-links"><span contenteditable="true">Start</span><span contenteditable="true">Leistungen</span><span contenteditable="true">Kontakt</span></div></div>`,
     subtitle: `<p class="web-subtitle" contenteditable="true" draggable="true">Ein aussagekräftiger Unter­titel, der den Wert deines Angebots erklärt.</p>`,
@@ -365,61 +350,14 @@ function addBlockByKey(key) {
 }
 
 /* ======================================================================
-   INSPECTOR ACTIONS & LINKING
+   INSPECTOR ACTIONS
    ====================================================================== */
-function applyLink(url) {
-    if (!selectedElement) return;
-    url = url.trim();
-
-    if (url) {
-        if (selectedElement.tagName.toLowerCase() === 'a') {
-            selectedElement.setAttribute('href', url);
-        } else {
-            const a = document.createElement('a');
-            a.innerHTML = selectedElement.innerHTML;
-            a.setAttribute('href', url);
-            // FIX: Ursprünglichen Tag merken, damit wir ihn beim Löschen des Links wiederherstellen können
-            a.dataset.origTag = selectedElement.tagName.toLowerCase();
-            
-            Array.from(selectedElement.attributes).forEach(attr => {
-                if (attr.name !== 'href' && attr.name !== 'data-orig-tag') {
-                    a.setAttribute(attr.name, attr.value);
-                }
-            });
-            selectedElement.replaceWith(a);
-            selectedElement = a;
-            attachElementEvents(a);
-            showElementToolbar(a);
-        }
-    } else {
-        if (selectedElement.tagName.toLowerCase() === 'a') {
-            // FIX: Hole den korrekten Ursprungs-Tag zurück (statt pauschal span/div zu raten)
-            const tag = selectedElement.dataset.origTag || 'span';
-            const el = document.createElement(tag);
-            el.innerHTML = selectedElement.innerHTML;
-            Array.from(selectedElement.attributes).forEach(attr => {
-                if (attr.name !== 'href' && attr.name !== 'data-orig-tag') {
-                    el.setAttribute(attr.name, attr.value);
-                }
-            });
-            selectedElement.replaceWith(el);
-            selectedElement = el;
-            attachElementEvents(el);
-            showElementToolbar(el);
-        }
-    }
-    
-    document.getElementById('elTagLabel').textContent = selectedElement.tagName.toLowerCase() + (selectedElement.className ? '.' + selectedElement.className.split(' ')[0] : '');
-    markDirty();
-    pushHistory();
-}
-
 function adjustSelected(property, value) {
     if (!selectedElement) return;
     selectedElement.style[property] = value;
     markDirty();
 }
-
+// Schließt die History-Schreibung beim Loslassen von Slidern/Color-Pickern ab
 function commitInspectorChange() {
     pushHistory();
 }
@@ -482,14 +420,8 @@ function createNewPage() {
         (filename) => {
             filename = filename.trim();
             if (!filename) return;
-            
-            // FIX: Automatisch .html anhängen, wenn es vom User vergessen wurde
-            if (!filename.endsWith('.html')) {
-                filename += '.html';
-            }
-
             if (!/^[a-zA-Z0-9_-]+\.html$/.test(filename)) {
-                showToast('Ungültiger Name. Nutze nur Buchstaben/Zahlen.', 'danger');
+                showToast('Ungültiger Name. Nutze nur Buchstaben/Zahlen und ende auf .html', 'danger');
                 return;
             }
             if (pages[filename]) {
@@ -499,7 +431,7 @@ function createNewPage() {
             savePageSnapshot();
             pages[filename] = {
                 html: `<h1 class="web-hero-title" contenteditable="true" draggable="true">Neue Seite: ${escapeHtml(filename)}</h1><p class="web-paragraph" contenteditable="true" draggable="true">Beginne hier mit dem Aufbau dieser Seite.</p>`,
-                theme: document.getElementById('themeSelect').value
+                theme: "style-clean"
             };
             addPageOption(filename);
             document.getElementById('pageSelect').value = filename;
@@ -627,30 +559,22 @@ function updateUndoRedoButtons() {
    ====================================================================== */
 function initKeyboardShortcuts() {
     document.addEventListener('keydown', (e) => {
-        // FIX: Prüfe, ob IRGENDEIN Input-Feld aktiv ist, nicht nur contenteditable
-        const active = document.activeElement;
-        const isEditingText = active && (
-            active.isContentEditable || 
-            active.tagName === 'INPUT' || 
-            active.tagName === 'TEXTAREA' || 
-            active.tagName === 'SELECT'
+        // Fix: Prüft jetzt auch reguläre Inputs und Textareas, damit Backspace im Modal funktioniert
+        const isEditingText = document.activeElement && (
+            document.activeElement.isContentEditable || 
+            document.activeElement.tagName === 'INPUT' || 
+            document.activeElement.tagName === 'TEXTAREA'
         );
-
         const mod = e.ctrlKey || e.metaKey;
 
         if (mod && e.key.toLowerCase() === 'z' && !e.shiftKey) {
-            // Erlaube normales Browser-Undo in Textfeldern
-            if (!isEditingText) {
-                e.preventDefault();
-                undo();
-            }
+            e.preventDefault();
+            undo();
             return;
         }
         if (mod && (e.key.toLowerCase() === 'y' || (e.key.toLowerCase() === 'z' && e.shiftKey))) {
-            if (!isEditingText) {
-                e.preventDefault();
-                redo();
-            }
+            e.preventDefault();
+            redo();
             return;
         }
         if (mod && e.key.toLowerCase() === 's') {
@@ -658,7 +582,6 @@ function initKeyboardShortcuts() {
             saveProjectToFile();
             return;
         }
-        // Hier passierte der Bug: Wenn man im Pop-up Backspace drückte, wurde das Element gelöscht!
         if (!isEditingText && (e.key === 'Delete' || e.key === 'Backspace') && selectedElement) {
             e.preventDefault();
             confirmDeleteElement(selectedElement);
@@ -726,6 +649,9 @@ function markClean() {
     if (dot) dot.classList.remove('unsaved');
 }
 
+/* ======================================================================
+   AUTOSAVE (in-memory only)
+   ====================================================================== */
 let autosaveTimer = null;
 function scheduleAutosave() {
     if (autosaveTimer) clearTimeout(autosaveTimer);
@@ -734,10 +660,11 @@ function scheduleAutosave() {
     }, 800);
 }
 function loadAutosave() {
+    // In-Memory Platzhalter
 }
 
 /* ======================================================================
-   PROJEKT SPEICHERN / LADEN
+   PROJEKT SPEICHERN / LADEN (als .json Datei herunterladen/importieren)
    ====================================================================== */
 function saveProjectToFile() {
     savePageSnapshot();
@@ -787,7 +714,7 @@ function handleProjectFileSelected(input) {
 }
 
 /* ======================================================================
-   EXPORT
+   EXPORT — einzelne Seite als HTML
    ====================================================================== */
 function buildExportHtml(pageName, theme, innerHtml) {
     return `<!DOCTYPE html>
@@ -797,12 +724,12 @@ function buildExportHtml(pageName, theme, innerHtml) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${escapeHtml(pageName.replace('.html', ''))}</title>
     <style>
-${EXPORT_CSS}
+\${EXPORT_CSS}
     </style>
 </head>
-<body class="${theme}">
+<body class="\${theme}">
     <div class="wrapper">
-        ${innerHtml}
+        \${innerHtml}
     </div>
 </body>
 </html>`;
@@ -810,11 +737,10 @@ ${EXPORT_CSS}
 
 const EXPORT_CSS = `        body { margin: 0; padding: 60px 20px; font-family: system-ui, sans-serif; display: flex; justify-content: center; }
         .wrapper { width: 100%; max-width: 900px; }
-        a { text-decoration: none; color: inherit; }
         .web-hero-title { font-size: 3rem; font-weight: 800; margin-bottom: 15px; line-height: 1.2; }
         .web-subtitle { font-size: 1.3rem; font-weight: 500; color: #64748b; margin-bottom: 20px; line-height: 1.4; }
         .web-paragraph { font-size: 1.1rem; line-height: 1.6; color: #475569; margin-bottom: 25px; }
-        .web-btn { display: inline-block; background: #1e293b; color: white; padding: 12px 24px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; }
+        .web-btn { display: inline-block; background: #1e293b; color: white; padding: 12px 24px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; text-decoration: none; }
         .web-img { max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 20px; display: block; }
         .web-divider { border: none; border-top: 1px solid #cbd5e1; margin: 30px 0; }
         .web-spacer { height: 40px; }
@@ -899,6 +825,9 @@ function downloadFile(content, filename, mime) {
     link.click();
 }
 
+/* ======================================================================
+   EXPORT — ALLE Seiten als ZIP (über JSZip CDN)
+   ====================================================================== */
 function exportAllPagesAsZip() {
     savePageSnapshot();
     if (typeof JSZip === 'undefined') {
@@ -937,7 +866,6 @@ function openConfirmModal(title, text, onConfirm) {
     document.getElementById('modalText').textContent = text;
     document.getElementById('modalOverlay').style.display = 'flex';
     document.getElementById('modalPromptInput').style.display = 'none';
-    
     document.getElementById('modalConfirmBtn').onclick = () => {
         closeModal();
         if (modalConfirmCallback) modalConfirmCallback();
@@ -954,19 +882,9 @@ function openPromptModal(title, label, defaultValue, onSubmit) {
     input.value = defaultValue || '';
     document.getElementById('modalOverlay').style.display = 'flex';
     setTimeout(() => input.focus(), 50);
-    
-    // FIX: Enter-Taste unterstützt!
-    input.onkeydown = (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            document.getElementById('modalConfirmBtn').click();
-        }
-    };
-
     document.getElementById('modalConfirmBtn').onclick = () => {
         const val = input.value;
         closeModal();
-        input.onkeydown = null; // cleanup
         if (modalPromptCallback) modalPromptCallback(val);
     };
 }
@@ -982,7 +900,7 @@ function showToast(message, type) {
     const toast = document.createElement('div');
     toast.className = 'toast' + (type ? ' toast-' + type : '');
     const icon = type === 'success' ? '✓' : type === 'danger' ? '⚠' : 'ℹ';
-    toast.innerHTML = `<span>${icon}</span><span>${escapeHtml(message)}</span>`;
+    toast.innerHTML = `<span>\${icon}</span><span>\${escapeHtml(message)}</span>`;
     stack.appendChild(toast);
     setTimeout(() => {
         toast.style.opacity = '0';
@@ -991,6 +909,9 @@ function showToast(message, type) {
     }, 2800);
 }
 
+/* ======================================================================
+   UTILS
+   ====================================================================== */
 function rgbToHex(rgb) {
     if (!rgb) return '#000000';
     if (rgb.startsWith('#')) return rgb;
