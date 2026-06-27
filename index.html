@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Web Builder PRO</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="group">
+            <h2>1. Struktur & Layout</h2>
+            <button class="tool-btn" onclick="addGrid(2)">📊 2 Spalten nebeneinander</button>
+            <button class="tool-btn" onclick="addGrid(3)">📊 3 Spalten nebeneinander</button>
+        </div>
+
+        <div class="group">
+            <h2>2. Komponenten</h2>
+            <button class="tool-btn" onclick="addComponent('h1', 'web-hero-title', 'Überschrift')">⚡ Hero-Überschrift</button>
+            <button class="tool-btn" onclick="addComponent('p', 'web-paragraph', 'Ein schöner Fließtext für deine Sektion.')">📝 Textblock</button>
+            <button class="tool-btn" onclick="addComponent('button', 'web-btn', 'Jetzt starten')">🔘 Call-to-Action Button</button>
+        </div>
+
+        <div class="group">
+            <h2>3. Globales Design</h2>
+            <select id="themeSelect" class="tool-btn" onchange="updateTheme()">
+                <option value="style-clean">Minimalist Clean</option>
+                <option value="style-brutal">Neo-Brutalism</option>
+                <option value="style-darkmode">Deep Dark Mode</option>
+            </select>
+        </div>
+
+        <div class="group inspector" id="inspector" style="display: none;">
+            <h2>4. Element anpassen</h2>
+            <label>Textfarbe:</label>
+            <input type="color" id="inspectColor" oninput="adjustSelectedElement('color', this.value)">
+            
+            <label>Abstand unten (Margin):</label>
+            <input type="range" min="0" max="100" id="inspectMargin" oninput="adjustSelectedElement('marginBottom', this.value + 'px')">
+        </div>
+
+        <button class="tool-btn export-btn" onclick="cleanExport()">💾 Saubere index.html exportieren</button>
+    </div>
+
+    <div class="canvas-container">
+        <div id="canvas" class="style-clean">
+            <h1 class="web-hero-title" contenteditable="true">Dein neuer GitHub-Builder.</h1>
+            <p class="web-paragraph" contenteditable="true">Klicke ein Element an, um es im linken Menü feinzutunen. Nutze Rechtsklick zum Löschen.</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
