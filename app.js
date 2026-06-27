@@ -58,7 +58,7 @@ function registerCanvasEvents() {
 }
 
 function attachElementEvents(el) {
-    if (el.dataset.boundEvents === '1') return; // verhindert doppelte Listener
+    if (!el || el.dataset.boundEvents === '1') return; // verhindert doppelte Listener
     el.dataset.boundEvents = '1';
     el.setAttribute('draggable', 'true');
 
@@ -76,13 +76,15 @@ function attachElementEvents(el) {
     el.addEventListener('dragstart', (e) => {
         draggedElement = el;
         el.classList.add('dragging-now');
-        document.getElementById('canvas').classList.add('dragging-active');
+        const canvas = document.getElementById('canvas');
+        if (canvas) canvas.classList.add('dragging-active');
         e.dataTransfer.effectAllowed = 'move';
     });
 
     el.addEventListener('dragend', () => {
         el.classList.remove('dragging-now');
-        document.getElementById('canvas').classList.remove('dragging-active');
+        const canvas = document.getElementById('canvas');
+        if (canvas) canvas.classList.remove('dragging-active');
         document.querySelectorAll('.drag-over-top, .drag-over-bottom').forEach(n => {
             n.classList.remove('drag-over-top', 'drag-over-bottom');
         });
@@ -133,7 +135,7 @@ function attachElementEvents(el) {
 
 // Spalten-Container (web-col) erlauben Drop von Elementen HINEIN
 function attachContainerDropEvents(col) {
-    if (col.dataset.dropBound === '1') return;
+    if (!col || col.dataset.dropBound === '1') return;
     col.dataset.dropBound = '1';
     col.addEventListener('dragover', (e) => {
         e.preventDefault();
@@ -157,6 +159,7 @@ document.getElementById('canvas')?.addEventListener('click', () => deselectEleme
    SELECTION / INSPECTOR
    ====================================================================== */
 function selectElement(el) {
+    if (!el) return;
     if (selectedElement) {
         selectedElement.classList.remove('selected-element');
         removeElementToolbar();
@@ -166,28 +169,38 @@ function selectElement(el) {
     showElementToolbar(el);
 
     const inspector = document.getElementById('inspector');
-    inspector.style.display = 'flex';
+    if (inspector) {
+        inspector.style.display = 'flex';
 
-    const computed = window.getComputedStyle(el);
-    document.getElementById('inspectColor').value = rgbToHex(computed.color);
-    document.getElementById('inspectBg').value = rgbToHex(computed.backgroundColor) || '#ffffff';
+        const computed = window.getComputedStyle(el);
+        const colorInput = document.getElementById('inspectColor');
+        if (colorInput) colorInput.value = rgbToHex(computed.color);
 
-    const fontSizePx = parseFloat(computed.fontSize) || 16;
-    document.getElementById('inspectFontSize').value = Math.round(fontSizePx);
-    document.getElementById('fontSizeValue').textContent = Math.round(fontSizePx) + 'px';
+        const bgInput = document.getElementById('inspectBg');
+        if (bgInput) bgInput.value = rgbToHex(computed.backgroundColor) || '#ffffff';
 
-    const marginBottomPx = parseFloat(el.style.marginBottom || computed.marginBottom) || 0;
-    document.getElementById('inspectMargin').value = Math.min(100, Math.round(marginBottomPx));
+        const fontSizeInput = document.getElementById('inspectFontSize');
+        const fontSizeVal = document.getElementById('fontSizeValue');
+        const fontSizePx = parseFloat(computed.fontSize) || 16;
+        if (fontSizeInput) fontSizeInput.value = Math.round(fontSizePx);
+        if (fontSizeVal) fontSizeVal.textContent = Math.round(fontSizePx) + 'px';
 
-    const paddingPx = parseFloat(el.style.padding) || 0;
-    document.getElementById('inspectPadding').value = Math.min(60, Math.round(paddingPx));
+        const marginInput = document.getElementById('inspectMargin');
+        const marginBottomPx = parseFloat(el.style.marginBottom || computed.marginBottom) || 0;
+        if (marginInput) marginInput.value = Math.min(100, Math.round(marginBottomPx));
 
-    document.querySelectorAll('.align-row button').forEach(b => b.classList.remove('active'));
-    const align = el.style.textAlign || 'left';
-    const alignBtn = document.querySelector(`.align-row button[data-align="${align}"]`);
-    if (alignBtn) alignBtn.classList.add('active');
+        const paddingInput = document.getElementById('inspectPadding');
+        const paddingPx = parseFloat(el.style.padding) || 0;
+        if (paddingInput) paddingInput.value = Math.min(60, Math.round(paddingPx));
 
-    document.getElementById('elTagLabel').textContent = el.tagName.toLowerCase() + (el.className ? '.' + el.className.split(' ')[0] : '');
+        document.querySelectorAll('.align-row button').forEach(b => b.classList.remove('active'));
+        const align = el.style.textAlign || 'left';
+        const alignBtn = document.querySelector(`.align-row button[data-align="${align}"]`);
+        if (alignBtn) alignBtn.classList.add('active');
+
+        const tagLabel = document.getElementById('elTagLabel');
+        if (tagLabel) tagLabel.textContent = el.tagName.toLowerCase() + (el.className ? '.' + el.className.split(' ')[0] : '');
+    }
 }
 
 function deselectElement() {
@@ -196,10 +209,12 @@ function deselectElement() {
         removeElementToolbar();
         selectedElement = null;
     }
-    document.getElementById('inspector').style.display = 'none';
+    const inspector = document.getElementById('inspector');
+    if (inspector) inspector.style.display = 'none';
 }
 
 function showElementToolbar(el) {
+    if (!el) return;
     removeElementToolbar();
     const toolbar = document.createElement('div');
     toolbar.className = 'element-toolbar';
@@ -238,6 +253,7 @@ function moveElement(el, direction) {
 }
 
 function duplicateElement(el) {
+    if (!el) return;
     const clone = el.cloneNode(true);
     clone.classList.remove('selected-element');
     clone.querySelectorAll('.element-toolbar').forEach(t => t.remove());
@@ -258,6 +274,7 @@ function duplicateElement(el) {
 }
 
 function confirmDeleteElement(el) {
+    if (!el) return;
     openConfirmModal(
         'Element löschen?',
         'Dieses Element wird dauerhaft aus der Seite entfernt. Das kannst du mit Strg+Z wieder rückgängig machen.',
@@ -293,6 +310,7 @@ function addBlock(html) {
 
 function appendToCanvas(el) {
     const canvas = document.getElementById('canvas');
+    if (!canvas || !el) return;
     canvas.appendChild(el);
     attachElementEvents(el);
     el.querySelectorAll('[contenteditable], img, button, a').forEach(child => {
@@ -374,22 +392,26 @@ function setAlign(align) {
 function applySwatch(hex) {
     if (!selectedElement) return;
     selectedElement.style.color = hex;
-    document.getElementById('inspectColor').value = hex;
+    const colorInput = document.getElementById('inspectColor');
+    if (colorInput) colorInput.value = hex;
     markDirty();
     pushHistory();
 }
 
 function updateTheme() {
-    const theme = document.getElementById('themeSelect').value;
+    const themeSelect = document.getElementById('themeSelect');
+    if (!themeSelect) return;
+    const theme = themeSelect.value;
     const canvas = document.getElementById('canvas');
-    canvas.className = theme + (getViewportClass() ? ' ' + getViewportClass() : '');
-    pages[currentPage].theme = theme;
+    if (canvas) canvas.className = theme + (getViewportClass() ? ' ' + getViewportClass() : '');
+    if (pages[currentPage]) pages[currentPage].theme = theme;
     markDirty();
     pushHistory();
 }
 
 function getViewportClass() {
     const canvas = document.getElementById('canvas');
+    if (!canvas) return '';
     if (canvas.classList.contains('viewport-tablet')) return 'viewport-tablet';
     if (canvas.classList.contains('viewport-mobile')) return 'viewport-mobile';
     return '';
@@ -397,6 +419,7 @@ function getViewportClass() {
 
 function setViewport(size) {
     const canvas = document.getElementById('canvas');
+    if (!canvas) return;
     canvas.classList.remove('viewport-tablet', 'viewport-mobile');
     if (size === 'tablet') canvas.classList.add('viewport-tablet');
     if (size === 'mobile') canvas.classList.add('viewport-mobile');
@@ -406,7 +429,7 @@ function setViewport(size) {
 
 function updateCanvasEmptyState() {
     const canvas = document.getElementById('canvas');
-    canvas.classList.toggle('empty-canvas', canvas.children.length === 0);
+    if (canvas) canvas.classList.toggle('empty-canvas', canvas.children.length === 0);
 }
 
 /* ======================================================================
@@ -418,6 +441,7 @@ function createNewPage() {
         'Dateiname der neuen Seite (z.B. about.html):',
         'about.html',
         (filename) => {
+            if (!filename) return;
             filename = filename.trim();
             if (!filename) return;
             if (!/^[a-zA-Z0-9_-]+\.html$/.test(filename)) {
@@ -434,7 +458,8 @@ function createNewPage() {
                 theme: "style-clean"
             };
             addPageOption(filename);
-            document.getElementById('pageSelect').value = filename;
+            const select = document.getElementById('pageSelect');
+            if (select) select.value = filename;
             switchPage(filename);
             showToast('Seite "' + filename + '" erstellt', 'success');
         }
@@ -443,6 +468,7 @@ function createNewPage() {
 
 function addPageOption(filename) {
     const select = document.getElementById('pageSelect');
+    if (!select) return;
     const opt = document.createElement('option');
     opt.value = filename;
     opt.innerText = filename;
@@ -460,10 +486,12 @@ function deleteCurrentPage() {
         () => {
             delete pages[currentPage];
             const select = document.getElementById('pageSelect');
-            const opt = [...select.options].find(o => o.value === currentPage);
-            if (opt) opt.remove();
+            if (select) {
+                const opt = [...select.options].find(o => o.value === currentPage);
+                if (opt) opt.remove();
+            }
             const nextPage = Object.keys(pages)[0];
-            select.value = nextPage;
+            if (select) select.value = nextPage;
             currentPage = nextPage; 
             loadPageIntoCanvas(nextPage);
             showToast('Seite gelöscht', 'danger');
@@ -473,12 +501,14 @@ function deleteCurrentPage() {
 
 function savePageSnapshot() {
     const canvas = document.getElementById('canvas');
+    if (!canvas) return;
     const clone = canvas.cloneNode(true);
     clone.querySelectorAll('.element-toolbar').forEach(t => t.remove());
     clone.querySelectorAll('.selected-element').forEach(n => n.classList.remove('selected-element'));
     pages[currentPage] = pages[currentPage] || {};
     pages[currentPage].html = clone.innerHTML;
-    pages[currentPage].theme = document.getElementById('themeSelect').value;
+    const themeSelect = document.getElementById('themeSelect');
+    pages[currentPage].theme = themeSelect ? themeSelect.value : "style-clean";
 }
 
 function switchPage(pageName) {
@@ -490,11 +520,14 @@ function switchPage(pageName) {
 function loadPageIntoCanvas(pageName) {
     deselectElement();
     const data = pages[pageName];
+    if (!data) return;
     const canvas = document.getElementById('canvas');
+    if (!canvas) return;
     canvas.innerHTML = data.html;
     const vp = getViewportClass();
     canvas.className = data.theme + (vp ? ' ' + vp : '');
-    document.getElementById('themeSelect').value = data.theme;
+    const themeSelect = document.getElementById('themeSelect');
+    if (themeSelect) themeSelect.value = data.theme;
     canvas.querySelectorAll('[data-bound-events]').forEach(n => n.removeAttribute('data-bound-events'));
     registerCanvasEvents();
     updateCanvasEmptyState();
@@ -510,6 +543,7 @@ function loadPageIntoCanvas(pageName) {
 function pushHistory() {
     if (isRestoringHistory) return;
     const canvas = document.getElementById('canvas');
+    if (!canvas) return;
     const clone = canvas.cloneNode(true);
     clone.querySelectorAll('.element-toolbar').forEach(t => t.remove());
     const snapshot = clone.innerHTML;
@@ -539,10 +573,12 @@ function restoreSnapshot(snapshot) {
     isRestoringHistory = true;
     deselectElement();
     const canvas = document.getElementById('canvas');
-    canvas.innerHTML = snapshot;
-    canvas.querySelectorAll('[data-bound-events]').forEach(n => n.removeAttribute('data-bound-events'));
-    canvas.querySelectorAll('[data-blur-bound]').forEach(n => n.removeAttribute('data-blur-bound'));
-    canvas.querySelectorAll('[data-drop-bound]').forEach(n => n.removeAttribute('data-drop-bound'));
+    if (canvas) {
+        canvas.innerHTML = snapshot;
+        canvas.querySelectorAll('[data-bound-events]').forEach(n => n.removeAttribute('data-bound-events'));
+        canvas.querySelectorAll('[data-blur-bound]').forEach(n => n.removeAttribute('data-blur-bound'));
+        canvas.querySelectorAll('[data-drop-bound]').forEach(n => n.removeAttribute('data-drop-bound'));
+    }
     registerCanvasEvents();
     updateCanvasEmptyState();
     markDirty();
@@ -550,8 +586,10 @@ function restoreSnapshot(snapshot) {
 }
 
 function updateUndoRedoButtons() {
-    document.getElementById('undoBtn').disabled = undoStack.length <= 1;
-    document.getElementById('redoBtn').disabled = redoStack.length === 0;
+    const undoBtn = document.getElementById('undoBtn');
+    const redoBtn = document.getElementById('redoBtn');
+    if (undoBtn) undoBtn.disabled = undoStack.length <= 1;
+    if (redoBtn) redoBtn.disabled = redoStack.length === 0;
 }
 
 /* ======================================================================
@@ -559,12 +597,7 @@ function updateUndoRedoButtons() {
    ====================================================================== */
 function initKeyboardShortcuts() {
     document.addEventListener('keydown', (e) => {
-        // Fix: Prüft jetzt auch reguläre Inputs und Textareas, damit Backspace im Modal funktioniert
-        const isEditingText = document.activeElement && (
-            document.activeElement.isContentEditable || 
-            document.activeElement.tagName === 'INPUT' || 
-            document.activeElement.tagName === 'TEXTAREA'
-        );
+        const isEditingText = document.activeElement && document.activeElement.isContentEditable;
         const mod = e.ctrlKey || e.metaKey;
 
         if (mod && e.key.toLowerCase() === 'z' && !e.shiftKey) {
@@ -593,7 +626,8 @@ function initKeyboardShortcuts() {
             return;
         }
         if (e.key === 'Escape') {
-            const modalOpen = document.getElementById('modalOverlay').style.display === 'flex';
+            const overlay = document.getElementById('modalOverlay');
+            const modalOpen = overlay && overlay.style.display === 'flex';
             if (modalOpen) {
                 closeModal();
             } else if (document.body.classList.contains('preview-mode')) {
@@ -630,9 +664,15 @@ function exitPreview() {
    STATUS BAR
    ====================================================================== */
 function updateStatusBar() {
-    document.getElementById('currentPageLabel').textContent = currentPage;
-    const count = document.getElementById('canvas').children.length;
-    document.getElementById('elementCountLabel').textContent = count + (count === 1 ? ' Element' : ' Elemente');
+    const pageLabel = document.getElementById('currentPageLabel');
+    if (pageLabel) pageLabel.textContent = currentPage;
+    
+    const canvas = document.getElementById('canvas');
+    const countLabel = document.getElementById('elementCountLabel');
+    if (canvas && countLabel) {
+        const count = canvas.children.length;
+        countLabel.textContent = count + (count === 1 ? ' Element' : ' Elemente');
+    }
 }
 
 function markDirty() {
@@ -660,11 +700,11 @@ function scheduleAutosave() {
     }, 800);
 }
 function loadAutosave() {
-    // In-Memory Platzhalter
+    // In-Memory Backup
 }
 
 /* ======================================================================
-   PROJEKT SPEICHERN / LADEN (als .json Datei herunterladen/importieren)
+   PROJEKT SPEICHERN / LADEN
    ====================================================================== */
 function saveProjectToFile() {
     savePageSnapshot();
@@ -683,12 +723,13 @@ function saveProjectToFile() {
 }
 
 function triggerProjectLoad() {
-    document.getElementById('projectFileInput').click();
+    const input = document.getElementById('projectFileInput');
+    if (input) input.click();
 }
 
 function handleProjectFileSelected(input) {
+    if (!input || !input.files[0]) return;
     const file = input.files[0];
-    if (!file) return;
     const reader = new FileReader();
     reader.onload = (e) => {
         try {
@@ -698,9 +739,11 @@ function handleProjectFileSelected(input) {
             currentPage = data.currentPage && pages[data.currentPage] ? data.currentPage : Object.keys(pages)[0];
 
             const select = document.getElementById('pageSelect');
-            select.innerHTML = '';
-            Object.keys(pages).forEach(name => addPageOption(name));
-            select.value = currentPage;
+            if (select) {
+                select.innerHTML = '';
+                Object.keys(pages).forEach(name => addPageOption(name));
+                select.value = currentPage;
+            }
 
             loadPageIntoCanvas(currentPage);
             markClean();
@@ -724,12 +767,12 @@ function buildExportHtml(pageName, theme, innerHtml) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${escapeHtml(pageName.replace('.html', ''))}</title>
     <style>
-\${EXPORT_CSS}
+${EXPORT_CSS}
     </style>
 </head>
-<body class="\${theme}">
+<body class="${theme}">
     <div class="wrapper">
-        \${innerHtml}
+        ${innerHtml}
     </div>
 </body>
 </html>`;
@@ -809,6 +852,7 @@ function cleanCanvasHtml(html) {
 
 function exportCurrentPage() {
     savePageSnapshot();
+    if (!pages[currentPage]) return;
     const data = pages[currentPage];
     const cleanHTML = cleanCanvasHtml(data.html);
     const exportCode = buildExportHtml(currentPage, data.theme, cleanHTML);
@@ -826,7 +870,7 @@ function downloadFile(content, filename, mime) {
 }
 
 /* ======================================================================
-   EXPORT — ALLE Seiten als ZIP (über JSZip CDN)
+   EXPORT — ALLE Seiten als ZIP
    ====================================================================== */
 function exportAllPagesAsZip() {
     savePageSnapshot();
@@ -862,45 +906,74 @@ function switchTab(tabName) {
 let modalConfirmCallback = null;
 function openConfirmModal(title, text, onConfirm) {
     modalConfirmCallback = onConfirm;
-    document.getElementById('modalTitle').textContent = title;
-    document.getElementById('modalText').textContent = text;
-    document.getElementById('modalOverlay').style.display = 'flex';
-    document.getElementById('modalPromptInput').style.display = 'none';
-    document.getElementById('modalConfirmBtn').onclick = () => {
-        closeModal();
-        if (modalConfirmCallback) modalConfirmCallback();
-    };
+    const titleEl = document.getElementById('modalTitle');
+    const textEl = document.getElementById('modalText');
+    const overlayEl = document.getElementById('modalOverlay');
+    const inputEl = document.getElementById('modalPromptInput');
+    const btnEl = document.getElementById('modalConfirmBtn');
+
+    if (titleEl && textEl && overlayEl && inputEl && btnEl) {
+        titleEl.textContent = title;
+        textEl.textContent = text;
+        overlayEl.style.display = 'flex';
+        inputEl.style.display = 'none';
+        btnEl.onclick = () => {
+            closeModal();
+            if (modalConfirmCallback) modalConfirmCallback();
+        };
+    } else {
+        // Fallback, falls modale IDs im HTML-Dokument fehlen
+        if (confirm(`${title}\n\n${text}`)) {
+            if (onConfirm) onConfirm();
+        }
+    }
 }
 
 let modalPromptCallback = null;
 function openPromptModal(title, label, defaultValue, onSubmit) {
     modalPromptCallback = onSubmit;
-    document.getElementById('modalTitle').textContent = title;
-    document.getElementById('modalText').textContent = label;
-    const input = document.getElementById('modalPromptInput');
-    input.style.display = 'block';
-    input.value = defaultValue || '';
-    document.getElementById('modalOverlay').style.display = 'flex';
-    setTimeout(() => input.focus(), 50);
-    document.getElementById('modalConfirmBtn').onclick = () => {
-        const val = input.value;
-        closeModal();
-        if (modalPromptCallback) modalPromptCallback(val);
-    };
+    const titleEl = document.getElementById('modalTitle');
+    const textEl = document.getElementById('modalText');
+    const inputEl = document.getElementById('modalPromptInput');
+    const overlayEl = document.getElementById('modalOverlay');
+    const btnEl = document.getElementById('modalConfirmBtn');
+
+    if (titleEl && textEl && inputEl && overlayEl && btnEl) {
+        titleEl.textContent = title;
+        textEl.textContent = label;
+        inputEl.style.display = 'block';
+        inputEl.value = defaultValue || '';
+        overlayEl.style.display = 'flex';
+        setTimeout(() => inputEl.focus(), 50);
+        btnEl.onclick = () => {
+            const val = inputEl.value;
+            closeModal();
+            if (modalPromptCallback) modalPromptCallback(val);
+        };
+    } else {
+        // Fallback auf nativen Browser-Prompt
+        const val = prompt(label, defaultValue);
+        if (val !== null && onSubmit) onSubmit(val);
+    }
 }
 
 function closeModal() {
-    document.getElementById('modalOverlay').style.display = 'none';
+    const overlayEl = document.getElementById('modalOverlay');
+    if (overlayEl) overlayEl.style.display = 'none';
     modalConfirmCallback = null;
     modalPromptCallback = null;
 }
 
 function showToast(message, type) {
     const stack = document.getElementById('toastStack');
+    if (!stack) {
+        console.log(`[${type}] ${message}`);
+        return;
+    }
     const toast = document.createElement('div');
     toast.className = 'toast' + (type ? ' toast-' + type : '');
     const icon = type === 'success' ? '✓' : type === 'danger' ? '⚠' : 'ℹ';
-    toast.innerHTML = `<span>\${icon}</span><span>\${escapeHtml(message)}</span>`;
+    toast.innerHTML = `<span>${icon}</span><span>${escapeHtml(message)}</span>`;
     stack.appendChild(toast);
     setTimeout(() => {
         toast.style.opacity = '0';
