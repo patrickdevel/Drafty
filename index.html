@@ -3,50 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise Web Builder PRO</title>
+    <title>Ultimate Web Builder Pro</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="sidebar">
         <div class="group">
-            <h2>1. Struktur & Layout</h2>
-            <button class="tool-btn" onclick="addGrid(2)">📊 2 Spalten nebeneinander</button>
-            <button class="tool-btn" onclick="addGrid(3)">📊 3 Spalten nebeneinander</button>
+            <h2>📁 Seiten-Manager</h2>
+            <select id="pageSelect" class="tool-btn" onchange="switchPage(this.value)">
+                <option value="index.html">index.html (Home)</option>
+            </select>
+            <button class="tool-btn" style="background: #10b981;" onclick="createNewPage()">➕ Neue Seite erstellen</button>
         </div>
 
         <div class="group">
-            <h2>2. Komponenten</h2>
-            <button class="tool-btn" onclick="addComponent('h1', 'web-hero-title', 'Überschrift')">⚡ Hero-Überschrift</button>
-            <button class="tool-btn" onclick="addComponent('p', 'web-paragraph', 'Ein schöner Fließtext für deine Sektion.')">📝 Textblock</button>
-            <button class="tool-btn" onclick="addComponent('button', 'web-btn', 'Jetzt starten')">🔘 Call-to-Action Button</button>
+            <h2>🧱 Bausteine (In Canvas ziehen)</h2>
+            <button class="tool-btn" onclick="addComponent('h1', 'web-hero-title', 'Epische Überschrift')">⚡ Überschrift</button>
+            <button class="tool-btn" onclick="addComponent('p', 'web-paragraph', 'Schreibe hier deinen interessanten Text hinein.')">📝 Textblock</button>
+            <button class="tool-btn" onclick="addComponent('button', 'web-btn', 'Jetzt klicken')">🔘 Button</button>
+            <button class="tool-btn" onclick="addImageComponent()">🖼️ Bild (mit URL)</button>
         </div>
 
         <div class="group">
-            <h2>3. Globales Design</h2>
+            <h2>🎨 Design-Thema</h2>
             <select id="themeSelect" class="tool-btn" onchange="updateTheme()">
                 <option value="style-clean">Minimalist Clean</option>
-                <option value="style-brutal">Neo-Brutalism</option>
                 <option value="style-darkmode">Deep Dark Mode</option>
+                <option value="style-brutal">Neo-Brutalism</option>
             </select>
         </div>
 
         <div class="group inspector" id="inspector" style="display: none;">
-            <h2>4. Element anpassen</h2>
+            <h2>⚙️ Element-Inspector</h2>
             <label>Textfarbe:</label>
-            <input type="color" id="inspectColor" oninput="adjustSelectedElement('color', this.value)">
+            <input type="color" id="inspectColor" oninput="adjustSelected('color', this.value)">
             
-            <label>Abstand unten (Margin):</label>
-            <input type="range" min="0" max="100" id="inspectMargin" oninput="adjustSelectedElement('marginBottom', this.value + 'px')">
+            <label>Abstand unten:</label>
+            <input type="range" min="0" max="100" id="inspectMargin" oninput="adjustSelected('marginBottom', this.value + 'px')">
         </div>
 
-        <button class="tool-btn export-btn" onclick="cleanExport()">💾 Saubere index.html exportieren</button>
+        <button class="tool-btn export-btn" onclick="exportCurrentPage()">💾 Aktuelle Seite exportieren</button>
     </div>
 
     <div class="canvas-container">
-        <div id="canvas" class="style-clean">
-            <h1 class="web-hero-title" contenteditable="true">Dein neuer GitHub-Builder.</h1>
-            <p class="web-paragraph" contenteditable="true">Klicke ein Element an, um es im linken Menü feinzutunen. Nutze Rechtsklick zum Löschen.</p>
+        <div id="canvas" class="style-clean" ondragover="allowDrop(e)">
+            <h1 class="web-hero-title" contenteditable="true" draggable="true">Willkommen im Pro-Builder!</h1>
+            <p class="web-paragraph" contenteditable="true" draggable="true">Halte ein Element gedrückt, um es nach oben oder unten zu verschieben (Drag & Drop). Klicke es an, um es links zu färben.</p>
         </div>
     </div>
 
