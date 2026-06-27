@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initKeyboardShortcuts();
     loadAutosave();
 
-    // BUGFIX: Verhindert, dass man im Editor aus Versehen auf Links klickt und die Seite wechselt!
     document.getElementById('canvas').addEventListener('click', (e) => {
         const link = e.target.closest('a');
         if (link && !document.body.classList.contains('preview-mode')) {
@@ -170,7 +169,6 @@ function selectElement(el) {
     const inspector = document.getElementById('inspector');
     inspector.style.display = 'flex';
 
-    // Link-Feld befüllen
     const linkInput = document.getElementById('inspectLink');
     const pageSelect = document.getElementById('inspectPageLink');
     if (el.tagName.toLowerCase() === 'a') {
@@ -179,7 +177,6 @@ function selectElement(el) {
         linkInput.value = '';
     }
     
-    // Seiten ins Dropdown laden
     pageSelect.innerHTML = '<option value="">Seiten...</option>';
     Object.keys(pages).forEach(p => {
         const opt = document.createElement('option');
@@ -378,32 +375,30 @@ function applyLink(url) {
         if (selectedElement.tagName.toLowerCase() === 'a') {
             selectedElement.setAttribute('href', url);
         } else {
-            // Verwandelt das Element in ein <a> Tag
             const a = document.createElement('a');
             a.innerHTML = selectedElement.innerHTML;
             a.setAttribute('href', url);
+            // FIX: Ursprünglichen Tag merken, damit wir ihn beim Löschen des Links wiederherstellen können
+            a.dataset.origTag = selectedElement.tagName.toLowerCase();
+            
             Array.from(selectedElement.attributes).forEach(attr => {
-                if (attr.name !== 'href') {
+                if (attr.name !== 'href' && attr.name !== 'data-orig-tag') {
                     a.setAttribute(attr.name, attr.value);
                 }
             });
             selectedElement.replaceWith(a);
             selectedElement = a;
             attachElementEvents(a);
-            showElementToolbar(a); // Toolbar neu anheften
+            showElementToolbar(a);
         }
     } else {
-        // Link entfernen: Verwandelt das <a> Tag zurück
         if (selectedElement.tagName.toLowerCase() === 'a') {
-            const isBtn = selectedElement.classList.contains('web-btn');
-            const isTitle = selectedElement.classList.contains('web-hero-title');
-            const isParagraph = selectedElement.classList.contains('web-paragraph');
-            
-            const tag = isBtn ? 'button' : (isTitle ? 'h1' : (isParagraph ? 'p' : 'span'));
+            // FIX: Hole den korrekten Ursprungs-Tag zurück (statt pauschal span/div zu raten)
+            const tag = selectedElement.dataset.origTag || 'span';
             const el = document.createElement(tag);
             el.innerHTML = selectedElement.innerHTML;
             Array.from(selectedElement.attributes).forEach(attr => {
-                if (attr.name !== 'href') {
+                if (attr.name !== 'href' && attr.name !== 'data-orig-tag') {
                     el.setAttribute(attr.name, attr.value);
                 }
             });
@@ -487,8 +482,14 @@ function createNewPage() {
         (filename) => {
             filename = filename.trim();
             if (!filename) return;
+            
+            // FIX: Automatisch .html anhängen, wenn es vom User vergessen wurde
+            if (!filename.endsWith('.html')) {
+                filename += '.html';
+            }
+
             if (!/^[a-zA-Z0-9_-]+\.html$/.test(filename)) {
-                showToast('Ungültiger Name. Nutze nur Buchstaben/Zahlen und ende auf .html', 'danger');
+                showToast('Ungültiger Name. Nutze nur Buchstaben/Zahlen.', 'danger');
                 return;
             }
             if (pages[filename]) {
@@ -498,7 +499,7 @@ function createNewPage() {
             savePageSnapshot();
             pages[filename] = {
                 html: `<h1 class="web-hero-title" contenteditable="true" draggable="true">Neue Seite: ${escapeHtml(filename)}</h1><p class="web-paragraph" contenteditable="true" draggable="true">Beginne hier mit dem Aufbau dieser Seite.</p>`,
-                theme: "style-clean"
+                theme: document.getElementById('themeSelect').value
             };
             addPageOption(filename);
             document.getElementById('pageSelect').value = filename;
@@ -626,17 +627,30 @@ function updateUndoRedoButtons() {
    ====================================================================== */
 function initKeyboardShortcuts() {
     document.addEventListener('keydown', (e) => {
-        const isEditingText = document.activeElement && document.activeElement.isContentEditable;
+        // FIX: Prüfe, ob IRGENDEIN Input-Feld aktiv ist, nicht nur contenteditable
+        const active = document.activeElement;
+        const isEditingText = active && (
+            active.isContentEditable || 
+            active.tagName === 'INPUT' || 
+            active.tagName === 'TEXTAREA' || 
+            active.tagName === 'SELECT'
+        );
+
         const mod = e.ctrlKey || e.metaKey;
 
         if (mod && e.key.toLowerCase() === 'z' && !e.shiftKey) {
-            e.preventDefault();
-            undo();
+            // Erlaube normales Browser-Undo in Textfeldern
+            if (!isEditingText) {
+                e.preventDefault();
+                undo();
+            }
             return;
         }
         if (mod && (e.key.toLowerCase() === 'y' || (e.key.toLowerCase() === 'z' && e.shiftKey))) {
-            e.preventDefault();
-            redo();
+            if (!isEditingText) {
+                e.preventDefault();
+                redo();
+            }
             return;
         }
         if (mod && e.key.toLowerCase() === 's') {
@@ -644,6 +658,7 @@ function initKeyboardShortcuts() {
             saveProjectToFile();
             return;
         }
+        // Hier passierte der Bug: Wenn man im Pop-up Backspace drückte, wurde das Element gelöscht!
         if (!isEditingText && (e.key === 'Delete' || e.key === 'Backspace') && selectedElement) {
             e.preventDefault();
             confirmDeleteElement(selectedElement);
@@ -922,6 +937,7 @@ function openConfirmModal(title, text, onConfirm) {
     document.getElementById('modalText').textContent = text;
     document.getElementById('modalOverlay').style.display = 'flex';
     document.getElementById('modalPromptInput').style.display = 'none';
+    
     document.getElementById('modalConfirmBtn').onclick = () => {
         closeModal();
         if (modalConfirmCallback) modalConfirmCallback();
@@ -938,9 +954,19 @@ function openPromptModal(title, label, defaultValue, onSubmit) {
     input.value = defaultValue || '';
     document.getElementById('modalOverlay').style.display = 'flex';
     setTimeout(() => input.focus(), 50);
+    
+    // FIX: Enter-Taste unterstützt!
+    input.onkeydown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            document.getElementById('modalConfirmBtn').click();
+        }
+    };
+
     document.getElementById('modalConfirmBtn').onclick = () => {
         const val = input.value;
         closeModal();
+        input.onkeydown = null; // cleanup
         if (modalPromptCallback) modalPromptCallback(val);
     };
 }
