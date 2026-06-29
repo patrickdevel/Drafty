@@ -76,26 +76,10 @@
             padding: 18px 20px; border-bottom: 1px solid var(--border-soft);
         }
         .brand-logo {
-    width: 30px; 
-    height: 30px; 
-    border-radius: 8px;
-    background: linear-gradient(135deg, var(--accent), var(--highlight));
-    display: flex; 
-    align-items: center; 
-    justify-content: center;
-    flex-shrink: 0;
-    /* font-weight, font-size und color werden für das Bild nicht mehr gebraucht */
-}
-
-/* Neu: Sorgt dafür, dass sich das Bild perfekt an die 30x30px anpasst */
-.brand-logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Verhindert, dass das Logo verzerrt wird */
-    padding: 4px;        /* Optional: Gibt dem Logo etwas Atemraum zum Rand */
-    box-sizing: border-box;
-}
-        
+            width: 30px; height: 30px; border-radius: 8px;
+            background: linear-gradient(135deg, var(--accent), var(--highlight));
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 0.9rem; color: #0a0e1a; flex-shrink: 0;
         }
         .brand-name { font-weight: 700; font-size: 0.95rem; letter-spacing: -0.01em; }
         .brand-sub { font-size: 0.68rem; color: var(--text-faint); font-family: var(--font-mono); }
@@ -616,8 +600,7 @@
 
     <div class="sidebar">
         <div class="brand">
-            <div class="brand-logo">
-            <img src="logo.png" alt="Drafty Logo">
+            <div class="brand-logo">Dy</div>
             <div>
                 <div class="brand-name">Drafty</div>
                 <div class="brand-sub">v3.0</div>
