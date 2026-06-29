@@ -28,4 +28,4 @@ Da Drafty eine reine Client-Side-Webanwendung (HTML/CSS/JS) ist, benötigst du *
 
 1. **Repository klonen:**
    ```bash
-   git clone [https://github.com/DEIN-BENUTZERNAME/drafty.git](https://github.com/DEIN-BENUTZERNAME/drafty.git)
+   gh repo clone patrickdevel/Drafty
