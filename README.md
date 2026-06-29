@@ -1,6 +1,6 @@
 # ⚡ Drafty v3.1
 
-[![Version](https://img.shields.io/badge/version-3.0-blueviolet.svg?style=flat-square)]()
+[![Version](https://img.shields.io/badge/version-3.1-blueviolet.svg?style=flat-square)]()
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)]()
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)]()
 
