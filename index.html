@@ -259,7 +259,7 @@
 
         /* ============ MAIN AREA ============ */
         .main-area { flex: 1; display: flex; flex-direction: column; min-width: 0; }
-        .canvas-container { flex-grow: 1; padding: 36px; overflow-y: auto; display: flex; justify-content: center; background: radial-gradient(circle at 50% 0%, #0d1326 0%, var(--bg-deep) 60%); position: relative; }
+        .canvas-container { flex-grow: 1; padding: 36px; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; background: radial-gradient(circle at 50% 0%, #0d1326 0%, var(--bg-deep) 60%); position: relative; }
 
         #canvas {
             width: 100%; max-width: 900px; min-height: 100%;
@@ -267,6 +267,7 @@
             border-radius: 14px; padding: 50px; box-sizing: border-box;
             box-shadow: 0 25px 60px -15px rgba(0,0,0,0.5);
             transition: max-width 0.3s ease; position: relative;
+            overflow: visible; /* Inhalt darf die Canvas immer nach unten wachsen lassen */
         }
         #canvas.viewport-tablet { max-width: 600px; }
         #canvas.viewport-mobile { max-width: 380px; }
@@ -290,8 +291,8 @@
 
         /* Toolbar / Text-Format Toolbar */
         .element-toolbar {
-            position: absolute; top: -34px; left: 0; background: #1e293b;
-            border-radius: 6px; display: flex; gap: 2px; padding: 3px; z-index: 50;
+            position: fixed; background: #1e293b;
+            border-radius: 6px; display: flex; gap: 2px; padding: 3px; z-index: 500;
             box-shadow: 0 4px 10px rgba(0,0,0,0.25);
         }
         .element-toolbar button {
@@ -595,6 +596,14 @@
 
         /* ---- Modals: SEO / Custom Code / History / Comments ---- */
         .modal-box.modal-wide { width: 480px; }
+        .navlink-row { display: flex; gap: 6px; align-items: center; }
+        .navlink-row input { flex: 1; min-width: 0; }
+        .navlink-row input.navlink-text { flex: 0 0 38%; }
+        .navlink-row button.navlink-del {
+            flex-shrink: 0; width: 30px; height: 30px; background: transparent;
+            border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-dim); cursor: pointer;
+        }
+        .navlink-row button.navlink-del:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
         .modal-box textarea.code-area {
             width: 100%; min-height: 110px; background: var(--bg-input); border: 1px solid var(--border); color: var(--text-main);
             border-radius: var(--radius-sm); padding: 9px; font-family: var(--font-mono); font-size: 0.78rem; resize: vertical;
@@ -682,7 +691,7 @@
                     <button class="tool-btn" draggable="true" data-fav-id="comp-h1-web-hero-title" data-type="comp" data-tag="h1" data-class="web-hero-title" data-text="Epische Überschrift"><span class="ic">⚡</span>Überschrift<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="comp-h1-web-hero-title">☆</span></button>
                     <button class="tool-btn" draggable="true" data-fav-id="block-subtitle" data-type="block" data-key="subtitle"><span class="ic">🔹</span>Untertitel<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-subtitle">☆</span></button>
                     <button class="tool-btn" draggable="true" data-fav-id="comp-p-web-paragraph" data-type="comp" data-tag="p" data-class="web-paragraph" data-text="Schreibe hier deinen interessanten Text hinein."><span class="ic">📝</span>Textblock<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="comp-p-web-paragraph">☆</span></button>
-                    <button class="tool-btn" draggable="true" data-fav-id="comp-button-web-btn" data-type="comp" data-tag="button" data-class="web-btn" data-text="Jetzt klicken"><span class="ic">🔘</span>Button<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="comp-button-web-btn">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="comp-button-web-btn" data-type="comp" data-tag="a" data-class="web-btn" data-text="Jetzt klicken"><span class="ic">🔘</span>Button<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="comp-button-web-btn">☆</span></button>
                     <button class="tool-btn" draggable="true" data-fav-id="block-badge" data-type="block" data-key="badge"><span class="ic">🏷️</span>Badge / Label<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-badge">☆</span></button>
                 </div>
 
@@ -1022,6 +1031,20 @@
         </div>
     </div>
 
+    <!-- Navbar-Links Modal (Text + URL pro Link) -->
+    <div class="modal-overlay" id="navLinksModalOverlay" style="display:none;" role="dialog" aria-modal="true">
+        <div class="modal-box modal-wide">
+            <h3>🧭 Navigations-Links verwalten</h3>
+            <p>Lege für jeden Link einen Text und ein Linkziel fest (URL oder Seitenname, z.B. <code>kontakt.html</code>).</p>
+            <div id="navLinksRows" style="display:flex; flex-direction:column; gap:8px; max-height:320px; overflow-y:auto; margin-bottom:10px;"></div>
+            <button class="tool-btn small no-drag" type="button" onclick="addNavLinkRow()">+ Link hinzufügen</button>
+            <div class="btn-row" style="margin-top:16px;">
+                <button class="tool-btn ghost no-drag" onclick="closeNavLinksModal()">Abbrechen</button>
+                <button class="tool-btn primary no-drag" onclick="saveNavLinksModal()">Speichern</button>
+            </div>
+        </div>
+    </div>
+
     <!-- SEO & Meta-Tags Modal -->
     <div class="modal-overlay" id="seoModalOverlay" style="display:none;" role="dialog" aria-modal="true">
         <div class="modal-box modal-wide">
@@ -1212,6 +1235,8 @@
                 el.className = draggedSidebarItem.cls;
                 el.innerText = draggedSidebarItem.text;
                 el.contentEditable = "true";
+                // Links (<a>) brauchen ein href-Attribut, sonst sind sie nicht klickbar/exportierbar
+                if (draggedSidebarItem.tag === 'a') el.setAttribute('href', '#');
             } else if (draggedSidebarItem.type === 'block') {
                 const html = BLOCKS[draggedSidebarItem.key];
                 if (!html) return;
@@ -1261,7 +1286,9 @@
             el.dataset.boundEvents = '1';
             el.setAttribute('draggable', 'true');
 
-            el.addEventListener('click', (e) => { e.stopPropagation(); selectElement(el); });
+            // preventDefault: verhindert, dass <a>-Links (z.B. der Button-Baustein) im Editor
+            // tatsächlich navigieren, wenn man draufklickt — wir wollen das Element nur auswählen.
+            el.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); selectElement(el); });
             el.addEventListener('contextmenu', (e) => { e.preventDefault(); e.stopPropagation(); confirmDeleteElement(el); });
 
             el.addEventListener('dragstart', (e) => {
@@ -1341,6 +1368,13 @@
         }
 
         document.getElementById('canvas')?.addEventListener('click', () => deselectElement());
+        // Globaler Schutz: egal wo im Canvas ein <a>-Link sitzt (Button-Baustein, Navbar,
+        // oder per "Link einfügen" in Fließtext erzeugt) — beim Bearbeiten soll ein Klick
+        // niemals tatsächlich navigieren, sondern nur das Element auswählen.
+        document.getElementById('canvas')?.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            if (link) e.preventDefault();
+        }, true);
 
         /* ======================================================================
            LIVE TEXT TOOLBAR
@@ -1516,10 +1550,14 @@
             markDirty(); pushHistory();
         }
 
+        let elementToolbarTrackedEl = null;
+        let elementToolbarRafId = null;
+
         function showElementToolbar(el) {
             removeElementToolbar();
             const toolbar = document.createElement('div');
             toolbar.className = 'element-toolbar';
+            toolbar.id = 'activeElementToolbar';
             toolbar.setAttribute('role', 'toolbar');
             toolbar.setAttribute('aria-label', 'Element-Werkzeuge');
             toolbar.innerHTML = `
@@ -1529,6 +1567,7 @@
                 <button title="Kommentar" aria-label="Kommentar hinzufügen oder bearbeiten" data-act="comment">💬</button>
                 <button title="Löschen" aria-label="Element löschen" class="del-btn" data-act="del">✕</button>
             `;
+            toolbar.addEventListener('mousedown', (e) => e.preventDefault()); // Auswahl/Fokus im contenteditable nicht verlieren
             toolbar.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const act = e.target.dataset.act;
@@ -1537,11 +1576,60 @@
                 if (act === 'dup') duplicateElement(el);
                 if (act === 'del') confirmDeleteElement(el);
                 if (act === 'comment') addOrEditComment(el);
+                positionElementToolbar(); // Position/Größe kann sich durch die Aktion geändert haben
             });
-            el.appendChild(toolbar);
+
+            // WICHTIG: Die Toolbar wird NICHT mehr per el.appendChild(toolbar) in das
+            // ausgewählte Element selbst eingefügt. Bei contenteditable-Elementen (Buttons,
+            // Badges, Überschriften, Nav-Links, ...) wurden die Toolbar-Icons dadurch zu
+            // bearbeitbarem Text — man konnte zwischen die Icons klicken/tippen, und die
+            // absolute Positionierung verhielt sich je nach Browser unvorhersehbar.
+            // Stattdessen hängen wir sie fix positioniert an <body> und berechnen die
+            // Position aus getBoundingClientRect() des Elements.
+            document.body.appendChild(toolbar);
+            elementToolbarTrackedEl = el;
+            positionElementToolbar();
+            startElementToolbarTracking();
         }
 
-        function removeElementToolbar() { document.querySelectorAll('.element-toolbar').forEach(t => t.remove()); }
+        function positionElementToolbar() {
+            const toolbar = document.getElementById('activeElementToolbar');
+            if (!toolbar || !elementToolbarTrackedEl || !elementToolbarTrackedEl.isConnected) {
+                removeElementToolbar();
+                return;
+            }
+            const rect = elementToolbarTrackedEl.getBoundingClientRect();
+            const tbRect = toolbar.getBoundingClientRect();
+            let top = rect.top - tbRect.height - 6;
+            // Wenn oberhalb kein Platz ist (Element ganz oben im sichtbaren Bereich), Toolbar stattdessen unter das Element setzen
+            if (top < 4) top = rect.bottom + 6;
+            let left = rect.left;
+            // Nicht über den rechten Bildschirmrand hinausragen
+            left = Math.min(left, window.innerWidth - tbRect.width - 4);
+            left = Math.max(left, 4);
+            toolbar.style.top = top + 'px';
+            toolbar.style.left = left + 'px';
+        }
+
+        function startElementToolbarTracking() {
+            stopElementToolbarTracking();
+            const loop = () => {
+                if (!document.getElementById('activeElementToolbar')) { elementToolbarRafId = null; return; }
+                positionElementToolbar();
+                elementToolbarRafId = requestAnimationFrame(loop);
+            };
+            elementToolbarRafId = requestAnimationFrame(loop);
+        }
+
+        function stopElementToolbarTracking() {
+            if (elementToolbarRafId) { cancelAnimationFrame(elementToolbarRafId); elementToolbarRafId = null; }
+        }
+
+        function removeElementToolbar() {
+            stopElementToolbarTracking();
+            elementToolbarTrackedEl = null;
+            document.querySelectorAll('.element-toolbar').forEach(t => t.remove());
+        }
 
         function moveElement(el, dir) {
             const p = el.parentElement;
@@ -1608,13 +1696,15 @@
 
             let cta = linksContainer.querySelector('.nav-cta');
             if (showCta && !cta) {
-                // Insert new CTA Button
-                cta = document.createElement('span');
+                // CTA als <a> statt <span>, damit sie über den Inspector verlinkt werden kann
+                cta = document.createElement('a');
                 cta.className = 'nav-cta';
                 cta.innerText = 'Loslegen';
+                cta.setAttribute('href', '#');
                 cta.contentEditable = 'true';
                 linksContainer.appendChild(cta);
-                cta.addEventListener('click', (e) => e.stopPropagation());
+                cta.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); selectElement(cta); });
+                cta.addEventListener('blur', () => { markDirty(); pushHistory(); });
             } else if (!showCta && cta) {
                 // Remove CTA Button
                 cta.remove();
@@ -1624,44 +1714,83 @@
             pushHistory();
         }
 
+        let navLinksModalNavbar = null; // Referenz auf die gerade bearbeitete Navbar
+
         function manageNavbarLinks() {
             if (!selectedElement || !selectedElement.classList.contains('web-navbar')) return;
-            
+
             const linksContainer = selectedElement.querySelector('.nav-links');
             if (!linksContainer) return;
 
-            // Gather current normal links (excluding CTA)
-            const currentLinks = Array.from(linksContainer.querySelectorAll('span:not(.nav-cta)'));
-            const linkTexts = currentLinks.map(el => el.innerText).join(', ');
+            navLinksModalNavbar = selectedElement;
 
-            openPromptModal('Links verwalten', 'Geben Sie Link-Texte getrennt durch Komma ein:', linkTexts, (inputVal) => {
-                if (inputVal === null) return;
-                
-                // Keep references
-                const cta = linksContainer.querySelector('.nav-cta');
-                
-                // Clear links container completely
-                linksContainer.innerHTML = '';
+            // Bestehende Links einlesen (CTA ausgeschlossen, die hat ihren eigenen Schalter)
+            const currentLinks = Array.from(linksContainer.querySelectorAll(':scope > *:not(.nav-cta)'));
+            const rows = document.getElementById('navLinksRows');
+            rows.innerHTML = '';
 
-                // Add newly compiled links
-                const newTexts = inputVal.split(',').map(s => s.trim()).filter(s => s.length > 0);
-                newTexts.forEach(text => {
-                    const span = document.createElement('span');
-                    span.innerText = text;
-                    span.contentEditable = 'true';
-                    span.addEventListener('click', (e) => e.stopPropagation());
-                    linksContainer.appendChild(span);
+            if (currentLinks.length === 0) {
+                addNavLinkRow();
+            } else {
+                currentLinks.forEach(el => {
+                    const text = el.innerText || '';
+                    const href = el.tagName.toLowerCase() === 'a' ? (el.getAttribute('href') || '') : (el.dataset.href || '');
+                    addNavLinkRow(text, href);
                 });
+            }
 
-                // Restore CTA if it existed
-                if (cta) {
-                    linksContainer.appendChild(cta);
-                }
+            document.getElementById('navLinksModalOverlay').style.display = 'flex';
+        }
 
-                markDirty();
-                pushHistory();
-                showToast('Navbar-Links aktualisiert!', 'success');
+        function addNavLinkRow(text = '', href = '') {
+            const rows = document.getElementById('navLinksRows');
+            const row = document.createElement('div');
+            row.className = 'navlink-row';
+            row.innerHTML = `
+                <input type="text" class="navlink-text" placeholder="Linktext (z.B. Start)" value="${escapeHtml(text)}">
+                <input type="text" class="navlink-href" placeholder="Linkziel (z.B. https://... oder kontakt.html)" value="${escapeHtml(href)}">
+                <button type="button" class="navlink-del" title="Entfernen" aria-label="Link entfernen">✕</button>
+            `;
+            row.querySelector('.navlink-del').onclick = () => row.remove();
+            rows.appendChild(row);
+        }
+
+        function closeNavLinksModal() {
+            document.getElementById('navLinksModalOverlay').style.display = 'none';
+            navLinksModalNavbar = null;
+        }
+
+        function saveNavLinksModal() {
+            if (!navLinksModalNavbar) return closeNavLinksModal();
+            const linksContainer = navLinksModalNavbar.querySelector('.nav-links');
+            if (!linksContainer) return closeNavLinksModal();
+
+            const cta = linksContainer.querySelector('.nav-cta');
+            linksContainer.innerHTML = '';
+
+            const rows = Array.from(document.getElementById('navLinksRows').querySelectorAll('.navlink-row'));
+            rows.forEach(row => {
+                const text = row.querySelector('.navlink-text').value.trim();
+                const href = row.querySelector('.navlink-href').value.trim();
+                if (!text) return; // Zeilen ohne Text werden übersprungen
+
+                // Navbar-Links sind jetzt echte <a>-Tags, damit der Link beim Export
+                // tatsächlich funktioniert (vorher: <span> ohne jede Verlinkungsmöglichkeit).
+                const a = document.createElement('a');
+                a.innerText = text;
+                a.setAttribute('href', href || '#');
+                a.contentEditable = 'true';
+                a.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); selectElement(a); });
+                a.addEventListener('blur', () => { markDirty(); pushHistory(); });
+                linksContainer.appendChild(a);
             });
+
+            if (cta) linksContainer.appendChild(cta);
+
+            markDirty();
+            pushHistory();
+            closeNavLinksModal();
+            showToast('Navbar-Links aktualisiert!', 'success');
         }
 
         /* ======================================================================
@@ -1741,8 +1870,17 @@
         }
         function applyLink(val) {
             if (!selectedElement) return;
-            if (selectedElement.tagName.toLowerCase() === 'a') selectedElement.setAttribute('href', val);
-            else selectedElement.dataset.href = val;
+            const isAnchor = selectedElement.tagName.toLowerCase() === 'a';
+            if (!val) {
+                // Leeres Feld = Link entfernen, statt href="" zu setzen (sonst verlinkt das
+                // Element auf die aktuelle Seite selbst, was wie ein "kaputter" Link wirkt)
+                if (isAnchor) selectedElement.removeAttribute('href');
+                delete selectedElement.dataset.href;
+            } else if (isAnchor) {
+                selectedElement.setAttribute('href', val);
+            } else {
+                selectedElement.dataset.href = val;
+            }
             markDirty(); pushHistory();
         }
 
@@ -1897,6 +2035,7 @@
 
                 if (e.key==='Escape') {
                     if (document.getElementById('modalOverlay').style.display==='flex') closeModal();
+                    else if (document.getElementById('navLinksModalOverlay').style.display==='flex') closeNavLinksModal();
                     else if (document.getElementById('seoModalOverlay').style.display==='flex') closeSeoModal();
                     else if (document.getElementById('codeModalOverlay').style.display==='flex') closeCustomCodeModal();
                     else if (document.getElementById('historyModalOverlay').style.display==='flex') closeHistoryModal();
@@ -1956,6 +2095,12 @@
         function cleanCanvasHtml(html) {
             const w = document.createElement('div'); w.innerHTML = html;
             w.querySelectorAll('*').forEach(el => {
+                // Falls ein Element (z.B. ein altes Button-Element) noch einen Link über
+                // data-href trägt, aber kein echtes href-Attribut hat: vor dem Export
+                // in ein echtes href umwandeln, sonst geht der Link beim Export verloren.
+                if (el.dataset.href && !el.hasAttribute('href')) {
+                    el.setAttribute('href', el.dataset.href);
+                }
                 ['contenteditable','draggable','data-bound-events','data-blur-bound','data-drop-bound','data-href','data-custom-classes','data-comment'].forEach(a => el.removeAttribute(a));
                 el.classList.remove('selected-element', 'dragging-now');
                 if(el.className==='') el.removeAttribute('class');
@@ -2341,7 +2486,7 @@
             <span class="web-badge" contenteditable="true" draggable="true">✨ Jetzt neu: Version 2.0</span>
             <h1 class="web-hero-title" contenteditable="true" draggable="true">Baue schneller. Launch früher.</h1>
             <p class="web-subtitle" contenteditable="true" draggable="true">Die All-in-One Plattform für moderne Teams, die ohne Code wunderschöne Produkte bauen wollen.</p>
-            <button class="web-btn" contenteditable="true" draggable="true">Jetzt kostenlos testen →</button>
+            <a href="#" class="web-btn" contenteditable="true" draggable="true">Jetzt kostenlos testen →</a>
             <div class="web-spacer" draggable="true"></div>
             <h2 class="web-hero-title" contenteditable="true" draggable="true" style="font-size:2rem;">Alles, was du brauchst</h2>
             <div class="web-columns-3" draggable="true">
