@@ -3,113 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Features | Drafty - No-Code Web-Builder</title>
+    <title>Drafty | Der No-Code Web-Builder der nächsten Generation</title>
+    <meta name="description" content="Erstelle beeindruckende Websites ohne eine Zeile Code. Drafty kombiniert intuitives Design mit professioneller Performance.">
     <link rel="icon" type="image/png" href="logo.png">
-    <link rel="apple-touch-icon" href="logo.png">
-    <meta name="description" content="Warum Drafty? Entdecke die Features unseres No-Code Web-Builders: Drag & Drop, responsive Designs und volle Kontrolle.">
-    
+
     <style>
         :root {
-            --bg-deep: #0f172a;
-            --bg-sidebar: #1e293b;
-            --text-main: #f8fafc;
-            --text-dim: #94a3b8;
+            --bg-deep: #050505;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --text-main: #ffffff;
+            --text-dim: #a1a1aa;
             --accent: #3b82f6;
-            --border: #334155;
-            --radius: 8px;
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
-        body {
-            background-color: var(--bg-deep);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 0;
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-deep); color: var(--text-main); font-family: 'Inter', -apple-system, sans-serif; line-height: 1.6; }
 
-        .container { max-width: 900px; width: 100%; }
+        /* Navigation */
+        nav { padding: 2rem 5%; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
 
-        header { text-align: center; margin-bottom: 60px; }
+        /* Hero */
+        .hero { padding: 80px 5%; text-align: center; max-width: 1000px; margin: 0 auto; }
+        h1 { font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 1.5rem; line-height: 1.1; }
+        .hero p { color: var(--text-dim); font-size: 1.25rem; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; }
         
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 60px;
+        .hero-image {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 3rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
-        .feature-card {
-            background: var(--bg-sidebar);
-            border: 1px solid var(--border);
-            padding: 25px;
-            border-radius: var(--radius);
+        /* Features */
+        .features { padding: 100px 5%; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .card { 
+            background: var(--bg-card); 
+            padding: 40px; 
+            border-radius: 20px; 
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.3s ease;
         }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .card h3 { margin-bottom: 1rem; color: var(--accent); }
 
-        .feature-card h3 { margin-top: 0; color: var(--accent); }
-        .feature-card p { color: var(--text-dim); line-height: 1.5; font-size: 0.95rem; }
-
-        .nav-btn {
-            color: var(--text-dim);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 20px;
+        /* CTA Button */
+        .cta-btn { 
+            background: var(--accent); color: white; padding: 15px 30px; border-radius: 50px; 
+            text-decoration: none; font-weight: 600; display: inline-block; transition: 0.3s;
         }
-        
-        .nav-btn:hover { color: var(--text-main); }
+        .cta-btn:hover { box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
 
-        footer { text-align: center; border-top: 1px solid var(--border); padding-top: 20px; }
-        .footer-link { color: var(--text-dim); text-decoration: none; font-size: 0.9rem; }
+        footer { text-align: center; padding: 50px; color: var(--text-dim); font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <a href="overview.html" class="nav-btn">← Zurück zur Übersicht</a>
+    <nav>
+        <div class="logo">Drafty</div>
+        <a href="index.html" style="color: white; text-decoration: none; font-size: 0.9rem;">Editor starten</a>
+    </nav>
 
-    <header>
-        <h1>Warum Drafty?</h1>
-        <p style="color: var(--text-dim); font-size: 1.2rem;">Webdesign ohne Kopfschmerzen. Einfach bauen, direkt starten.</p>
-    </header>
+    <section class="hero">
+        <h1>Design in Sekunden.<br>Live in Minuten.</h1>
+        <p>Entfessle deine Kreativität mit Drafty. Der professionelle No-Code Web-Builder, der deine Ideen ohne Kompromisse zum Leben erweckt.</p>
+        <a href="index.html" class="cta-btn">Kostenlos starten</a>
+        
+        <!-- Einbindung des Referenzbildes -->
+        <img src="image_bd10ff.png" alt="Drafty Interface Preview" class="hero-image">
+    </section>
 
-    <div class="features-grid">
-        <div class="feature-card">
-            <h3>Intuitive Drag & Drop</h3>
-            <p>Kein Code-Wirrwarr. Ziehe deine Elemente einfach an die Stelle, wo sie hin sollen. Dein Layout, deine Regeln.</p>
+    <section class="features">
+        <div class="card">
+            <h3>Pixel-Perfect</h3>
+            <p>Volle Kontrolle über jedes Element. Dein Design bleibt konsistent, egal auf welchem Endgerät.</p>
         </div>
-        <div class="feature-card">
-            <h3>Responsiv ab Werk</h3>
-            <p>Deine Website sieht auf dem Smartphone genauso scharf aus wie auf dem Desktop. Automatische Anpassung inklusive.</p>
+        <div class="card">
+            <h3>High-Speed Rendering</h3>
+            <p>Unsere Engine sorgt für extrem kurze Ladezeiten. Performance ist kein Feature, sondern Standard.</p>
         </div>
-        <div class="feature-card">
-            <h3>Dark-Theme First</h3>
-            <p>Dunkles Design ist modern und schont die Augen. Wir haben das Design so konzipiert, dass es von Natur aus gut aussieht.</p>
+        <div class="card">
+            <h3>Workflow-Optimiert</h3>
+            <p>Fokussiere dich auf das Wesentliche. Dank integrierter Bausteine erstellst du komplexe Layouts in Minuten.</p>
         </div>
-        <div class="feature-card">
-            <h3>Volle Kontrolle</h3>
-            <p>Du bist nicht an uns gebunden. Dein Projekt ist portabel, clean und genau so, wie du es gebaut hast.</p>
-        </div>
-        <div class="feature-card">
-            <h3>Schneller Export</h3>
-            <p>Fertig mit dem Design? Exportiere deinen Code mit einem Klick und hoste ihn, wo immer du willst.</p>
-        </div>
-        <div class="feature-card">
-            <h3>Leichtgewichtig</h3>
-            <p>Kein Bloat, kein unnötiger Overhead. Drafty hält deine Website schnell und effizient.</p>
-        </div>
-    </div>
+    </section>
 
     <footer>
-        <a href="https://github.com/patrickdevel" target="_blank" class="footer-link">
-            &copy; 2026 - patrickdevel | GitHub
-        </a>
+        &copy; 2026 Drafty Systems. Built by patrickdevel.
     </footer>
-</div>
 
 </body>
 </html>
