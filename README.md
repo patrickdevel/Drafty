@@ -1,4 +1,4 @@
-# ⚡ Drafty v3.0
+# ⚡ Drafty v3.1
 
 [![Version](https://img.shields.io/badge/version-3.0-blueviolet.svg?style=flat-square)]()
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)]()
