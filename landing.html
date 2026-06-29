@@ -3,96 +3,345 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drafty | Der No-Code Web-Builder der nächsten Generation</title>
-    <meta name="description" content="Erstelle beeindruckende Websites ohne eine Zeile Code. Drafty kombiniert intuitives Design mit professioneller Performance.">
+    <title>Drafty | Next-Gen No-Code Web-Builder</title>
+    <meta name="description" content="Erstelle blitzschnelle, responsive Websites im High-End-Design. Drafty kombiniert intuitive Bedienung mit professionellem Clean-Code-Export.">
     <link rel="icon" type="image/png" href="logo.png">
 
     <style>
         :root {
-            --bg-deep: #050505;
-            --bg-card: rgba(255, 255, 255, 0.03);
-            --text-main: #ffffff;
-            --text-dim: #a1a1aa;
+            --bg-base: #030712;
+            --bg-card: rgba(17, 24, 39, 0.35);
+            --border-glow: rgba(59, 130, 246, 0.15);
+            --border-subtle: rgba(255, 255, 255, 0.04);
+            --text-pure: #ffffff;
+            --text-muted: #9ca3af;
             --accent: #3b82f6;
-            --glass: rgba(255, 255, 255, 0.05);
+            --accent-glow: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            --font-stack: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--bg-deep); color: var(--text-main); font-family: 'Inter', -apple-system, sans-serif; line-height: 1.6; }
-
-        /* Navigation */
-        nav { padding: 2rem 5%; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
-
-        /* Hero */
-        .hero { padding: 80px 5%; text-align: center; max-width: 1000px; margin: 0 auto; }
-        h1 { font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 1.5rem; line-height: 1.1; }
-        .hero p { color: var(--text-dim); font-size: 1.25rem; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; }
         
+        body { 
+            background-color: var(--bg-base); 
+            color: var(--text-pure); 
+            font-family: var(--font-stack); 
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- Hintergrund-Animationen (Ambient Glow & Grid) --- */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -2;
+        }
+
+        .glow-orb {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, rgba(0,0,0,0) 70%);
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: -1;
+            animation: pulseGlow 8s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            100% { opacity: 1; transform: translateX(-50%) scale(1.15); }
+        }
+
+        /* --- Aufbau-Animationen für Elemente (Load-In) --- */
+        .animate-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.35s; }
+        .delay-4 { animation-delay: 0.5s; }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Navigation --- */
+        nav { 
+            padding: 1.5rem 5%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            border-bottom: 1px solid var(--border-subtle);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo-area { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.25rem; letter-spacing: -0.5px; }
+        .logo-img { width: 28px; height: 28px; }
+        
+        .nav-link-btn {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-link-btn:hover { color: var(--text-pure); }
+
+        /* --- Hero Section --- */
+        .hero { 
+            padding: 100px 5% 60px 5%; 
+            text-align: center; 
+            max-width: 1100px; 
+            margin: 0 auto; 
+        }
+        
+        h1 { 
+            font-size: clamp(2.8rem, 7vw, 4.5rem); 
+            font-weight: 800;
+            letter-spacing: -2px;
+            line-height: 1.05;
+            margin-bottom: 1.5rem; 
+            background: linear-gradient(to bottom, #ffffff 40%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p { 
+            color: var(--text-muted); 
+            font-size: clamp(1.1rem, 2vw, 1.35rem); 
+            margin-bottom: 2.5rem; 
+            max-width: 650px; 
+            margin-left: auto; 
+            margin-right: auto; 
+        }
+
+        /* Premium Call-to-Action Button */
+        .cta-btn { 
+            background: var(--text-pure);
+            color: var(--bg-base);
+            padding: 16px 36px; 
+            border-radius: 6px; 
+            text-decoration: none; 
+            font-weight: 600; 
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .cta-btn:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 26px rgba(255, 255, 255, 0.25);
+        }
+
+        /* Hero App-Preview Container */
+        .hero-window {
+            margin-top: 4.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+            padding: 6px;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.8), 0 0 100px rgba(59, 130, 246, 0.05);
+            position: relative;
+        }
+        .window-header {
+            display: flex;
+            gap: 6px;
+            padding: 10px 14px;
+        }
+        .dot { width: 100%; max-width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.15); }
         .hero-image {
             width: 100%;
-            max-width: 800px;
-            margin-top: 3rem;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            display: block;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* Features */
-        .features { padding: 100px 5%; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
-        .card { 
+        /* --- Features Matrix Section --- */
+        .features-section {
+            padding: 100px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-tag {
+            text-align: center;
+            color: var(--accent);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 4rem;
+        }
+
+        .grid-matrix { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 24px; 
+        }
+        
+        .matrix-card { 
             background: var(--bg-card); 
             padding: 40px; 
-            border-radius: 20px; 
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: transform 0.3s ease;
+            border-radius: 12px; 
+            border: 1px solid var(--border-subtle);
+            backdrop-filter: blur(8px);
+            transition: border-color 0.3s, transform 0.3s;
         }
-        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
-        .card h3 { margin-bottom: 1rem; color: var(--accent); }
-
-        /* CTA Button */
-        .cta-btn { 
-            background: var(--accent); color: white; padding: 15px 30px; border-radius: 50px; 
-            text-decoration: none; font-weight: 600; display: inline-block; transition: 0.3s;
+        .matrix-card:hover { 
+            border-color: var(--border-glow);
+            transform: translateY(-4px);
         }
-        .cta-btn:hover { box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
+        
+        .matrix-card .icon-wrapper {
+            width: 42px; height: 42px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
 
-        footer { text-align: center; padding: 50px; color: var(--text-dim); font-size: 0.8rem; }
+        .matrix-card h3 { font-size: 1.25rem; margin-bottom: 0.75rem; font-weight: 600; letter-spacing: -0.3px; }
+        .matrix-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
+
+        /* --- Footer --- */
+        footer { 
+            text-align: center; 
+            padding: 80px 20px 40px 20px; 
+            border-top: 1px solid var(--border-subtle);
+            margin-top: 60px;
+        }
+        
+        .footer-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        .footer-link:hover { color: var(--text-pure); }
     </style>
 </head>
 <body>
 
+    <div class="glow-orb"></div>
+
     <nav>
-        <div class="logo">Drafty</div>
-        <a href="index.html" style="color: white; text-decoration: none; font-size: 0.9rem;">Editor starten</a>
+        <div class="logo-area">
+            <img src="logo.png" alt="" class="logo-img">
+            <span>Drafty</span>
+        </div>
+        <a href="index.html" class="nav-link-btn">Editor starten →</a>
     </nav>
 
     <section class="hero">
-        <h1>Design in Sekunden.<br>Live in Minuten.</h1>
-        <p>Entfessle deine Kreativität mit Drafty. Der professionelle No-Code Web-Builder, der deine Ideen ohne Kompromisse zum Leben erweckt.</p>
-        <a href="index.html" class="cta-btn">Kostenlos starten</a>
+        <h1 class="animate-up delay-1">Websites bauen.<br>Ohne Kompromisse.</h1>
+        <p class="animate-up delay-2">Drafty kombiniert die visuelle Freiheit eines High-End UI-Design-Tools mit der Performance und Portabilität von sauberem, nativem HTML & CSS.</p>
         
-        <!-- Einbindung des Referenzbildes -->
-        <img src="image_bd10ff.png" alt="Drafty Interface Preview" class="hero-image">
+        <div class="animate-up delay-3">
+            <a href="index.html" class="cta-btn">
+                Jetzt Workspace öffnen
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 3l5 5-5 5"/></svg>
+            </a>
+        </div>
+        
+        <div class="hero-window animate-up delay-4">
+            <div class="window-header">
+                <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+            <img src="image_bd10ff.png" alt="Drafty Interface Engine Preview" class="hero-image">
+        </div>
     </section>
 
-    <section class="features">
-        <div class="card">
-            <h3>Pixel-Perfect</h3>
-            <p>Volle Kontrolle über jedes Element. Dein Design bleibt konsistent, egal auf welchem Endgerät.</p>
-        </div>
-        <div class="card">
-            <h3>High-Speed Rendering</h3>
-            <p>Unsere Engine sorgt für extrem kurze Ladezeiten. Performance ist kein Feature, sondern Standard.</p>
-        </div>
-        <div class="card">
-            <h3>Workflow-Optimiert</h3>
-            <p>Fokussiere dich auf das Wesentliche. Dank integrierter Bausteine erstellst du komplexe Layouts in Minuten.</p>
+    <section class="features-section">
+        <div class="section-tag">Architektur</div>
+        <div class="section-title">Entwickelt für moderne Creators.</div>
+
+        <div class="grid-matrix">
+            <div class="matrix-card">
+                <div class="icon-wrapper">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+                </div>
+                <h3>Intuitive Drag & Drop Matrix</h3>
+                <p>Ziehe Elemente frei auf deine Arbeitsfläche. Die integrierte Layout-Engine sorgt dafür, dass im Hintergrund alles im perfekten Fluss bleibt.</p>
+            </div>
+            
+            <div class="matrix-card">
+                <div class="icon-wrapper">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                </div>
+                <h3>Automatisches Responsive Design</h3>
+                <p>Keine separaten Layouts für Smartphones nötig. Deine Elemente passen sich intelligent und absolut sauber an jede Displaygröße an.</p>
+            </div>
+
+            <div class="matrix-card">
+                <div class="icon-wrapper">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                </div>
+                <h3>Zero-Runtime Code Export</h3>
+                <p>Mit einem Klick kopierst du hochoptimiertes, reines HTML direkt in deine Zwischenablage. Kein Bloatware-Code, kein JavaScript-Zwang.</p>
+            </div>
+
+            <div class="matrix-card">
+                <div class="icon-wrapper">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                </div>
+                <h3>Liquid Glass Dark Theme</h3>
+                <p>Arbeite in einer hochmodernen, augenschonenden Arbeitsumgebung, die genau auf den Workflow moderner Entwickler und Designer ausgelegt ist.</p>
+            </div>
+
+            <div class="matrix-card">
+                <div class="icon-wrapper">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+                </div>
+                <h3>Local-Snapshot Engine</h3>
+                <p>Deine Arbeit ist sicher. Drafty speichert den aktuellen Zustand deiner Seiten automatisch lokal in deinem Browser ab, damit kein Fortschritt verloren geht.</p>
+            </div>
+
+            <div class="matrix-card">
+                <div class="icon-wrapper">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <h3>Extreme Performance</h3>
+                <p>Da Drafty direkt im Browser ohne Framework-Overhead läuft, reagiert die Oberfläche verzögerungsfrei. Jede Änderung ist sofort sichtbar.</p>
+            </div>
         </div>
     </section>
 
     <footer>
-        &copy; 2026 Drafty Systems. Built by patrickdevel.
+        <a href="https://github.com/patrickdevel" target="_blank" class="footer-link">
+            <svg height="18" width="18" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+            &copy; 2026 - patrickdevel
+        </a>
     </footer>
 
 </body>
