@@ -1,112 +1,334 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Projektübersicht | Drafty</title>
-    <link rel="icon" type="image/png" href="logo.png">
-    <link rel="apple-touch-icon" href="logo.png">
-    <meta name="description" content="Projektübersicht für Drafty – Deinem intuitiven No-Code-Web-Builder. Verwalte deine Projekte und starte direkt im Browser.">
-    <meta name="keywords" content="Drafty, Projektübersicht, Web Builder, No Code, Drag and Drop">
-    <meta name="author" content="GitHub: patrickdevel">
-    <meta name="robots" content="index, follow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projektübersicht | Drafty</title>
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<meta name="description" content="Projektübersicht für Drafty – Deinem intuitiven No-Code-Web-Builder. Verwalte deine Projekte und starte direkt im Browser.">
+<meta name="keywords" content="Drafty, Projektübersicht, Web Builder, No Code, Drag and Drop">
+<meta name="author" content="GitHub: patrickdevel">
+<meta name="robots" content="index, follow">
 
-    <meta property="og:title" content="Projektübersicht | Drafty">
-    <meta property="og:description" content="Verwalte deine Web-Projekte einfach und schnell mit Drafty.">
-    <meta property="og:image" content="logo.png">
-    <meta property="og:type" content="website">
+<meta property="og:title" content="Projektübersicht | Drafty">
+<meta property="og:description" content="Verwalte deine Web-Projekte einfach und schnell mit Drafty.">
+<meta property="og:image" content="logo.png">
+<meta property="og:type" content="website">
 
-    <style>
-        :root {
-            --bg-deep: #0f172a;
-            --bg-sidebar: #1e293b;
-            --text-main: #f8fafc;
-            --text-dim: #94a3b8;
-            --text-faint: #475569;
-            --accent: #3b82f6;
-            --border: #334155;
-            --radius: 8px;
-        }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/11.1.1/marked.min.js"></script>
 
-        body {
-            background-color: var(--bg-deep);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
+<style>
+    :root {
+        --bg-deep: #0f172a;
+        --bg-sidebar: #1e293b;
+        --text-main: #f8fafc;
+        --text-dim: #94a3b8;
+        --text-faint: #475569;
+        --accent: #3b82f6;
+        --border: #334155;
+        --radius: 8px;
+    }
 
-        .overview-container {
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-        }
+    * { box-sizing: border-box; }
 
-        .logo-large {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 20px;
-        }
+    body {
+        background-color: var(--bg-deep);
+        color: var(--text-main);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        margin: 0;
+        min-height: 100vh;
+        padding: 40px;
+    }
 
-        .info-card {
-            background: var(--bg-sidebar);
-            border: 1px solid var(--border);
-            padding: 30px;
-            border-radius: var(--radius);
-            margin-bottom: 20px;
-        }
+    .layout {
+        display: flex;
+        gap: 40px;
+        max-width: 1300px;
+        margin: 0 auto;
+        align-items: flex-start;
+        min-height: calc(100vh - 80px);
+    }
 
-        .primary-btn {
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: var(--radius);
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 20px;
-        }
+    .left-panel {
+        flex: 0 0 320px;
+        display: flex;
+        flex-direction: column;
+    }
 
-        .footer-link {
-            color: var(--text-faint);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-            transition: color 0.2s;
-        }
+    .logo-circle {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 24px;
+        border-radius: 50%;
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+    }
 
-        .footer-link:hover { color: var(--accent); }
-    </style>
+    .logo-large {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    h1 {
+        font-size: 2.4rem;
+        margin: 0;
+        background: linear-gradient(90deg, #6d28d9, #db2777);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        line-height: 1.1;
+    }
+
+    .subtitle {
+        color: var(--text-main);
+        font-weight: 600;
+        margin: 8px 0 24px 0;
+        font-size: 1rem;
+    }
+
+    .action-cards {
+        display: flex;
+        gap: 16px;
+    }
+
+    .action-card {
+        flex: 1;
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 24px 16px;
+        text-align: center;
+        text-decoration: none;
+        color: var(--text-main);
+        cursor: pointer;
+        transition: border-color 0.2s, transform 0.15s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .action-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-2px);
+    }
+
+    .action-card.dashed {
+        border-style: dashed;
+    }
+
+    .action-icon {
+        color: var(--accent);
+    }
+
+    .action-label {
+        font-size: 0.95rem;
+        color: var(--text-main);
+    }
+
+    .footer-link {
+        color: var(--text-faint);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+        transition: color 0.2s;
+        margin-top: auto;
+        padding-top: 60px;
+    }
+
+    .footer-link:hover { color: var(--accent); }
+
+    .right-panel {
+        flex: 1;
+        background: var(--bg-sidebar);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        max-height: calc(100vh - 80px);
+    }
+
+    .panel-header {
+        padding: 24px 30px;
+        border-bottom: 1px solid var(--border);
+        font-weight: 700;
+        font-size: 1.3rem;
+    }
+
+    .panel-content {
+        padding: 24px 30px;
+        overflow-y: auto;
+        color: var(--text-dim);
+        line-height: 1.6;
+    }
+
+    .panel-content h1,
+    .panel-content h2,
+    .panel-content h3,
+    .panel-content h4 {
+        color: var(--text-main);
+        margin-top: 1.4em;
+        margin-bottom: 0.5em;
+    }
+    .panel-content h1:first-child,
+    .panel-content h2:first-child,
+    .panel-content h3:first-child {
+        margin-top: 0;
+    }
+
+    .panel-content p { margin: 0.8em 0; }
+
+    .panel-content ul, .panel-content ol {
+        padding-left: 1.4em;
+        margin: 0.8em 0;
+    }
+
+    .panel-content li { margin: 0.3em 0; }
+
+    .panel-content code {
+        background: #0f172a;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.9em;
+        color: #e2e8f0;
+    }
+
+    .panel-content pre {
+        background: #0f172a;
+        padding: 14px;
+        border-radius: 8px;
+        overflow-x: auto;
+        border: 1px solid var(--border);
+    }
+
+    .panel-content pre code {
+        background: none;
+        padding: 0;
+    }
+
+    .panel-content blockquote {
+        border-left: 3px solid var(--accent);
+        margin: 0.8em 0;
+        padding: 4px 16px;
+        color: var(--text-dim);
+        background: rgba(59, 130, 246, 0.07);
+        border-radius: 0 6px 6px 0;
+    }
+
+    .panel-content hr {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 1.6em 0;
+    }
+
+    .panel-content a {
+        color: var(--accent);
+        text-decoration: none;
+    }
+    .panel-content a:hover { text-decoration: underline; }
+
+    .panel-content table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 1em 0;
+    }
+    .panel-content th, .panel-content td {
+        border: 1px solid var(--border);
+        padding: 8px 12px;
+        text-align: left;
+    }
+    .panel-content th {
+        background: rgba(255,255,255,0.03);
+        color: var(--text-main);
+    }
+
+    .panel-content strong { color: var(--text-main); }
+
+    .loading-msg, .error-msg {
+        color: var(--text-faint);
+        font-style: italic;
+    }
+    .error-msg { color: #f87171; }
+
+    @media (max-width: 900px) {
+        .layout { flex-direction: column; }
+        .left-panel { flex: none; width: 100%; }
+        .right-panel { width: 100%; max-height: 60vh; }
+    }
+</style>
 </head>
 <body>
 
-    <div class="overview-container">
-        <img src="logo.png" alt="Drafty Logo" class="logo-large">
-        <h1>Willkommen bei Drafty</h1>
-        <p style="color: var(--text-dim); margin-bottom: 30px;">Dein No-Code Web-Builder.</p>
+    <div class="layout">
+        <div class="left-panel">
+            <div class="logo-circle">
+                <img src="logo.png" alt="Drafty Logo" class="logo-large">
+            </div>
+            <h1>Guten Morgen!</h1>
+            <p class="subtitle">Was möchtest du tun?</p>
 
-        <div class="info-card">
-            <h3>Erste Schritte</h3>
-            <p style="color: var(--text-dim);">Klicke auf den Button, um ein neues Projekt im Editor zu starten.</p>
-            <a href="index.html" class="primary-btn">Editor öffnen</a>
+            <div class="action-cards">
+                <a href="index.html" class="action-card dashed">
+                    <svg class="action-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span class="action-label">Neues Projekt</span>
+                </a>
+                <a href="landing.html" class="action-card">
+                    <svg class="action-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="9" y1="18" x2="15" y2="18"></line>
+                        <line x1="10" y1="22" x2="14" y2="22"></line>
+                        <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A6 6 0 1 0 8.5 11.5c.76.76 1.23 1.52 1.41 2.5"></path>
+                    </svg>
+                    <span class="action-label">Mehr erfahren</span>
+                </a>
+            </div>
+
+            <a href="https://github.com/patrickdevel" target="_blank" class="footer-link">
+                <svg height="18" width="18" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                </svg>
+                &copy; 2026 - patrickdevel
+            </a>
         </div>
 
-        <a href="https://github.com/patrickdevel" target="_blank" class="footer-link">
-            <svg height="18" width="18" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-            </svg>
-            &copy; 2026 - patrickdevel
-        </a>
+        <div class="right-panel">
+            <div class="panel-header">Was ist neu bei Drafty?</div>
+            <div class="panel-content" id="changelog-content">
+                <p class="loading-msg">Lade Inhalt…</p>
+            </div>
+        </div>
     </div>
+
+    <script>
+        async function loadChangelog() {
+            const target = document.getElementById('changelog-content');
+            try {
+                const res = await fetch('new.txt');
+                if (!res.ok) throw new Error('Datei nicht gefunden (' + res.status + ')');
+                const text = await res.text();
+                if (window.marked) {
+                    target.innerHTML = marked.parse(text);
+                } else {
+                    // Fallback falls marked.js nicht laden konnte
+                    target.textContent = text;
+                }
+            } catch (err) {
+                target.innerHTML = '<p class="error-msg">Inhalt konnte nicht geladen werden: ' + err.message + '<br>Stelle sicher, dass "new.txt" im selben Verzeichnis liegt.</p>';
+            }
+        }
+        loadChangelog();
+    </script>
 
 </body>
 </html>
