@@ -1,5 +1,16 @@
-#Drafty 3.2 🚀
+#Drafty v.3.3 🚀
 ---
-###Das ist neu:
-- 'overview.html' geupdatet: Neues Design.
-- neue 'new.txt' erstellt für 'overview.html' zum anzeigen von Erneuerungen.
+###Was ist neu?
+- 25 neue Komponenten unter dem Tab "🧩 Sektionen"
+
+- Multi-Select: Shift+Klick fügt Elemente einer Mehrfachauswahl hinzu/entfernt sie wieder (orange gestrichelter Rahmen).
+- Gruppieren/Ungruppieren: Mehrfachauswahl → "📦 Gruppieren" fasst die Elemente in einem Container zusammen; im Rechtsklick-Menü einer Gruppe gibt's "Gruppierung aufheben".
+- Sperren (Lock): Einzeln über die Mini-Toolbar/Kontextmenü oder für mehrere gleichzeitig über die Multi-Select-Leiste. Gesperrte Elemente zeigen ein 🔒-Badge, sind nicht mehr verschieb- oder editierbar.
+- Element verstecken: Blendet das Element im Editor abgedunkelt mit Hinweis-Label ein, im exportierten HTML wird es per display:none komplett ausgeblendet.
+- Rechtsklick-Menü: Echtes Kontextmenü statt der alten Sofort-Löschen-Bestätigung — mit Duplizieren, Sperren/Entsperren, Verstecken/Einblenden, Verschieben, Löschen (und Gruppierung aufheben bei Gruppen).
+- Element duplizieren (Strg+D): War schon vorhanden, jetzt zusätzlich für Mehrfachauswahl nutzbar.
+- Mini-Toolbar direkt am Element: um die neuen Lock/Hide-Buttons erweitert.  
+
+---
+<img width="446" height="563" alt="image" src="https://github.com/user-attachments/assets/3c002152-a8e9-4cd6-87b7-2caf673183dd" />
+<img width="1087" height="441" alt="image" src="https://github.com/user-attachments/assets/1181273b-52e0-4bef-9d88-2493fdbac7b0" />
