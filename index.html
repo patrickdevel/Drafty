@@ -104,6 +104,40 @@
             display: flex; align-items: center; gap: 10px;
             padding: 18px 20px; border-bottom: 1px solid var(--border-soft);
         }
+        .add-everything-btn {
+            margin-left: auto; flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
+            background: var(--accent); color: #fff; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 8px rgba(99,102,241,0.4); transition: transform .15s, background .15s;
+        }
+        .add-everything-btn:hover { background: var(--accent-hover); transform: scale(1.08) rotate(90deg); }
+
+        .add-everything-overlay {
+            position: fixed; inset: 0; background: rgba(6,9,20,0.6); z-index: 2000;
+            display: none; align-items: flex-start; justify-content: center; padding: 6vh 20px;
+        }
+        .add-everything-box {
+            background: var(--bg-sidebar); border: 1px solid var(--border); border-radius: 14px;
+            width: 100%; max-width: 760px; max-height: 86vh; display: flex; flex-direction: column;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5); overflow: hidden;
+        }
+        .add-everything-head { padding: 16px 20px 12px; border-bottom: 1px solid var(--border-soft); }
+        .add-everything-head h3 { margin: 0 0 10px; font-size: 1rem; color: var(--text-main); display: flex; align-items: center; justify-content: space-between; }
+        .add-everything-head .ae-close { background: transparent; border: none; color: var(--text-dim); cursor: pointer; padding: 4px; border-radius: 6px; }
+        .add-everything-head .ae-close:hover { background: var(--bg-input); color: var(--text-main); }
+        .add-everything-search { position: relative; }
+        .add-everything-search input {
+            width: 100%; box-sizing: border-box; padding: 10px 14px 10px 34px; background: var(--bg-input);
+            border: 1px solid var(--border); border-radius: 9px; color: var(--text-main); font-size: 0.85rem;
+        }
+        .add-everything-search input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+        .add-everything-search svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-faint); }
+        .add-everything-body { padding: 14px 20px 22px; overflow-y: auto; }
+        .ae-category { margin-bottom: 18px; }
+        .ae-category h4 { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-faint); margin: 0 0 8px; }
+        .ae-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+        .ae-grid .tool-btn { width: 100%; }
+        .ae-empty { text-align: center; color: var(--text-faint); font-size: 0.82rem; padding: 30px 0; }
 .brand-logo {
     width: 30px; height: 30px; border-radius: 8px;
     background: linear-gradient(135deg, var(--accent), var(--highlight));
@@ -301,6 +335,9 @@
         }
         .element-toolbar button:hover { background: var(--accent); }
         .element-toolbar button.del-btn:hover { background: var(--danger); }
+        .element-toolbar .tb-sep { width: 1px; background: var(--border); margin: 2px 2px; }
+        .element-toolbar button svg, .multiselect-toolbar button svg, .context-menu button svg { display: block; flex-shrink: 0; }
+        .multiselect-toolbar button, .context-menu button { display: inline-flex; align-items: center; gap: 6px; }
 
         .text-format-toolbar {
             position: fixed; background: #0f172a; border: 1px solid #334155; border-radius: 6px;
@@ -486,8 +523,22 @@
 
         /* ---- Component search & favorites ---- */
         .comp-search-wrap { position: relative; }
-        .comp-search-wrap input { padding-left: 30px !important; }
-        .comp-search-wrap .ic { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); font-size: 0.85rem; opacity: 0.5; pointer-events: none; }
+        .comp-search-wrap input {
+            padding-left: 32px !important; padding-right: 28px !important;
+            background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius-sm);
+            color: var(--text-main); width: 100%; box-sizing: border-box; height: 36px; font-size: 0.82rem;
+            transition: border-color .15s, box-shadow .15s;
+        }
+        .comp-search-wrap input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+        .comp-search-wrap .ic { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-faint); pointer-events: none; }
+        .comp-search-wrap .comp-search-clear {
+            position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: var(--bg-panel);
+            border: none; color: var(--text-dim); width: 20px; height: 20px; border-radius: 50%; cursor: pointer;
+            font-size: 0.65rem; line-height: 1; display: flex; align-items: center; justify-content: center;
+        }
+        .comp-search-wrap .comp-search-clear:hover { background: var(--danger); color: #fff; }
+        .comp-search-meta { font-size: 0.68rem; color: var(--text-faint); padding: 4px 2px 0; }
+        .comp-search-highlight { background: rgba(99,102,241,0.35); border-radius: 3px; padding: 0 1px; }
         .tool-btn .fav-star {
             position: absolute; right: 26px; top: 50%; transform: translateY(-50%); font-size: 0.85rem;
             opacity: 0.25; cursor: pointer; z-index: 2; line-height: 1; padding: 2px;
@@ -784,11 +835,28 @@
         .web-carousel .car-dots label { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; }
         .web-carousel #cs1:checked ~ .car-dots label[for="cs1"], .web-carousel #cs2:checked ~ .car-dots label[for="cs2"], .web-carousel #cs3:checked ~ .car-dots label[for="cs3"] { background: #fff; }
 
-        .web-beforeafter { position: relative; margin: 25px 0; border-radius: var(--canvas-radius,10px); overflow: hidden; height: 260px; }
-        .web-beforeafter .ba-after, .web-beforeafter .ba-before { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; }
-        .web-beforeafter .ba-after { background: linear-gradient(135deg,#475569,#1e293b); }
-        .web-beforeafter .ba-before { background: linear-gradient(135deg,#6366f1,#22d3ee); clip-path: inset(0 50% 0 0); }
-        .web-beforeafter input[type="range"] { position: absolute; bottom: 14px; left: 14px; right: 14px; width: calc(100% - 28px); }
+        .web-beforeafter { position: relative; margin: 25px 0; border-radius: var(--canvas-radius,12px); overflow: hidden; height: 320px; box-shadow: 0 10px 30px rgba(15,23,42,0.18); user-select: none; }
+        .web-beforeafter .ba-after, .web-beforeafter .ba-before { position: absolute; inset: 0; background-size: cover; background-position: center; display: flex; align-items: flex-end; justify-content: center; color: #fff; font-weight: 700; }
+        .web-beforeafter .ba-after { background-color: #334155; background-image: linear-gradient(135deg,#475569,#1e293b); }
+        .web-beforeafter .ba-before { background-color: #6366f1; background-image: linear-gradient(135deg,#6366f1,#22d3ee); clip-path: inset(0 50% 0 0); }
+        .web-beforeafter .ba-after span, .web-beforeafter .ba-before span { display: none; }
+        .web-beforeafter .ba-tag { position: absolute; top: 14px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; background: rgba(15,23,42,0.65); color: #fff; padding: 5px 12px; border-radius: 20px; pointer-events: none; }
+        .web-beforeafter .ba-tag-after { right: 14px; }
+        .web-beforeafter .ba-tag-before { left: 14px; }
+        .web-beforeafter .ba-handle {
+            position: absolute; top: 0; bottom: 0; width: 3px; background: #fff; transform: translateX(-50%);
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.15); pointer-events: none; z-index: 2;
+        }
+        .web-beforeafter .ba-handle::after {
+            content: "\2194"; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+            width: 34px; height: 34px; border-radius: 50%; background: #fff; color: #1e293b;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+        }
+        .web-beforeafter input[type="range"] {
+            position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; z-index: 3;
+            -webkit-appearance: none; appearance: none;
+        }
 
         .web-mapblock { margin: 25px 0; border-radius: var(--canvas-radius,10px); overflow: hidden; }
         .web-mapblock iframe { width: 100%; height: 280px; border: 0; display: block; }
@@ -847,6 +915,21 @@
         .context-menu button span { color: var(--text-faint); font-size: 0.68rem; }
         .context-menu .ctx-sep { height: 1px; background: var(--border); margin: 4px 2px; }
 
+        /* ===== V3.1: Universeller Bild-Upload (Slots) — nur im Editor sichtbar ===== */
+        #canvas.dragging-file-over { outline: 3px dashed var(--accent); outline-offset: -3px; }
+        #canvas [data-img-slot] { position: relative; cursor: pointer; }
+        #canvas [data-img-slot] .img-slot-btn {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 5;
+            background: rgba(15,23,42,0.78); color: #fff; border: none; border-radius: 7px;
+            padding: 6px 10px; font-size: 0.68rem; font-weight: 600; cursor: pointer;
+            display: flex; align-items: center; gap: 5px; opacity: 0; transition: opacity .15s; white-space: nowrap;
+        }
+        #canvas [data-img-slot]:hover .img-slot-btn { opacity: 1; }
+        #canvas .web-beforeafter:hover .img-slot-btn { opacity: 1; }
+        #canvas .web-beforeafter .ba-before .img-slot-btn { left: 18%; transform: translate(-50%, -50%); top: 38%; }
+        #canvas .web-beforeafter .ba-after .img-slot-btn { left: 82%; transform: translate(-50%, -50%); top: 38%; }
+        #canvas [data-img-slot].has-img .img-slot-btn { padding: 6px; }
+
 
         .web-table { width: 100%; border-collapse: collapse; margin: 25px 0; font-size: 0.9rem; }
         .web-table th, .web-table td { border: 1px solid #e2e8f0; padding: 10px 14px; text-align: left; }
@@ -869,6 +952,9 @@
         <div class="brand-name">Drafty</div>
         <div class="brand-sub">v3.0</div>
     </div>
+    <button class="add-everything-btn" onclick="openAddEverythingModal()" title="Element hinzufügen" aria-label="Element hinzufügen">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+    </button>
 </div>
 
         <div class="sidebar-body">
@@ -888,9 +974,11 @@
                 <h2>🧱 Bausteine <span style="font-size:0.6rem; color:var(--text-faint); font-weight:normal;">(Reinziehen)</span></h2>
 
                 <div class="comp-search-wrap">
-                    <span class="ic">🔍</span>
-                    <input type="text" id="compSearchInput" placeholder="Bausteine durchsuchen…" oninput="filterComponents(this.value)" aria-label="Bausteine durchsuchen">
+                    <svg class="ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="compSearchInput" placeholder="Alles durchsuchen… (Bausteine, Sektionen, Medien)" oninput="filterComponents(this.value)" aria-label="Bausteine durchsuchen">
+                    <button type="button" class="comp-search-clear no-drag" id="compSearchClear" style="display:none;" title="Suche leeren" onclick="document.getElementById('compSearchInput').value='';filterComponents('');document.getElementById('compSearchInput').focus();">✕</button>
                 </div>
+                <div class="comp-search-meta" id="compSearchMeta" style="display:none;"></div>
 
                 <div class="tab-row with-fav" id="compTabRow">
                     <button class="tab-btn active" data-tab="basics" onclick="switchTab('basics')">Basis</button>
@@ -930,6 +1018,7 @@
 
                 <div class="tab-panel" data-tab="media">
                     <button class="tool-btn no-drag" data-fav-id="action-image" onclick="addImageComponent()"><span class="ic">🖼️</span>Bild (Suchen/URL)<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="action-image">☆</span></button>
+                    <button class="tool-btn no-drag" data-fav-id="action-image-upload" onclick="addImageComponentUpload()"><svg class="ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>Bild hochladen<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="action-image-upload">☆</span></button>
                     <button class="tool-btn no-drag" data-fav-id="action-video" onclick="addVideoComponent()"><span class="ic">🎬</span>Video einbetten<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="action-video">☆</span></button>
                 </div>
 
@@ -1355,9 +1444,24 @@
         <button onclick="formatText('bold')" title="Fett">B</button>
         <button onclick="formatText('italic')" style="font-style:italic;" title="Kursiv">I</button>
         <button onclick="formatText('underline')" style="text-decoration:underline;" title="Unterstrichen">U</button>
-        <button onclick="formatText('insertUnorderedList')" title="Aufzählungsliste">☰</button>
-        <button onclick="formatText('insertOrderedList')" title="Nummerierte Liste">①</button>
-        <button onclick="insertLink()" style="color:#60a5fa;" title="Link">🔗</button>
+        <button onclick="formatText('insertUnorderedList')" title="Aufzählungsliste"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="9" y1="6" x2="20" y2="6"></line><line x1="9" y1="12" x2="20" y2="12"></line><line x1="9" y1="18" x2="20" y2="18"></line><circle cx="4" cy="6" r="1.4"></circle><circle cx="4" cy="12" r="1.4"></circle><circle cx="4" cy="18" r="1.4"></circle></svg></button>
+        <button onclick="formatText('insertOrderedList')" title="Nummerierte Liste"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="20" y2="6"></line><line x1="10" y1="12" x2="20" y2="12"></line><line x1="10" y1="18" x2="20" y2="18"></line><path d="M4 6h1v4M4 10h2M4.5 14a1.5 1.5 0 0 1 3 0c0 .8-1 1.4-1.7 2L4 18.5h3" stroke-width="1.6"></path></svg></button>
+        <button onclick="insertLink()" style="color:#60a5fa;" title="Link"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></button>
+    </div>
+
+    <div class="add-everything-overlay" id="addEverythingOverlay">
+        <div class="add-everything-box">
+            <div class="add-everything-head">
+                <h3>Element hinzufügen
+                    <button class="ae-close" onclick="closeAddEverythingModal()" aria-label="Schließen"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                </h3>
+                <div class="add-everything-search">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="addEverythingSearch" placeholder="Alles durchsuchen… (Texte, Layout, Sektionen, Medien)" oninput="renderAddEverythingModal(this.value)" aria-label="Element suchen">
+                </div>
+            </div>
+            <div class="add-everything-body" id="addEverythingBody"></div>
+        </div>
     </div>
 
     <input type="file" id="projectFileInput" accept=".json" style="display:none" onchange="handleProjectFileSelected(this)">
@@ -1562,14 +1666,79 @@
 
             // Canvas drop zone setup
             const canvas = document.getElementById('canvas');
-            canvas.addEventListener('dragover', e => { e.preventDefault(); });
+            canvas.addEventListener('dragover', e => {
+                e.preventDefault();
+                if (e.dataTransfer && Array.from(e.dataTransfer.types || []).includes('Files')) {
+                    canvas.classList.add('dragging-file-over');
+                }
+            });
+            canvas.addEventListener('dragleave', e => { if (e.target === canvas) canvas.classList.remove('dragging-file-over'); });
             canvas.addEventListener('drop', e => {
                 e.preventDefault();
+                canvas.classList.remove('dragging-file-over');
+                // Bild-Datei direkt aus dem Dateisystem hierher gezogen
+                const files = e.dataTransfer && e.dataTransfer.files;
+                if (files && files.length && files[0].type.startsWith('image/')) {
+                    const slotTarget = e.target.closest && e.target.closest('[data-img-slot]');
+                    readImageFileAsDataUrl(files[0], (dataUrl) => {
+                        if (slotTarget) { applyImageToSlot(slotTarget, dataUrl); }
+                        else {
+                            const img = document.createElement('img');
+                            img.className = 'web-img'; img.src = dataUrl; img.alt = files[0].name.replace(/\.[a-zA-Z0-9]+$/, '');
+                            img.loading = 'lazy'; img.decoding = 'async';
+                            appendToCanvas(img);
+                        }
+                    });
+                    return;
+                }
                 if (draggedSidebarItem && e.target === canvas) {
                     insertSidebarItem(canvas, null, 'bottom');
                 }
             });
         }
+
+        /* ======================================================================
+           V3.1: UNIVERSELLER BILD-UPLOAD (Klick & Drag-and-Drop -> Daten-URL)
+           ====================================================================== */
+        function readImageFileAsDataUrl(file, callback) {
+            if (!file || !file.type.startsWith('image/')) { showToast('Bitte eine Bilddatei wählen', 'danger'); return; }
+            if (file.size > 6 * 1024 * 1024) { showToast('Bild zu groß (max. 6 MB)', 'danger'); return; }
+            const reader = new FileReader();
+            reader.onload = (e) => callback(e.target.result);
+            reader.onerror = () => showToast('Bild konnte nicht gelesen werden', 'danger');
+            reader.readAsDataURL(file);
+        }
+        function pickImageFile(callback) {
+            const input = document.createElement('input');
+            input.type = 'file'; input.accept = 'image/*'; input.style.display = 'none';
+            input.addEventListener('change', () => { if (input.files[0]) readImageFileAsDataUrl(input.files[0], callback); input.remove(); });
+            document.body.appendChild(input);
+            input.click();
+        }
+        function applyImageToSlot(slot, dataUrl) {
+            if (!slot) return;
+            slot.style.backgroundImage = `url('${dataUrl}')`;
+            slot.style.backgroundSize = 'cover';
+            slot.style.backgroundPosition = 'center';
+            slot.classList.add('has-img');
+            // Bei Avatar-Platzhaltern (Emoji als Inhalt) den Emoji-Text entfernen, sobald ein echtes Bild da ist
+            if (slot.classList.contains('team-avatar') || slot.classList.contains('t-avatar') || slot.classList.contains('sf-avatar')) {
+                Array.from(slot.childNodes).forEach(n => { if (n.nodeType === 3) n.remove(); });
+            }
+            markDirty(); pushHistory();
+        }
+        // Klick auf einen Bild-Slot-Button (Galerie/Masonry/Team/Vorher-Nachher/etc.) öffnet die Dateiauswahl
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.img-slot-btn');
+            if (!btn) return;
+            e.preventDefault(); e.stopPropagation();
+            const slot = btn.closest('[data-img-slot]');
+            pickImageFile((dataUrl) => applyImageToSlot(slot, dataUrl));
+        });
+        // Drag-and-Drop einer Bilddatei direkt auf einen Bild-Slot (z.B. Galerie-Kachel)
+        document.addEventListener('dragover', (e) => {
+            if (e.target.closest && e.target.closest('[data-img-slot]')) e.preventDefault();
+        });
 
         function insertSidebarItem(parent, referenceNode, position) {
             let el;
@@ -1950,6 +2119,20 @@
         let elementToolbarTrackedEl = null;
         let elementToolbarRafId = null;
 
+        const ICON_UP = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>';
+        const ICON_DOWN = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>';
+        const ICON_DUP = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+        const ICON_LOCK = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>';
+        const ICON_UNLOCK = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>';
+        const ICON_HIDE = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
+        const ICON_SHOW = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
+        const ICON_COMMENT = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>';
+        const ICON_DEL = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>';
+        const ICON_ROWPLUS = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="15" x2="21" y2="15"></line><line x1="12" y1="18" x2="12" y2="21"></line><line x1="10.5" y1="19.5" x2="13.5" y2="19.5"></line></svg>';
+        const ICON_ROWMINUS = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="14" rx="2"></rect><line x1="3" y1="11" x2="21" y2="11"></line><line x1="9.5" y1="20" x2="14.5" y2="20"></line></svg>';
+        const ICON_COLPLUS = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="14" height="18" rx="2"></rect><line x1="11" y1="3" x2="11" y2="21"></line><line x1="19.5" y1="9" x2="19.5" y2="14"></line><line x1="17" y1="11.5" x2="22" y2="11.5"></line></svg>';
+        const ICON_COLMINUS = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="14" y1="3" x2="14" y2="21"></line><line x1="17" y1="12" x2="22" y2="12"></line></svg>';
+
         function showElementToolbar(el) {
             removeElementToolbar();
             const toolbar = document.createElement('div');
@@ -1957,19 +2140,28 @@
             toolbar.id = 'activeElementToolbar';
             toolbar.setAttribute('role', 'toolbar');
             toolbar.setAttribute('aria-label', 'Element-Werkzeuge');
+            const isLocked = el.classList.contains('el-locked');
+            const isHidden = el.classList.contains('web-hidden');
+            const isTable = el.tagName === 'TABLE';
             toolbar.innerHTML = `
-                <button title="Nach oben" aria-label="Element nach oben verschieben" data-act="up">↑</button>
-                <button title="Nach unten" aria-label="Element nach unten verschieben" data-act="down">↓</button>
-                <button title="Duplizieren (Strg+D)" aria-label="Element duplizieren" data-act="dup">⧉</button>
-                <button title="Sperren" aria-label="Element sperren" data-act="lock">🔒</button>
-                <button title="Verstecken" aria-label="Element verstecken" data-act="hide">🙈</button>
-                <button title="Kommentar" aria-label="Kommentar hinzufügen oder bearbeiten" data-act="comment">💬</button>
-                <button title="Löschen" aria-label="Element löschen" class="del-btn" data-act="del">✕</button>
+                ${isTable ? `
+                <button title="Zeile hinzufügen" aria-label="Zeile hinzufügen" data-act="rowplus">${ICON_ROWPLUS}</button>
+                <button title="Zeile entfernen" aria-label="Zeile entfernen" data-act="rowminus">${ICON_ROWMINUS}</button>
+                <button title="Spalte hinzufügen" aria-label="Spalte hinzufügen" data-act="colplus">${ICON_COLPLUS}</button>
+                <button title="Spalte entfernen" aria-label="Spalte entfernen" data-act="colminus">${ICON_COLMINUS}</button>
+                <span class="tb-sep"></span>` : ''}
+                <button title="Nach oben" aria-label="Element nach oben verschieben" data-act="up">${ICON_UP}</button>
+                <button title="Nach unten" aria-label="Element nach unten verschieben" data-act="down">${ICON_DOWN}</button>
+                <button title="Duplizieren (Strg+D)" aria-label="Element duplizieren" data-act="dup">${ICON_DUP}</button>
+                <button title="${isLocked ? 'Entsperren' : 'Sperren'}" aria-label="Element sperren" data-act="lock">${isLocked ? ICON_UNLOCK : ICON_LOCK}</button>
+                <button title="${isHidden ? 'Einblenden' : 'Verstecken'}" aria-label="Element verstecken" data-act="hide">${isHidden ? ICON_SHOW : ICON_HIDE}</button>
+                <button title="Kommentar" aria-label="Kommentar hinzufügen oder bearbeiten" data-act="comment">${ICON_COMMENT}</button>
+                <button title="Löschen" aria-label="Element löschen" class="del-btn" data-act="del">${ICON_DEL}</button>
             `;
             toolbar.addEventListener('mousedown', (e) => e.preventDefault()); // Auswahl/Fokus im contenteditable nicht verlieren
             toolbar.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const act = e.target.dataset.act;
+                const act = e.target.closest('button')?.dataset.act;
                 if (act === 'up') moveElement(el, -1);
                 if (act === 'down') moveElement(el, 1);
                 if (act === 'dup') duplicateElement(el);
@@ -1977,6 +2169,11 @@
                 if (act === 'hide') toggleHideElement(el);
                 if (act === 'del') confirmDeleteElement(el);
                 if (act === 'comment') addOrEditComment(el);
+                if (act === 'rowplus') tableAddRow(el);
+                if (act === 'rowminus') tableRemoveRow(el);
+                if (act === 'colplus') tableAddColumn(el);
+                if (act === 'colminus') tableRemoveColumn(el);
+                if (act !== 'del') showElementToolbar(el); // Icons (Lock/Hide) & Tabellengröße können sich geändert haben
                 positionElementToolbar(); // Position/Größe kann sich durch die Aktion geändert haben
             });
 
@@ -2102,11 +2299,11 @@
             bar.className = 'multiselect-toolbar';
             bar.innerHTML = `
                 <span class="ms-count">${multiSelectedElements.length} ausgewählt</span>
-                <button data-act="group" title="Gruppieren">📦 Gruppieren</button>
-                <button data-act="lock" title="Sperren">🔒 Sperren</button>
-                <button data-act="hide" title="Verstecken">🙈 Verstecken</button>
-                <button data-act="dup" title="Duplizieren">⧉ Duplizieren</button>
-                <button data-act="del" class="del-btn" title="Löschen">✕ Löschen</button>
+                <button data-act="group" title="Gruppieren"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg> Gruppieren</button>
+                <button data-act="lock" title="Sperren">${ICON_LOCK} Sperren</button>
+                <button data-act="hide" title="Verstecken">${ICON_HIDE} Verstecken</button>
+                <button data-act="dup" title="Duplizieren">${ICON_DUP} Duplizieren</button>
+                <button data-act="del" class="del-btn" title="Löschen">${ICON_DEL} Löschen</button>
             `;
             bar.addEventListener('click', (e) => {
                 const act = e.target.closest('button')?.dataset.act;
@@ -2211,14 +2408,14 @@
             menu.id = 'elContextMenu';
             menu.className = 'context-menu';
             menu.innerHTML = `
-                <button data-act="dup">⧉ Duplizieren <span>Strg+D</span></button>
-                ${isGroup ? '<button data-act="ungroup">📦 Gruppierung aufheben</button>' : ''}
-                <button data-act="lock">${isLocked ? '🔓 Entsperren' : '🔒 Sperren'}</button>
-                <button data-act="hide">${isHidden ? '👁️ Einblenden' : '🙈 Verstecken'}</button>
-                <button data-act="up">↑ Nach oben</button>
-                <button data-act="down">↓ Nach unten</button>
+                <button data-act="dup">${ICON_DUP} Duplizieren <span>Strg+D</span></button>
+                ${isGroup ? `<button data-act="ungroup"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect></svg> Gruppierung aufheben</button>` : ''}
+                <button data-act="lock">${isLocked ? ICON_UNLOCK + ' Entsperren' : ICON_LOCK + ' Sperren'}</button>
+                <button data-act="hide">${isHidden ? ICON_SHOW + ' Einblenden' : ICON_HIDE + ' Verstecken'}</button>
+                <button data-act="up">${ICON_UP} Nach oben</button>
+                <button data-act="down">${ICON_DOWN} Nach unten</button>
                 <div class="ctx-sep"></div>
-                <button data-act="del" class="del-btn">✕ Löschen</button>
+                <button data-act="del" class="del-btn">${ICON_DEL} Löschen</button>
             `;
             menu.style.left = x + 'px';
             menu.style.top = y + 'px';
@@ -2389,6 +2586,54 @@
                 appendToCanvas(img);
             });
         }
+        function addImageComponentUpload() {
+            pickImageFile((dataUrl) => {
+                const img = document.createElement('img');
+                img.className = 'web-img'; img.src = dataUrl; img.alt = 'Hochgeladenes Bild';
+                img.loading = 'lazy'; img.decoding = 'async';
+                appendToCanvas(img);
+            });
+        }
+
+        /* ---- V3.1: Tabelle anpassen (Zeilen/Spalten) ---- */
+        function tableAddRow(table) {
+            if (!table) return;
+            const tbody = table.querySelector('tbody'); if (!tbody) return;
+            const colCount = table.querySelector('tr').children.length;
+            const tr = document.createElement('tr');
+            for (let i = 0; i < colCount; i++) {
+                const td = document.createElement('td');
+                td.contentEditable = 'true'; td.textContent = 'Wert';
+                td.addEventListener('click', e => e.stopPropagation());
+                td.addEventListener('blur', () => { markDirty(); pushHistory(); });
+                tr.appendChild(td);
+            }
+            tbody.appendChild(tr);
+            markDirty(); pushHistory(); showToast('Zeile hinzugefügt', 'success');
+        }
+        function tableRemoveRow(table) {
+            if (!table) return;
+            const tbody = table.querySelector('tbody'); if (!tbody || tbody.children.length <= 1) return showToast('Mindestens eine Zeile nötig', 'danger');
+            tbody.lastElementChild.remove();
+            markDirty(); pushHistory(); showToast('Zeile entfernt', 'success');
+        }
+        function tableAddColumn(table) {
+            if (!table) return;
+            table.querySelectorAll('tr').forEach((tr, i) => {
+                const cell = document.createElement(i === 0 ? 'th' : 'td');
+                cell.contentEditable = 'true'; cell.textContent = i === 0 ? 'Neue Spalte' : 'Wert';
+                cell.addEventListener('click', e => e.stopPropagation());
+                cell.addEventListener('blur', () => { markDirty(); pushHistory(); });
+                tr.appendChild(cell);
+            });
+            markDirty(); pushHistory(); showToast('Spalte hinzugefügt', 'success');
+        }
+        function tableRemoveColumn(table) {
+            if (!table) return;
+            const firstRow = table.querySelector('tr'); if (!firstRow || firstRow.children.length <= 1) return showToast('Mindestens eine Spalte nötig', 'danger');
+            table.querySelectorAll('tr').forEach(tr => tr.lastElementChild && tr.lastElementChild.remove());
+            markDirty(); pushHistory(); showToast('Spalte entfernt', 'success');
+        }
 
         function addVideoComponent() {
             openPromptModal('Video', 'YouTube Link:', 'https://www.youtube.com/embed/dQw4w9WgXcQ', (url) => {
@@ -2454,19 +2699,19 @@ pricing: `<div class="web-pricing" draggable="true">
                 <div class="tl-item"><div class="tl-date" contenteditable="true">2026</div><div class="tl-title" contenteditable="true">Internationale Expansion</div><div class="tl-text" contenteditable="true">Markteintritt in fünf weiteren Ländern.</div></div>
             </div>`,
             testimonials: `<div class="web-testimonials" draggable="true">
-                <div class="testimonial-card"><div class="t-quote" contenteditable="true">„Hat unsere Arbeitsweise komplett verändert, absolut empfehlenswert!“</div><div class="t-person"><div class="t-avatar">👩</div><div><div class="t-name" contenteditable="true">Lena Schmidt</div><div class="t-role" contenteditable="true">Marketing Lead</div></div></div></div>
-                <div class="testimonial-card"><div class="t-quote" contenteditable="true">„Einfache Bedienung und hervorragender Support.“</div><div class="t-person"><div class="t-avatar">👨</div><div><div class="t-name" contenteditable="true">Tom Becker</div><div class="t-role" contenteditable="true">Gründer</div></div></div></div>
-                <div class="testimonial-card"><div class="t-quote" contenteditable="true">„Genau das Tool, nach dem wir gesucht haben.“</div><div class="t-person"><div class="t-avatar">🧑</div><div><div class="t-name" contenteditable="true">Mira Keller</div><div class="t-role" contenteditable="true">Produktmanagerin</div></div></div></div>
+                <div class="testimonial-card"><div class="t-quote" contenteditable="true">„Hat unsere Arbeitsweise komplett verändert, absolut empfehlenswert!“</div><div class="t-person"><div class="t-avatar" data-img-slot="1">👩<button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></button></div><div><div class="t-name" contenteditable="true">Lena Schmidt</div><div class="t-role" contenteditable="true">Marketing Lead</div></div></div></div>
+                <div class="testimonial-card"><div class="t-quote" contenteditable="true">„Einfache Bedienung und hervorragender Support.“</div><div class="t-person"><div class="t-avatar" data-img-slot="1">👨<button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></button></div><div><div class="t-name" contenteditable="true">Tom Becker</div><div class="t-role" contenteditable="true">Gründer</div></div></div></div>
+                <div class="testimonial-card"><div class="t-quote" contenteditable="true">„Genau das Tool, nach dem wir gesucht haben.“</div><div class="t-person"><div class="t-avatar" data-img-slot="1">🧑<button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></button></div><div><div class="t-name" contenteditable="true">Mira Keller</div><div class="t-role" contenteditable="true">Produktmanagerin</div></div></div></div>
             </div>`,
             team: `<div class="web-team" draggable="true">
-                <div class="team-card"><div class="team-avatar">👩‍💼</div><div class="team-name" contenteditable="true">Anna Vogel</div><div class="team-role" contenteditable="true">CEO</div><div class="team-bio" contenteditable="true">Leitet das Unternehmen seit der Gründung.</div></div>
-                <div class="team-card"><div class="team-avatar">👨‍💻</div><div class="team-name" contenteditable="true">Jonas Wagner</div><div class="team-role" contenteditable="true">CTO</div><div class="team-bio" contenteditable="true">Verantwortlich für Produkt und Technik.</div></div>
-                <div class="team-card"><div class="team-avatar">👩‍🎨</div><div class="team-name" contenteditable="true">Sara Klein</div><div class="team-role" contenteditable="true">Design Lead</div><div class="team-bio" contenteditable="true">Gestaltet alle visuellen Erlebnisse.</div></div>
+                <div class="team-card"><div class="team-avatar" data-img-slot="1">👩‍💼<button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></button></div><div class="team-name" contenteditable="true">Anna Vogel</div><div class="team-role" contenteditable="true">CEO</div><div class="team-bio" contenteditable="true">Leitet das Unternehmen seit der Gründung.</div></div>
+                <div class="team-card"><div class="team-avatar" data-img-slot="1">👨‍💻<button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></button></div><div class="team-name" contenteditable="true">Jonas Wagner</div><div class="team-role" contenteditable="true">CTO</div><div class="team-bio" contenteditable="true">Verantwortlich für Produkt und Technik.</div></div>
+                <div class="team-card"><div class="team-avatar" data-img-slot="1">👩‍🎨<button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></button></div><div class="team-name" contenteditable="true">Sara Klein</div><div class="team-role" contenteditable="true">Design Lead</div><div class="team-bio" contenteditable="true">Gestaltet alle visuellen Erlebnisse.</div></div>
             </div>`,
             blogcards: `<div class="web-blogcards" draggable="true">
-                <div class="blog-card"><div class="blog-img"></div><div class="blog-body"><div class="blog-date" contenteditable="true">12. Mai 2026</div><div class="blog-title" contenteditable="true">5 Tipps für bessere Webseiten</div><div class="blog-excerpt" contenteditable="true">Kurze Zusammenfassung des Artikelinhalts für die Leser.</div></div></div>
-                <div class="blog-card"><div class="blog-img"></div><div class="blog-body"><div class="blog-date" contenteditable="true">2. Mai 2026</div><div class="blog-title" contenteditable="true">Design-Trends 2026</div><div class="blog-excerpt" contenteditable="true">Ein Überblick über die wichtigsten Trends dieses Jahres.</div></div></div>
-                <div class="blog-card"><div class="blog-img"></div><div class="blog-body"><div class="blog-date" contenteditable="true">28. April 2026</div><div class="blog-title" contenteditable="true">No-Code im Aufwind</div><div class="blog-excerpt" contenteditable="true">Warum immer mehr Teams auf No-Code setzen.</div></div></div>
+                <div class="blog-card"><div class="blog-img" data-img-slot="1"><button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Bild</button></div><div class="blog-body"><div class="blog-date" contenteditable="true">12. Mai 2026</div><div class="blog-title" contenteditable="true">5 Tipps für bessere Webseiten</div><div class="blog-excerpt" contenteditable="true">Kurze Zusammenfassung des Artikelinhalts für die Leser.</div></div></div>
+                <div class="blog-card"><div class="blog-img" data-img-slot="1"><button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Bild</button></div><div class="blog-body"><div class="blog-date" contenteditable="true">2. Mai 2026</div><div class="blog-title" contenteditable="true">Design-Trends 2026</div><div class="blog-excerpt" contenteditable="true">Ein Überblick über die wichtigsten Trends dieses Jahres.</div></div></div>
+                <div class="blog-card"><div class="blog-img" data-img-slot="1"><button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Bild</button></div><div class="blog-body"><div class="blog-date" contenteditable="true">28. April 2026</div><div class="blog-title" contenteditable="true">No-Code im Aufwind</div><div class="blog-excerpt" contenteditable="true">Warum immer mehr Teams auf No-Code setzen.</div></div></div>
             </div>`,
             newsletter: `<div class="web-newsletter" draggable="true">
                 <div class="nl-title" contenteditable="true">Bleib auf dem Laufenden</div>
@@ -2530,20 +2775,21 @@ pricing: `<div class="web-pricing" draggable="true">
                 <button type="button" class="chat-bubble">💬</button>
             </div>`,
             gallery: `<div class="web-gallery" draggable="true">
-                <div class="gal-item"></div><div class="gal-item"></div><div class="gal-item"></div><div class="gal-item"></div>
+                <div class="gal-item" data-img-slot="1"><button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Bild</button></div><div class="gal-item" data-img-slot="1"><button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Bild</button></div><div class="gal-item" data-img-slot="1"><button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Bild</button></div><div class="gal-item" data-img-slot="1"><button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Bild</button></div>
             </div>`,
             masonry: `<div class="web-masonry" draggable="true">
-                <div class="mas-item"></div><div class="mas-item"></div><div class="mas-item"></div><div class="mas-item"></div><div class="mas-item"></div><div class="mas-item"></div>
+                <div class="mas-item" data-img-slot="1"><button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Bild</button></div><div class="mas-item" data-img-slot="1"><button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Bild</button></div><div class="mas-item" data-img-slot="1"><button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Bild</button></div><div class="mas-item" data-img-slot="1"><button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Bild</button></div><div class="mas-item" data-img-slot="1"><button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Bild</button></div><div class="mas-item" data-img-slot="1"><button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Bild</button></div>
             </div>`,
             carousel: `<div class="web-carousel" draggable="true">
                 <input type="radio" name="rdcar1" id="cs1" checked><input type="radio" name="rdcar1" id="cs2"><input type="radio" name="rdcar1" id="cs3">
-                <div class="car-slides"><div class="car-slide" contenteditable="true">Slide 1</div><div class="car-slide" contenteditable="true">Slide 2</div><div class="car-slide" contenteditable="true">Slide 3</div></div>
+                <div class="car-slides"><div class="car-slide" data-img-slot="1"><span contenteditable="true">Slide 1</span><button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Bild</button></div><div class="car-slide" data-img-slot="1"><span contenteditable="true">Slide 2</span><button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Bild</button></div><div class="car-slide" data-img-slot="1"><span contenteditable="true">Slide 3</span><button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Bild</button></div></div>
                 <div class="car-dots"><label for="cs1"></label><label for="cs2"></label><label for="cs3"></label></div>
             </div>`,
             beforeafter: `<div class="web-beforeafter" draggable="true">
-                <div class="ba-after" contenteditable="true">Nachher</div>
-                <div class="ba-before" contenteditable="true">Vorher</div>
-                <input type="range" min="0" max="100" value="50" oninput="this.previousElementSibling.style.clipPath = 'inset(0 ' + (100 - this.value) + '% 0 0)'">
+                <div class="ba-after" data-img-slot="1"><span contenteditable="true">Nachher</span><button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Bild</button><span class="ba-tag ba-tag-after">Nachher</span></div>
+                <div class="ba-before" data-img-slot="1"><span contenteditable="true">Vorher</span><button type="button" class="img-slot-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg> Bild</button><span class="ba-tag ba-tag-before">Vorher</span></div>
+                <div class="ba-handle" style="left:50%"></div>
+                <input type="range" min="0" max="100" value="50" oninput="this.parentElement.style.setProperty('--ba-pos', this.value + '%'); this.previousElementSibling.style.left = this.value + '%'; this.parentElement.querySelector('.ba-before').style.clipPath = 'inset(0 ' + (100 - this.value) + '% 0 0)'">
             </div>`,
             mapblock: `<div class="web-mapblock" draggable="true">
                 <iframe src="https://www.google.com/maps?q=Berlin&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -2763,7 +3009,8 @@ pricing: `<div class="web-pricing" draggable="true">
                 }
 
                 if (e.key==='Escape') {
-                    if (document.getElementById('modalOverlay').style.display==='flex') closeModal();
+                    if (document.getElementById('addEverythingOverlay').style.display==='flex') closeAddEverythingModal();
+                    else if (document.getElementById('modalOverlay').style.display==='flex') closeModal();
                     else if (document.getElementById('navLinksModalOverlay').style.display==='flex') closeNavLinksModal();
                     else if (document.getElementById('seoModalOverlay').style.display==='flex') closeSeoModal();
                     else if (document.getElementById('codeModalOverlay').style.display==='flex') closeCustomCodeModal();
@@ -2830,11 +3077,11 @@ pricing: `<div class="web-pricing" draggable="true">
                 if (el.dataset.href && !el.hasAttribute('href')) {
                     el.setAttribute('href', el.dataset.href);
                 }
-                ['contenteditable','draggable','data-bound-events','data-blur-bound','data-drop-bound','data-href','data-custom-classes','data-comment'].forEach(a => el.removeAttribute(a));
-                el.classList.remove('selected-element', 'dragging-now');
+                ['contenteditable','draggable','data-bound-events','data-blur-bound','data-drop-bound','data-href','data-custom-classes','data-comment','data-img-slot'].forEach(a => el.removeAttribute(a));
+                el.classList.remove('selected-element', 'dragging-now', 'multi-selected', 'el-locked');
                 if(el.className==='') el.removeAttribute('class');
             });
-            w.querySelectorAll('.element-toolbar').forEach(t=>t.remove());
+            w.querySelectorAll('.element-toolbar, .img-slot-btn').forEach(t=>t.remove());
             // Animationen sollen auf der exportierten Seite erst beim Scrollen ins Bild starten,
             // nicht sofort beim Laden — daher 'anim-paused' anhängen; ein kleines IntersectionObserver
             // Skript (siehe buildExportHtml) entfernt die Klasse wieder, sobald das Element sichtbar wird.
@@ -3117,11 +3364,28 @@ pricing: `<div class="web-pricing" draggable="true">
         .web-carousel .car-dots label { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; }
         .web-carousel #cs1:checked ~ .car-dots label[for="cs1"], .web-carousel #cs2:checked ~ .car-dots label[for="cs2"], .web-carousel #cs3:checked ~ .car-dots label[for="cs3"] { background: #fff; }
 
-        .web-beforeafter { position: relative; margin: 25px 0; border-radius: var(--canvas-radius,10px); overflow: hidden; height: 260px; }
-        .web-beforeafter .ba-after, .web-beforeafter .ba-before { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; }
-        .web-beforeafter .ba-after { background: linear-gradient(135deg,#475569,#1e293b); }
-        .web-beforeafter .ba-before { background: linear-gradient(135deg,#6366f1,#22d3ee); clip-path: inset(0 50% 0 0); }
-        .web-beforeafter input[type="range"] { position: absolute; bottom: 14px; left: 14px; right: 14px; width: calc(100% - 28px); }
+        .web-beforeafter { position: relative; margin: 25px 0; border-radius: var(--canvas-radius,12px); overflow: hidden; height: 320px; box-shadow: 0 10px 30px rgba(15,23,42,0.18); user-select: none; }
+        .web-beforeafter .ba-after, .web-beforeafter .ba-before { position: absolute; inset: 0; background-size: cover; background-position: center; display: flex; align-items: flex-end; justify-content: center; color: #fff; font-weight: 700; }
+        .web-beforeafter .ba-after { background-color: #334155; background-image: linear-gradient(135deg,#475569,#1e293b); }
+        .web-beforeafter .ba-before { background-color: #6366f1; background-image: linear-gradient(135deg,#6366f1,#22d3ee); clip-path: inset(0 50% 0 0); }
+        .web-beforeafter .ba-after span, .web-beforeafter .ba-before span { display: none; }
+        .web-beforeafter .ba-tag { position: absolute; top: 14px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; background: rgba(15,23,42,0.65); color: #fff; padding: 5px 12px; border-radius: 20px; pointer-events: none; }
+        .web-beforeafter .ba-tag-after { right: 14px; }
+        .web-beforeafter .ba-tag-before { left: 14px; }
+        .web-beforeafter .ba-handle {
+            position: absolute; top: 0; bottom: 0; width: 3px; background: #fff; transform: translateX(-50%);
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.15); pointer-events: none; z-index: 2;
+        }
+        .web-beforeafter .ba-handle::after {
+            content: "\\2194"; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+            width: 34px; height: 34px; border-radius: 50%; background: #fff; color: #1e293b;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+        }
+        .web-beforeafter input[type="range"] {
+            position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; z-index: 3;
+            -webkit-appearance: none; appearance: none;
+        }
 
         .web-mapblock { margin: 25px 0; border-radius: var(--canvas-radius,10px); overflow: hidden; }
         .web-mapblock iframe { width: 100%; height: 280px; border: 0; display: block; }
@@ -3232,6 +3496,8 @@ pricing: `<div class="web-pricing" draggable="true">
                 const searchInput = document.getElementById('compSearchInput');
                 if (searchInput && searchInput.value) { searchInput.value = ''; }
                 document.getElementById('compTabRow').style.display = 'flex';
+                document.getElementById('compSearchClear').style.display = 'none';
+                document.getElementById('compSearchMeta').style.display = 'none';
             }
         }
 
@@ -3297,12 +3563,85 @@ pricing: `<div class="web-pricing" draggable="true">
             renderFrequentTab();
         }
 
+        /* ======================================================================
+           V3.1: "+" ADD-EVERYTHING POPUP (alle Bausteine an einem Ort, mit Suche)
+           ====================================================================== */
+        const AE_CATEGORY_LABELS = { basics: 'Texte & Basis-Elemente', layout: 'Layout', content: 'Inhalt', media: 'Medien', sections: 'Sektionen' };
+        function openAddEverythingModal() {
+            document.getElementById('addEverythingOverlay').style.display = 'flex';
+            const input = document.getElementById('addEverythingSearch');
+            input.value = '';
+            renderAddEverythingModal('');
+            setTimeout(() => input.focus(), 30);
+        }
+        function closeAddEverythingModal() {
+            document.getElementById('addEverythingOverlay').style.display = 'none';
+        }
+        document.getElementById('addEverythingOverlay')?.addEventListener('click', (e) => {
+            if (e.target.id === 'addEverythingOverlay') closeAddEverythingModal();
+        });
+        function renderAddEverythingModal(query) {
+            const q = (query || '').trim().toLowerCase();
+            const body = document.getElementById('addEverythingBody');
+            const order = ['basics', 'layout', 'content', 'media', 'sections'];
+            let html = '';
+            let totalMatches = 0;
+            order.forEach(cat => {
+                const btns = Array.from(document.querySelectorAll(`.tab-panel[data-tab="${cat}"] .tool-btn[data-fav-id]`));
+                const matches = q ? btns.filter(b => buttonMatchesQuery(b, q)) : btns;
+                if (!matches.length) return;
+                totalMatches += matches.length;
+                html += `<div class="ae-category"><h4>${AE_CATEGORY_LABELS[cat]}</h4><div class="ae-grid" data-cat="${cat}"></div></div>`;
+            });
+            body.innerHTML = html || '<div class="ae-empty">Keine Treffer. Versuch ein anderes Stichwort.</div>';
+            if (!totalMatches && q) { body.innerHTML = `<div class="ae-empty">Keine Treffer für „${escapeHtml(query)}“.</div>`; return; }
+            order.forEach(cat => {
+                const grid = body.querySelector(`.ae-grid[data-cat="${cat}"]`);
+                if (!grid) return;
+                const btns = Array.from(document.querySelectorAll(`.tab-panel[data-tab="${cat}"] .tool-btn[data-fav-id]`));
+                const matches = q ? btns.filter(b => buttonMatchesQuery(b, q)) : btns;
+                matches.forEach(b => {
+                    const clone = b.cloneNode(true);
+                    clone.removeAttribute('draggable');
+                    if (clone.dataset.type === 'block' || clone.dataset.type === 'comp') {
+                        clone.addEventListener('click', (e) => { if (e.target.closest('.fav-star')) return; quickInsertFromButton(clone); });
+                    } else {
+                        // no-drag Aktions-Buttons (Bild/Video) behalten ihr eigenes onclick; nur Modal danach schließen
+                        clone.addEventListener('click', (e) => { if (e.target.closest('.fav-star')) return; setTimeout(closeAddEverythingModal, 50); });
+                    }
+                    grid.appendChild(clone);
+                });
+            });
+        }
+        function quickInsertFromButton(btn) {
+            let el;
+            if (btn.dataset.type === 'comp') {
+                el = document.createElement(btn.dataset.tag);
+                el.className = btn.dataset.class;
+                el.innerText = btn.dataset.text;
+                el.contentEditable = "true";
+                if (btn.dataset.tag === 'a') el.setAttribute('href', '#');
+            } else if (btn.dataset.type === 'block') {
+                const html = BLOCKS[btn.dataset.key];
+                if (!html) return;
+                const wrap = document.createElement('div');
+                wrap.innerHTML = html.trim();
+                el = wrap.firstElementChild;
+            }
+            if (!el) return;
+            appendToCanvas(el);
+            el.querySelectorAll('.web-col').forEach(col => attachContainerDropEvents(col));
+            if (btn.dataset.favId) trackUsage(btn.dataset.favId);
+            closeAddEverythingModal();
+        }
+
         function getSourceButtons() {
             return Array.from(document.querySelectorAll(
                 '.tab-panel[data-tab="basics"] .tool-btn[data-fav-id], ' +
                 '.tab-panel[data-tab="layout"] .tool-btn[data-fav-id], ' +
                 '.tab-panel[data-tab="content"] .tool-btn[data-fav-id], ' +
-                '.tab-panel[data-tab="media"] .tool-btn[data-fav-id]'
+                '.tab-panel[data-tab="media"] .tool-btn[data-fav-id], ' +
+                '.tab-panel[data-tab="sections"] .tool-btn[data-fav-id]'
             ));
         }
 
@@ -3331,18 +3670,65 @@ pricing: `<div class="web-pricing" draggable="true">
             });
         }
 
+        // Zusätzliche Such-Synonyme, damit z.B. "Modal" auch "Pop-up" findet
+        const SEARCH_SYNONYMS = {
+            'modal': ['popup', 'pop-up', 'dialog', 'overlay'],
+            'pricing': ['preise', 'preistabelle', 'plan', 'tarif'],
+            'faq': ['fragen', 'antworten'],
+            'team': ['mitarbeiter', 'personen'],
+            'beforeafter': ['vorher', 'nachher', 'vergleich'],
+            'mapblock': ['karte', 'standort', 'adresse'],
+            'chartblock': ['diagramm', 'statistik', 'chart'],
+            'socialfeed': ['social', 'instagram', 'feed'],
+            'newsletter': ['e-mail', 'abo'],
+            'loginform': ['login', 'anmelden', 'einloggen'],
+            'registerform': ['register', 'registrieren', 'signup'],
+            'cookiebanner': ['cookie', 'dsgvo'],
+            'chatwidget': ['chat', 'support'],
+            'carousel': ['karussell', 'slider', 'slideshow'],
+            'masonry': ['pinterest', 'grid'],
+            'table': ['tabelle', 'daten'],
+            'columns2': ['spalten', 'zweispaltig'],
+            'columns3': ['spalten', 'dreispaltig'],
+        };
+        function buttonMatchesQuery(btn, q) {
+            const label = btn.textContent.toLowerCase();
+            if (label.includes(q)) return true;
+            const key = btn.dataset.key || '';
+            const syn = SEARCH_SYNONYMS[key];
+            return !!(syn && syn.some(s => s.includes(q) || q.includes(s)));
+        }
+        function highlightMatch(text, q) {
+            if (!q) return escapeHtml(text);
+            const idx = text.toLowerCase().indexOf(q);
+            if (idx === -1) return escapeHtml(text);
+            return escapeHtml(text.slice(0, idx)) + '<mark class="comp-search-highlight">' + escapeHtml(text.slice(idx, idx + q.length)) + '</mark>' + escapeHtml(text.slice(idx + q.length));
+        }
         function filterComponents(query) {
             const q = query.trim().toLowerCase();
             const tabRow = document.getElementById('compTabRow');
             const panel = document.getElementById('searchTabPanel');
-            if (!q) { panel.innerHTML = ''; switchTab('basics'); return; }
+            const meta = document.getElementById('compSearchMeta');
+            const clearBtn = document.getElementById('compSearchClear');
+            if (clearBtn) clearBtn.style.display = q ? 'flex' : 'none';
+            if (!q) { panel.innerHTML = ''; if (meta) meta.style.display = 'none'; switchTab('basics'); return; }
             tabRow.style.display = 'none';
             document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
             panel.classList.add('active');
-            const matches = getSourceButtons().filter(b => b.textContent.toLowerCase().includes(q));
-            if (!matches.length) { panel.innerHTML = '<div class="empty-fav-hint">Keine Treffer für „' + escapeHtml(query) + '“.</div>'; return; }
+            const matches = getSourceButtons().filter(b => buttonMatchesQuery(b, q));
+            if (meta) { meta.style.display = 'block'; meta.textContent = matches.length + (matches.length === 1 ? ' Treffer' : ' Treffer'); }
+            if (!matches.length) { panel.innerHTML = '<div class="empty-fav-hint">Keine Treffer für „' + escapeHtml(query) + '“. Versuch ein anderes Stichwort.</div>'; return; }
             panel.innerHTML = '';
-            matches.forEach(b => panel.appendChild(b.cloneNode(true)));
+            matches.forEach(b => {
+                const clone = b.cloneNode(true);
+                const labelNode = Array.from(clone.childNodes).find(n => n.nodeType === 3 && n.textContent.trim());
+                if (labelNode) {
+                    const span = document.createElement('span');
+                    span.innerHTML = highlightMatch(labelNode.textContent, q);
+                    labelNode.replaceWith(span);
+                }
+                panel.appendChild(clone);
+            });
         }
 
         /* ======================================================================
