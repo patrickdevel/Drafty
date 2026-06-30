@@ -1,5 +1,5 @@
-#Version 3.1
+#Drafty 3.2 🚀
 ---
-#Was ist neu? 🚀
-- neue Übersichtsseite hinzugefügt.
-- Seiten bei Google registriert.
+###Das ist neu:
+- 'overview.html' geupdatet: Neues Design.
+- neue 'new.txt' erstellt für 'overview.html' zum anzeigen von Erneuerungen.
