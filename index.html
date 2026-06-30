@@ -574,6 +574,9 @@
         .anim-slideRight { animation: rd-slideRight ease both; }
         .anim-bounceIn { animation: rd-bounceIn ease both; }
         .anim-zoomIn { animation: rd-zoomIn ease both; }
+@keyframes rd-typing { from { width: 0; } to { width: 100%; } }
+@keyframes rd-blink { 50% { border-color: transparent; } }
+.anim-typing { display: inline-block; max-width: 100%; overflow: hidden; white-space: nowrap; border-right: 2px solid currentColor; vertical-align: bottom; animation: rd-typing steps(30,end) forwards, rd-blink 0.75s step-end infinite; }
         .anim-replaying { animation-name: none !important; }
 
         /* ---- Color management ---- */
@@ -844,6 +847,14 @@
         .context-menu button span { color: var(--text-faint); font-size: 0.68rem; }
         .context-menu .ctx-sep { height: 1px; background: var(--border); margin: 4px 2px; }
 
+
+        .web-table { width: 100%; border-collapse: collapse; margin: 25px 0; font-size: 0.9rem; }
+        .web-table th, .web-table td { border: 1px solid #e2e8f0; padding: 10px 14px; text-align: left; }
+        .web-table th { background: #f8fafc; font-weight: 700; color: #1e293b; }
+        .web-table tr:nth-child(even) td { background: #f8fafc; }
+        .style-darkmode .web-table th, .style-darkmode .web-table td { border-color: #334155; }
+        .style-darkmode .web-table th { background: #1e293b; color: #f8fafc; }
+        .style-darkmode .web-table tr:nth-child(even) td { background: #1e293b; }
         .badge-count { position: absolute; top: -4px; right: -4px; background: var(--danger); color: #fff; font-size: 0.6rem; font-weight: 700; min-width: 14px; height: 14px; border-radius: 7px; display: flex; align-items: center; justify-content: center; padding: 0 3px; }
     </style>
 </head>
@@ -913,6 +924,7 @@
                     <button class="tool-btn" draggable="true" data-fav-id="block-iconbox" data-type="block" data-key="iconbox"><span class="ic">💡</span>Icon-Box<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-iconbox">☆</span></button>
                     <button class="tool-btn" draggable="true" data-fav-id="block-quote" data-type="block" data-key="quote"><span class="ic">❝</span>Zitat<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-quote">☆</span></button>
                     <button class="tool-btn" draggable="true" data-fav-id="block-list" data-type="block" data-key="list"><span class="ic">☰</span>Liste<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-list">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-table" data-type="block" data-key="table"><span class="ic">▦</span>Tabelle<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-table">☆</span></button>
                     <button class="tool-btn" draggable="true" data-fav-id="block-form" data-type="block" data-key="form"><span class="ic">📋</span>Kontaktformular<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-form">☆</span></button>
                 </div>
 
@@ -994,6 +1006,8 @@
                 </div>
                 <button class="tool-btn small ghost no-drag" style="margin-top:6px; justify-content:center;" onclick="generateColorHarmony()"><span class="ic">🎨</span>Farbharmonien vorschlagen</button>
                 <div class="harmony-row" id="harmonyRow" style="display:none;"></div>
+                <button class="tool-btn small ghost no-drag" style="margin-top:6px; justify-content:center;" onclick="importColorPalette()"><span class="ic">📥</span>Farbpalette importieren</button>
+                <button class="tool-btn small ghost no-drag" style="margin-top:6px; justify-content:center;" onclick="generateDarkModePalette()"><span class="ic">🌙</span>Dark Mode Generator</button>
             </div>
 
             <details class="mini-group group">
@@ -1126,8 +1140,18 @@
                             <option value="'Space Mono', monospace" style="font-family:'Space Mono',monospace;">Space Mono</option>
                         </select>
 
+                        <label>Google Fonts Suche:</label>
+                        <div style="display:flex; gap:4px;">
+                            <input type="text" id="googleFontSearch" placeholder="z.B. Montserrat, Lobster…" class="no-drag">
+                            <button class="tool-btn small no-drag" style="width:auto; padding:8px 10px;" onclick="loadGoogleFont()">Laden</button>
+                        </div>
+                        <span class="help-text" id="googleFontStatus"></span>
+
                         <label>Buchstabenabstand: <span id="letterSpacingValue" class="kbd-hint">0px</span></label>
                         <input type="range" min="-2" max="12" step="0.5" id="inspectLetterSpacing" value="0" oninput="adjustSelected('letterSpacing', this.value + 'px'); document.getElementById('letterSpacingValue').textContent = this.value + 'px';" onchange="commitInspectorChange()">
+
+                        <label>Wortabstand: <span id="wordSpacingValue" class="kbd-hint">0px</span></label>
+                        <input type="range" min="-4" max="40" step="1" id="inspectWordSpacing" value="0" oninput="adjustSelected('wordSpacing', this.value + 'px'); document.getElementById('wordSpacingValue').textContent = this.value + 'px';" onchange="commitInspectorChange()">
 
                         <label>Zeilenhöhe: <span id="lineHeightValue" class="kbd-hint">1.4</span></label>
                         <input type="range" min="0.9" max="2.4" step="0.05" id="inspectLineHeight" value="1.4" oninput="adjustSelected('lineHeight', this.value); document.getElementById('lineHeightValue').textContent = this.value;" onchange="commitInspectorChange()">
@@ -1139,6 +1163,90 @@
                             <input type="color" id="textShadowColor" value="#000000" oninput="updateTextShadow()">
                             <input type="range" min="0" max="20" id="textShadowBlur" value="4" oninput="updateTextShadow()" title="Unschärfe">
                         </div>
+
+                        <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                            <input type="checkbox" id="textOutlineCheck" onchange="toggleTextOutline(this.checked)"> Text-Umriss (Outline)
+                        </label>
+                        <div class="text-shadow-row" id="textOutlineControls" style="display:none;">
+                            <input type="color" id="textOutlineColor" value="#000000" oninput="updateTextOutline()">
+                            <input type="range" min="0.5" max="6" step="0.5" id="textOutlineWidth" value="1" oninput="updateTextOutline()" title="Stärke">
+                        </div>
+
+                        <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                            <input type="checkbox" id="gradientTextCheck" onchange="toggleGradientText(this.checked)"> Verlaufstext (Gradient)
+                        </label>
+                        <div class="text-shadow-row" id="gradientTextControls" style="display:none;">
+                            <input type="color" id="gradientTextColor1" value="#6366f1" oninput="updateGradientText()">
+                            <input type="color" id="gradientTextColor2" value="#22d3ee" oninput="updateGradientText()">
+                        </div>
+
+                        <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                            <input type="checkbox" id="textMaskCheck" onchange="toggleTextMask(this.checked)"> Text-Maske (Bild im Text)
+                        </label>
+                        <div class="text-shadow-row" id="textMaskControls" style="display:none;">
+                            <input type="text" id="textMaskUrl" placeholder="Bild-URL…" class="no-drag" onchange="updateTextMask()" style="flex:1;">
+                        </div>
+
+                        <label>Schriftstärke (Variable Font): <span id="fontWeightValue" class="kbd-hint">400</span></label>
+                        <input type="range" min="100" max="900" step="100" id="inspectFontWeight" value="400" oninput="updateFontWeight(this.value)">
+
+                        <label>Emojis &amp; Sonderzeichen:</label>
+                        <button class="tool-btn small no-drag" onclick="toggleEmojiPicker()"><span class="ic">😀</span>Einfügen…</button>
+                        <div id="emojiPickerPanel" class="emoji-picker" style="display:none;"></div>
+                    </div>
+                </details>
+
+                <details class="mini-group">
+                    <summary>🎨 Design</summary>
+                    <div class="mini-group-body">
+                        <label>Eckenradius: <span id="elRadiusValue" class="kbd-hint">0px</span></label>
+                        <input type="range" min="0" max="60" id="elRadiusInput" value="0" oninput="adjustSelected('borderRadius', this.value + 'px'); document.getElementById('elRadiusValue').textContent = this.value + 'px';" onchange="commitInspectorChange()">
+
+                        <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                            <input type="checkbox" id="elBorderCheck" onchange="toggleElBorder(this.checked)"> Rahmen aktivieren
+                        </label>
+                        <div class="text-shadow-row" id="elBorderControls" style="display:none;">
+                            <input type="range" min="1" max="10" id="elBorderWidth" value="1" oninput="updateElBorder()" title="Stärke">
+                            <input type="color" id="elBorderColor" value="#1e293b" oninput="updateElBorder()">
+                            <select id="elBorderStyle" class="tool-btn small no-drag" style="width:auto;" onchange="updateElBorder()">
+                                <option value="solid">Solid</option>
+                                <option value="dashed">Dashed</option>
+                                <option value="dotted">Dotted</option>
+                                <option value="double">Double</option>
+                            </select>
+                        </div>
+
+                        <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                            <input type="checkbox" id="elShadowCheck" onchange="toggleElShadow(this.checked)"> Box-Schatten aktivieren
+                        </label>
+                        <div id="elShadowControls" style="display:none;">
+                            <div style="display:flex; gap:4px;">
+                                <input type="range" min="-30" max="30" id="elShadowX" value="0" oninput="updateElShadow()" title="X-Versatz">
+                                <input type="range" min="-30" max="30" id="elShadowY" value="8" oninput="updateElShadow()" title="Y-Versatz">
+                            </div>
+                            <div style="display:flex; gap:4px; margin-top:4px;">
+                                <input type="range" min="0" max="60" id="elShadowBlur" value="20" oninput="updateElShadow()" title="Unschärfe">
+                                <input type="color" id="elShadowColor" value="#0f172a" oninput="updateElShadow()">
+                            </div>
+                        </div>
+
+                        <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                            <input type="checkbox" id="elGradientBgCheck" onchange="toggleElGradientBg(this.checked)"> Hintergrund-Verlauf
+                        </label>
+                        <div id="elGradientBgControls" style="display:none;">
+                            <div style="display:flex; gap:4px;">
+                                <input type="color" id="elGradientColor1" value="#6366f1" oninput="updateElGradientBg()">
+                                <input type="color" id="elGradientColor2" value="#22d3ee" oninput="updateElGradientBg()">
+                            </div>
+                            <input type="range" min="0" max="360" id="elGradientAngle" value="135" oninput="updateElGradientBg()" title="Winkel">
+                        </div>
+
+                        <label>Stil-Presets:</label>
+                        <div class="btn-row">
+                            <button class="tool-btn small no-drag" onclick="applyGlassmorphism()">🧊 Glassmorphism</button>
+                            <button class="tool-btn small no-drag" onclick="applyNeumorphism()">🌑 Neumorphism</button>
+                        </div>
+                        <button class="tool-btn small danger-outline no-drag" onclick="resetDesignEffects()">↺ Design-Effekte zurücksetzen</button>
                     </div>
                 </details>
 
@@ -1168,6 +1276,7 @@
                             <option value="anim-slideRight">Slide (von rechts)</option>
                             <option value="anim-bounceIn">Bounce In</option>
                             <option value="anim-zoomIn">Zoom In</option>
+                            <option value="anim-typing">Schreibmaschine (Typing)</option>
                         </select>
                         <label>Dauer: <span id="animDurationValue" class="kbd-hint">0.6s</span></label>
                         <input type="range" min="0.1" max="3" step="0.1" id="animDuration" value="0.6" oninput="document.getElementById('animDurationValue').textContent=this.value+'s'; applyAnimation();">
@@ -1246,6 +1355,8 @@
         <button onclick="formatText('bold')" title="Fett">B</button>
         <button onclick="formatText('italic')" style="font-style:italic;" title="Kursiv">I</button>
         <button onclick="formatText('underline')" style="text-decoration:underline;" title="Unterstrichen">U</button>
+        <button onclick="formatText('insertUnorderedList')" title="Aufzählungsliste">☰</button>
+        <button onclick="formatText('insertOrderedList')" title="Nummerierte Liste">①</button>
         <button onclick="insertLink()" style="color:#60a5fa;" title="Link">🔗</button>
     </div>
 
@@ -1391,7 +1502,7 @@
         let snapToGridOn = false;      // Snap-to-Grid für Inspector-Slider
         let currentBreakpoint = 'desktop'; // 📱 aktiver Vorschau-Breakpoint
         let autosaveTimerHandle = null;
-        const ANIM_CLASSES = ['anim-fadeIn','anim-slideUp','anim-slideLeft','anim-slideRight','anim-bounceIn','anim-zoomIn'];
+        const ANIM_CLASSES = ['anim-fadeIn','anim-slideUp','anim-slideLeft','anim-slideRight','anim-bounceIn','anim-zoomIn','anim-typing'];
 
         document.addEventListener('DOMContentLoaded', () => {
             registerCanvasEvents();
@@ -1759,6 +1870,53 @@
 
                 updateContrastReadout();
                 updateSizeInfo();
+
+                // ---- V3.1: Wortabstand ----
+                const wsVal = parseFloat(el.style.wordSpacing) || 0;
+                document.getElementById('inspectWordSpacing').value = wsVal;
+                document.getElementById('wordSpacingValue').textContent = wsVal + 'px';
+
+                // ---- V3.1: Text-Umriss ----
+                const hasOutline = !!(el.style.webkitTextStroke);
+                document.getElementById('textOutlineCheck').checked = hasOutline;
+                document.getElementById('textOutlineControls').style.display = hasOutline ? 'flex' : 'none';
+
+                // ---- V3.1: Verlaufstext ----
+                const hasGradientText = !!((el.style.webkitBackgroundClip === 'text' || el.style.backgroundClip === 'text') && !el.style.backgroundImage);
+                document.getElementById('gradientTextCheck').checked = hasGradientText;
+                document.getElementById('gradientTextControls').style.display = hasGradientText ? 'flex' : 'none';
+
+                // ---- V3.1: Text-Maske ----
+                const hasTextMask = !!(el.style.backgroundImage && (el.style.webkitBackgroundClip === 'text' || el.style.backgroundClip === 'text'));
+                document.getElementById('textMaskCheck').checked = hasTextMask;
+                document.getElementById('textMaskControls').style.display = hasTextMask ? 'flex' : 'none';
+                const urlMatch = (el.style.backgroundImage || '').match(/url\(['"]?(.*?)['"]?\)/);
+                document.getElementById('textMaskUrl').value = urlMatch ? urlMatch[1] : '';
+
+                // ---- V3.1: Variable Font Gewicht ----
+                const fwVal = parseInt(computed.fontWeight) || 400;
+                const fwSnapped = Math.round(fwVal / 100) * 100;
+                document.getElementById('inspectFontWeight').value = fwSnapped;
+                document.getElementById('fontWeightValue').textContent = fwSnapped;
+
+                document.getElementById('emojiPickerPanel').style.display = 'none';
+
+                // ---- V3.1: Design (Radius/Border/Shadow/Gradient-BG) ----
+                const radiusVal = parseFloat(el.style.borderRadius) || 0;
+                document.getElementById('elRadiusInput').value = radiusVal;
+                document.getElementById('elRadiusValue').textContent = radiusVal + 'px';
+
+                const hasBorder = !!(el.style.border && el.style.border !== 'none');
+                document.getElementById('elBorderCheck').checked = hasBorder;
+                document.getElementById('elBorderControls').style.display = hasBorder ? 'flex' : 'none';
+
+                const hasBoxShadow = !!(el.style.boxShadow && el.style.boxShadow !== 'none');
+                document.getElementById('elShadowCheck').checked = hasBoxShadow;
+                document.getElementById('elShadowControls').style.display = hasBoxShadow ? 'block' : 'none';
+
+                const hasGradientBg = !!(el.style.background && el.style.background.includes('gradient') && !hasGradientText);
+                document.getElementById('elGradientBgCheck').checked = hasGradientBg;
+                document.getElementById('elGradientBgControls').style.display = hasGradientBg ? 'block' : 'none';
             }
         }
 
@@ -2407,6 +2565,14 @@ pricing: `<div class="web-pricing" draggable="true">
                 <div class="sf-post"><div class="sf-head"><div class="sf-avatar">🙂</div><div><div class="sf-name" contenteditable="true">Max Müller</div><div class="sf-time">vor 2 Std.</div></div></div><div class="sf-text" contenteditable="true">Heute haben wir ein neues Feature gelauncht, schaut es euch an! 🚀</div></div>
                 <div class="sf-post"><div class="sf-head"><div class="sf-avatar">😊</div><div><div class="sf-name" contenteditable="true">Lisa Hoffmann</div><div class="sf-time">vor 5 Std.</div></div></div><div class="sf-text" contenteditable="true">Tolle Erfahrung mit dem Support-Team, danke für die schnelle Hilfe!</div></div>
             </div>`,
+            table: `<table class="web-table" draggable="true">
+                <thead><tr><th contenteditable="true">Spalte 1</th><th contenteditable="true">Spalte 2</th><th contenteditable="true">Spalte 3</th></tr></thead>
+                <tbody>
+                    <tr><td contenteditable="true">Zeile 1</td><td contenteditable="true">Wert</td><td contenteditable="true">Wert</td></tr>
+                    <tr><td contenteditable="true">Zeile 2</td><td contenteditable="true">Wert</td><td contenteditable="true">Wert</td></tr>
+                    <tr><td contenteditable="true">Zeile 3</td><td contenteditable="true">Wert</td><td contenteditable="true">Wert</td></tr>
+                </tbody>
+            </table>`,
         };
 
         /* ======================================================================
@@ -2807,6 +2973,9 @@ pricing: `<div class="web-pricing" draggable="true">
 .anim-slideRight { animation: rd-slideRight ease both; }
 .anim-bounceIn { animation: rd-bounceIn ease both; }
 .anim-zoomIn { animation: rd-zoomIn ease both; }
+@keyframes rd-typing { from { width: 0; } to { width: 100%; } }
+@keyframes rd-blink { 50% { border-color: transparent; } }
+.anim-typing { display: inline-block; max-width: 100%; overflow: hidden; white-space: nowrap; border-right: 2px solid currentColor; vertical-align: bottom; animation: rd-typing steps(30,end) forwards, rd-blink 0.75s step-end infinite; }
 .anim-paused { animation-play-state: paused !important; }
 
         /* ===== V3.1: Erweiterte Komponenten-Bibliothek ===== */
@@ -2981,6 +3150,14 @@ pricing: `<div class="web-pricing" draggable="true">
         .style-darkmode .web-modal-block .modal-panel { background: #1e293b; color: #f8fafc; }
 .web-hidden { display: none !important; }
 .web-group { display: block; }
+
+        .web-table { width: 100%; border-collapse: collapse; margin: 25px 0; font-size: 0.9rem; }
+        .web-table th, .web-table td { border: 1px solid #e2e8f0; padding: 10px 14px; text-align: left; }
+        .web-table th { background: #f8fafc; font-weight: 700; color: #1e293b; }
+        .web-table tr:nth-child(even) td { background: #f8fafc; }
+        .style-darkmode .web-table th, .style-darkmode .web-table td { border-color: #334155; }
+        .style-darkmode .web-table th { background: #1e293b; color: #f8fafc; }
+        .style-darkmode .web-table tr:nth-child(even) td { background: #1e293b; }
 `;
 
         function buildExportHtml(pageName, data, htmlCode, useExternalCss = false) {
@@ -3325,6 +3502,233 @@ pricing: `<div class="web-pricing" draggable="true">
         }
 
         /* ======================================================================
+           V3.1 — TEXTE & DESIGN: Google Fonts, Outline, Gradient-Text, Emoji,
+           Border/Shadow/Gradient-Generator, Glassmorphism, Neumorphism
+           ====================================================================== */
+        const loadedGoogleFonts = new Set();
+        function loadGoogleFont() {
+            const input = document.getElementById('googleFontSearch');
+            const status = document.getElementById('googleFontStatus');
+            const name = (input.value || '').trim();
+            if (!name) return;
+            if (!selectedElement) { status.textContent = 'Bitte zuerst ein Element auswählen.'; return; }
+            const family = name.replace(/\s+/g, '+');
+            if (!loadedGoogleFonts.has(name)) {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = `https://fonts.googleapis.com/css2?family=${family}:wght@400;600;700&display=swap`;
+                link.onerror = () => { status.textContent = 'Schriftart konnte nicht geladen werden.'; };
+                document.head.appendChild(link);
+                loadedGoogleFonts.add(name);
+            }
+            const fontFamilyValue = `'${name}', sans-serif`;
+            adjustSelected('fontFamily', fontFamilyValue);
+            document.getElementById('inspectFontFamily').value = '';
+            commitInspectorChange();
+            status.textContent = `„${name}“ geladen und angewendet ✓`;
+            // Damit der Font auch im Export funktioniert, wird der Import-Link gemerkt
+            if (pages[currentPage]) {
+                pages[currentPage].googleFontImports = pages[currentPage].googleFontImports || [];
+                if (!pages[currentPage].googleFontImports.includes(name)) pages[currentPage].googleFontImports.push(name);
+            }
+        }
+
+        function toggleTextOutline(checked) {
+            document.getElementById('textOutlineControls').style.display = checked ? 'flex' : 'none';
+            if (checked) updateTextOutline();
+            else { adjustSelected('webkitTextStroke', ''); commitInspectorChange(); }
+        }
+        function updateTextOutline() {
+            const color = document.getElementById('textOutlineColor').value;
+            const width = document.getElementById('textOutlineWidth').value;
+            if (!selectedElement) return;
+            selectedElement.style.setProperty('-webkit-text-stroke', `${width}px ${color}`);
+            selectedElement.style.setProperty('paint-order', 'stroke fill');
+            markDirty(); commitInspectorChange();
+        }
+
+        function toggleGradientText(checked) {
+            document.getElementById('gradientTextControls').style.display = checked ? 'flex' : 'none';
+            if (checked) updateGradientText();
+            else if (selectedElement) {
+                selectedElement.style.background = '';
+                selectedElement.style.webkitBackgroundClip = '';
+                selectedElement.style.backgroundClip = '';
+                selectedElement.style.webkitTextFillColor = '';
+                markDirty(); commitInspectorChange();
+            }
+        }
+        function updateGradientText() {
+            if (!selectedElement) return;
+            const c1 = document.getElementById('gradientTextColor1').value;
+            const c2 = document.getElementById('gradientTextColor2').value;
+            selectedElement.style.background = `linear-gradient(90deg, ${c1}, ${c2})`;
+            selectedElement.style.webkitBackgroundClip = 'text';
+            selectedElement.style.backgroundClip = 'text';
+            selectedElement.style.webkitTextFillColor = 'transparent';
+            markDirty(); commitInspectorChange();
+        }
+
+        /* ---- V3.1: Text-Maske (Bild-im-Text) ---- */
+        function toggleTextMask(checked) {
+            document.getElementById('textMaskControls').style.display = checked ? 'flex' : 'none';
+            if (checked) updateTextMask();
+            else if (selectedElement) {
+                selectedElement.style.backgroundImage = '';
+                selectedElement.style.webkitBackgroundClip = '';
+                selectedElement.style.backgroundClip = '';
+                selectedElement.style.webkitTextFillColor = '';
+                selectedElement.style.backgroundSize = '';
+                markDirty(); commitInspectorChange();
+            }
+        }
+        function updateTextMask() {
+            if (!selectedElement) return;
+            const url = (document.getElementById('textMaskUrl').value || '').trim();
+            if (!url) return;
+            selectedElement.style.backgroundImage = `url('${url.replace(/'/g, "\\'")}')`;
+            selectedElement.style.backgroundSize = 'cover';
+            selectedElement.style.backgroundPosition = 'center';
+            selectedElement.style.webkitBackgroundClip = 'text';
+            selectedElement.style.backgroundClip = 'text';
+            selectedElement.style.webkitTextFillColor = 'transparent';
+            markDirty(); commitInspectorChange();
+        }
+
+        /* ---- V3.1: Variable Fonts (Schriftschnitt-Gewicht) ---- */
+        function updateFontWeight(val) {
+            if (!selectedElement) return;
+            adjustSelected('fontWeight', val);
+            document.getElementById('fontWeightValue').textContent = val;
+            commitInspectorChange();
+        }
+
+        /* ---- Emoji & Sonderzeichen ---- */
+        const EMOJI_SET = ['😀','😁','😂','🥹','😊','😍','😎','🤔','😴','🙌','👍','👎','🔥','✨','🎉','🚀','💡','⭐','❤️','💬','✅','❌','⚡','📌','📅','📍','🔒','🔓','🛒','💳','📈','📉','🎯','🏆','🌟','🌈','☀️','🌙','☕','🎁'];
+        const SPECIAL_CHARS = ['©','®','™','€','£','$','%','§','&','@','#','°','±','×','÷','→','←','↑','↓','«','»','„','“','’','…','•','–','—','½','¼','¾'];
+        let lastFocusedEditable = null;
+        document.addEventListener('focusin', (e) => {
+            if (e.target && e.target.isContentEditable) lastFocusedEditable = e.target;
+        });
+        function toggleEmojiPicker() {
+            const panel = document.getElementById('emojiPickerPanel');
+            if (panel.style.display === 'none' || !panel.style.display) {
+                panel.style.display = 'block';
+                panel.innerHTML = `
+                    <div class="emoji-grid">${EMOJI_SET.map(em => `<button type="button" onclick="insertAtCursor('${em}')">${em}</button>`).join('')}</div>
+                    <div class="emoji-sep">Sonderzeichen</div>
+                    <div class="emoji-grid">${SPECIAL_CHARS.map(ch => `<button type="button" onclick="insertAtCursor('${ch}')">${ch}</button>`).join('')}</div>
+                `;
+            } else {
+                panel.style.display = 'none';
+            }
+        }
+        function insertAtCursor(char) {
+            const target = (selectedElement && selectedElement.isContentEditable) ? selectedElement : lastFocusedEditable;
+            if (!target) { showToast('Bitte zuerst in einen Text klicken', 'danger'); return; }
+            target.focus();
+            const sel = window.getSelection();
+            if (sel && sel.rangeCount && target.contains(sel.anchorNode)) {
+                document.execCommand('insertText', false, char);
+            } else {
+                target.appendChild(document.createTextNode(char));
+            }
+            markDirty(); pushHistory();
+        }
+
+        /* ---- Border / Radius Generator ---- */
+        function toggleElBorder(checked) {
+            document.getElementById('elBorderControls').style.display = checked ? 'flex' : 'none';
+            if (checked) updateElBorder();
+            else { adjustSelected('border', 'none'); commitInspectorChange(); }
+        }
+        function updateElBorder() {
+            if (!selectedElement) return;
+            const w = document.getElementById('elBorderWidth').value;
+            const c = document.getElementById('elBorderColor').value;
+            const s = document.getElementById('elBorderStyle').value;
+            selectedElement.style.border = `${w}px ${s} ${c}`;
+            markDirty(); commitInspectorChange();
+        }
+
+        /* ---- Box-Shadow Generator ---- */
+        function toggleElShadow(checked) {
+            document.getElementById('elShadowControls').style.display = checked ? 'block' : 'none';
+            if (checked) updateElShadow();
+            else { adjustSelected('boxShadow', 'none'); commitInspectorChange(); }
+        }
+        function updateElShadow() {
+            if (!selectedElement) return;
+            const x = document.getElementById('elShadowX').value;
+            const y = document.getElementById('elShadowY').value;
+            const blur = document.getElementById('elShadowBlur').value;
+            const c = document.getElementById('elShadowColor').value;
+            selectedElement.style.boxShadow = `${x}px ${y}px ${blur}px ${hexToRgba(c, 0.25)}`;
+            markDirty(); commitInspectorChange();
+        }
+        function hexToRgba(hex, alpha) {
+            const h = hex.replace('#', '');
+            const r = parseInt(h.substring(0, 2), 16), g = parseInt(h.substring(2, 4), 16), b = parseInt(h.substring(4, 6), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        /* ---- Background-Gradient Generator ---- */
+        function toggleElGradientBg(checked) {
+            document.getElementById('elGradientBgControls').style.display = checked ? 'block' : 'none';
+            if (checked) updateElGradientBg();
+            else { adjustSelected('background', ''); commitInspectorChange(); }
+        }
+        function updateElGradientBg() {
+            if (!selectedElement) return;
+            const c1 = document.getElementById('elGradientColor1').value;
+            const c2 = document.getElementById('elGradientColor2').value;
+            const angle = document.getElementById('elGradientAngle').value;
+            selectedElement.style.background = `linear-gradient(${angle}deg, ${c1}, ${c2})`;
+            markDirty(); commitInspectorChange();
+        }
+
+        /* ---- Stil-Presets: Glassmorphism & Neumorphism ---- */
+        function applyGlassmorphism() {
+            if (!selectedElement) return showToast('Bitte zuerst ein Element auswählen', 'danger');
+            Object.assign(selectedElement.style, {
+                background: 'rgba(255, 255, 255, 0.18)',
+                backdropFilter: 'blur(14px)',
+                webkitBackdropFilter: 'blur(14px)',
+                border: '1px solid rgba(255, 255, 255, 0.35)',
+                borderRadius: '16px',
+                boxShadow: '0 8px 32px rgba(31, 38, 135, 0.18)'
+            });
+            markDirty(); pushHistory(); selectElement(selectedElement);
+            showToast('Glassmorphism angewendet', 'success');
+        }
+        function applyNeumorphism() {
+            if (!selectedElement) return showToast('Bitte zuerst ein Element auswählen', 'danger');
+            const bg = window.getComputedStyle(document.getElementById('canvas')).backgroundColor;
+            const base = (bg && bg !== 'rgba(0, 0, 0, 0)') ? bg : '#e6e9ef';
+            Object.assign(selectedElement.style, {
+                background: base,
+                backdropFilter: '',
+                webkitBackdropFilter: '',
+                border: 'none',
+                borderRadius: '20px',
+                boxShadow: '8px 8px 18px rgba(0,0,0,0.15), -8px -8px 18px rgba(255,255,255,0.7)'
+            });
+            markDirty(); pushHistory(); selectElement(selectedElement);
+            showToast('Neumorphism angewendet', 'success');
+        }
+        function resetDesignEffects() {
+            if (!selectedElement) return;
+            Object.assign(selectedElement.style, {
+                border: '', borderRadius: '', boxShadow: '', background: '',
+                backdropFilter: '', webkitBackdropFilter: '', webkitTextStroke: '',
+                webkitBackgroundClip: '', backgroundClip: '', webkitTextFillColor: '',
+                backgroundImage: '', backgroundSize: '', backgroundPosition: ''
+            });
+            markDirty(); pushHistory(); selectElement(selectedElement);
+            showToast('Design-Effekte zurückgesetzt', 'success');
+        }
+
+        /* ======================================================================
            V3.0 — RESPONSIVE BREAKPOINT-EDITOR
            ====================================================================== */
         function toggleResponsiveHide(bp, checked) {
@@ -3429,6 +3833,42 @@ pricing: `<div class="web-pricing" draggable="true">
                 row.appendChild(sw);
             });
             row.style.display = 'flex';
+        }
+
+        /* ---- V3.1: Farbpalette importieren (z.B. von Coolors/Adobe: Hex-Liste oder #-getrennt) ---- */
+        function importColorPalette() {
+            openPromptModal('Farbpalette importieren', 'Hex-Codes eingeben (z.B. #6366f1, #22d3ee, #f43f5e oder per Komma/Zeile/# getrennt):', '', (val) => {
+                if (!val) return;
+                const matches = val.match(/#?[0-9a-fA-F]{6}\b|#?[0-9a-fA-F]{3}\b/g);
+                if (!matches || !matches.length) return showToast('Keine gültigen Hex-Farben gefunden', 'danger');
+                let added = 0;
+                matches.forEach(m => {
+                    let hex = m.startsWith('#') ? m : '#' + m;
+                    hex = hex.toLowerCase();
+                    if (hex.length === 4) hex = '#' + hex.slice(1).split('').map(c=>c+c).join('');
+                    if (!colorPalette.includes(hex)) { colorPalette.push(hex); added++; }
+                });
+                persistPalette(); renderPalette();
+                showToast(added ? `${added} Farbe(n) importiert` : 'Alle Farben bereits vorhanden', added ? 'success' : 'danger');
+            });
+        }
+
+        /* ---- V3.1: Dark Mode Generator — erzeugt eine zur aktuellen Akzentfarbe passende Dark-Palette ---- */
+        function generateDarkModePalette() {
+            const base = document.getElementById('inspectColor').value || '#6366f1';
+            const [h, s] = hexToHsl(base);
+            const darkVariants = [
+                hslToHex(h, Math.min(s, 55), 14),   // tiefer Hintergrund
+                hslToHex(h, Math.min(s, 35), 20),   // Panel-Hintergrund
+                hslToHex(h, Math.min(s, 70), 65),   // Akzent (hell genug für Dark BG)
+                hslToHex(h, 10, 78),                 // gedämpfter Text
+                hslToHex(h, 8, 95)                   // heller Text
+            ];
+            darkVariants.forEach(hex => { if (!colorPalette.includes(hex)) colorPalette.push(hex); });
+            persistPalette(); renderPalette();
+            document.getElementById('themeSelect').value = 'style-darkmode';
+            updateTheme();
+            showToast('Dark-Mode-Palette erzeugt & Theme umgeschaltet', 'success');
         }
         function relativeLuminance(hex) {
             hex = hex.replace('#','');
