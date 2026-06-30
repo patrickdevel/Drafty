@@ -641,6 +641,178 @@
         .viewport-toggle button[aria-pressed="true"] { background: var(--accent); color: #fff; }
 
         /* ---- Comments badge in topbar ---- */
+
+        /* ===== V3.1: Erweiterte Komponenten-Bibliothek ===== */
+        .web-pricing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 25px 0; }
+        .web-pricing .pricing-card { border: 1px solid #e2e8f0; border-radius: var(--canvas-radius,10px); padding: 26px 20px; background: #fff; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .web-pricing .pricing-card.featured { border: 2px solid #6366f1; transform: scale(1.04); box-shadow: 0 10px 25px rgba(99,102,241,0.18); }
+        .web-pricing .plan-name { font-weight: 700; font-size: 1rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+        .web-pricing .plan-price { font-size: 2.2rem; font-weight: 800; margin-bottom: 4px; }
+        .web-pricing .plan-price span { font-size: 0.95rem; font-weight: 500; color: #94a3b8; }
+        .web-pricing .plan-feat { list-style: none; padding: 0; margin: 18px 0; font-size: 0.88rem; color: #475569; line-height: 2; }
+        .web-pricing .plan-feat li::before { content: "✓ "; color: #10b981; font-weight: 700; }
+        .web-pricing .plan-btn { display: block; width: 100%; padding: 11px; border-radius: var(--canvas-radius-sm,6px); border: none; background: #1e293b; color: #fff; font-weight: 600; cursor: pointer; text-decoration: none; }
+        .web-pricing .pricing-card.featured .plan-btn { background: #6366f1; }
+
+        .web-faq { margin: 25px 0; display: flex; flex-direction: column; gap: 10px; }
+        .web-faq .faq-item { border: 1px solid #e2e8f0; border-radius: var(--canvas-radius-sm,8px); padding: 4px 18px; background: #fff; }
+        .web-faq .faq-item summary { cursor: pointer; font-weight: 600; padding: 14px 0; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        .web-faq .faq-item summary::-webkit-details-marker { display: none; }
+        .web-faq .faq-item summary::after { content: "+"; font-size: 1.3rem; color: #6366f1; font-weight: 400; }
+        .web-faq .faq-item[open] summary::after { content: "−"; }
+        .web-faq .faq-item p { color: #64748b; font-size: 0.92rem; line-height: 1.6; padding: 0 0 16px; margin: 0; }
+
+        .web-accordion { margin: 25px 0; display: flex; flex-direction: column; gap: 8px; }
+        .web-accordion .acc-item { border: 1px solid #e2e8f0; border-radius: var(--canvas-radius-sm,8px); padding: 4px 16px; background: #fff; }
+        .web-accordion .acc-item summary { cursor: pointer; font-weight: 600; padding: 13px 0; list-style: none; }
+        .web-accordion .acc-item summary::-webkit-details-marker { display: none; }
+        .web-accordion .acc-item p { color: #64748b; font-size: 0.9rem; line-height: 1.6; padding: 0 0 14px; margin: 0; }
+
+        .web-timeline { margin: 30px 0; position: relative; padding-left: 28px; border-left: 2px solid #e2e8f0; }
+        .web-timeline .tl-item { position: relative; padding-bottom: 26px; }
+        .web-timeline .tl-item::before { content: ""; position: absolute; left: -34px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: #6366f1; border: 3px solid #fff; box-shadow: 0 0 0 2px #6366f1; }
+        .web-timeline .tl-date { font-size: 0.75rem; font-weight: 700; color: #6366f1; text-transform: uppercase; letter-spacing: 0.04em; }
+        .web-timeline .tl-title { font-weight: 700; margin: 4px 0; }
+        .web-timeline .tl-text { font-size: 0.88rem; color: #64748b; line-height: 1.5; }
+
+        .web-testimonials { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin: 25px 0; }
+        .web-testimonials .testimonial-card { border: 1px solid #e2e8f0; border-radius: var(--canvas-radius,10px); padding: 22px; background: #fff; }
+        .web-testimonials .t-quote { font-size: 0.92rem; color: #475569; line-height: 1.6; font-style: italic; margin-bottom: 16px; }
+        .web-testimonials .t-person { display: flex; align-items: center; gap: 10px; }
+        .web-testimonials .t-avatar { width: 38px; height: 38px; border-radius: 50%; background: #e0e7ff; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+        .web-testimonials .t-name { font-weight: 700; font-size: 0.85rem; }
+        .web-testimonials .t-role { font-size: 0.75rem; color: #94a3b8; }
+
+        .web-team { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin: 25px 0; }
+        .web-team .team-card { text-align: center; padding: 18px; border: 1px solid #e2e8f0; border-radius: var(--canvas-radius,10px); background: #fff; }
+        .web-team .team-avatar { width: 80px; height: 80px; border-radius: 50%; background: #e0e7ff; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+        .web-team .team-name { font-weight: 700; }
+        .web-team .team-role { color: #6366f1; font-size: 0.82rem; font-weight: 600; margin: 2px 0 8px; }
+        .web-team .team-bio { color: #64748b; font-size: 0.82rem; line-height: 1.5; }
+
+        .web-blogcards { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin: 25px 0; }
+        .web-blogcards .blog-card { border: 1px solid #e2e8f0; border-radius: var(--canvas-radius,10px); overflow: hidden; background: #fff; }
+        .web-blogcards .blog-img { height: 130px; background: linear-gradient(135deg,#6366f1,#22d3ee); }
+        .web-blogcards .blog-body { padding: 16px; }
+        .web-blogcards .blog-date { font-size: 0.72rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
+        .web-blogcards .blog-title { font-weight: 700; margin: 6px 0; font-size: 1rem; }
+        .web-blogcards .blog-excerpt { color: #64748b; font-size: 0.85rem; line-height: 1.5; }
+
+        .web-newsletter { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--canvas-radius,12px); padding: 32px; text-align: center; margin: 25px 0; }
+        .web-newsletter .nl-title { font-weight: 800; font-size: 1.3rem; margin-bottom: 6px; }
+        .web-newsletter .nl-text { color: #64748b; font-size: 0.9rem; margin-bottom: 18px; }
+        .web-newsletter .nl-row { display: flex; gap: 10px; max-width: 420px; margin: 0 auto; }
+        .web-newsletter .nl-row input { flex: 1; padding: 11px 14px; border: 1px solid #cbd5e1; border-radius: var(--canvas-radius-sm,6px); font-family: inherit; }
+        .web-newsletter .nl-row button { background: #6366f1; color: #fff; border: none; padding: 0 22px; border-radius: var(--canvas-radius-sm,6px); font-weight: 600; cursor: pointer; }
+
+        .web-authform { max-width: 360px; margin: 25px auto; border: 1px solid #e2e8f0; border-radius: var(--canvas-radius,12px); padding: 28px; background: #fff; }
+        .web-authform .auth-title { font-weight: 800; font-size: 1.2rem; text-align: center; margin-bottom: 18px; }
+        .web-authform input { width: 100%; box-sizing: border-box; padding: 11px 14px; border: 1px solid #cbd5e1; border-radius: var(--canvas-radius-sm,6px); margin-bottom: 12px; font-family: inherit; }
+        .web-authform button.auth-submit { width: 100%; background: #1e293b; color: #fff; border: none; padding: 12px; border-radius: var(--canvas-radius-sm,6px); font-weight: 700; cursor: pointer; }
+        .web-authform .auth-foot { text-align: center; font-size: 0.78rem; color: #94a3b8; margin-top: 12px; }
+
+        .web-contact-section { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin: 25px 0; align-items: stretch; }
+        .web-contact-section iframe { width: 100%; height: 100%; min-height: 260px; border: 0; border-radius: var(--canvas-radius,10px); }
+
+        .web-countdown { display: flex; gap: 14px; justify-content: center; margin: 28px 0; }
+        .web-countdown .cd-box { background: #1e293b; color: #fff; border-radius: var(--canvas-radius,10px); padding: 16px 18px; text-align: center; min-width: 70px; }
+        .web-countdown .cd-num { font-size: 1.6rem; font-weight: 800; display: block; }
+        .web-countdown .cd-label { font-size: 0.65rem; text-transform: uppercase; color: #94a3b8; letter-spacing: 0.05em; }
+
+        .web-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; text-align: center; margin: 28px 0; }
+        .web-stats .stat-num { font-size: 2rem; font-weight: 800; color: #6366f1; }
+        .web-stats .stat-label { font-size: 0.8rem; color: #64748b; font-weight: 600; }
+
+        .web-progressbars { margin: 25px 0; display: flex; flex-direction: column; gap: 16px; }
+        .web-progressbars .pb-row .pb-top { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; }
+        .web-progressbars .pb-track { background: #e2e8f0; border-radius: 20px; height: 10px; overflow: hidden; }
+        .web-progressbars .pb-fill { background: linear-gradient(90deg,#6366f1,#22d3ee); height: 100%; border-radius: 20px; }
+
+        .web-tabs { margin: 25px 0; }
+        .web-tabs .tabs-nav { display: flex; gap: 6px; border-bottom: 2px solid #e2e8f0; margin-bottom: 16px; }
+        .web-tabs input[type="radio"] { display: none; }
+        .web-tabs .tabs-nav label { padding: 10px 16px; font-size: 0.85rem; font-weight: 600; color: #94a3b8; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; }
+        .web-tabs .tab-content { display: none; color: #475569; font-size: 0.9rem; line-height: 1.6; }
+        .web-tabs #tab1:checked ~ .tabs-nav label[for="tab1"], .web-tabs #tab2:checked ~ .tabs-nav label[for="tab2"], .web-tabs #tab3:checked ~ .tabs-nav label[for="tab3"] { color: #6366f1; border-color: #6366f1; }
+        .web-tabs #tab1:checked ~ .tab-content.c1, .web-tabs #tab2:checked ~ .tab-content.c2, .web-tabs #tab3:checked ~ .tab-content.c3 { display: block; }
+
+        .web-modal-block { margin: 25px 0; text-align: center; }
+        .web-modal-block .modal-open-btn { background: #6366f1; color: #fff; border: none; padding: 12px 24px; border-radius: var(--canvas-radius-sm,6px); font-weight: 600; cursor: pointer; }
+        .web-modal-block input[type="checkbox"] { display: none; }
+        .web-modal-block .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.55); align-items: center; justify-content: center; z-index: 999; }
+        .web-modal-block input:checked ~ .modal-overlay { display: flex; }
+        .web-modal-block .modal-panel { background: #fff; border-radius: var(--canvas-radius,12px); padding: 26px; max-width: 380px; text-align: left; position: relative; }
+        .web-modal-block .modal-close { position: absolute; top: 10px; right: 14px; cursor: pointer; font-size: 1.2rem; color: #94a3b8; }
+        .web-modal-block .modal-panel h3 { margin-top: 0; }
+
+        .web-cookiebanner { position: fixed; left: 18px; right: 18px; bottom: 18px; max-width: 480px; margin: 0 auto; background: #1e293b; color: #fff; padding: 16px 18px; border-radius: var(--canvas-radius,10px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 998; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .web-cookiebanner p { margin: 0; font-size: 0.82rem; flex: 1; min-width: 180px; }
+        .web-cookiebanner button { background: #6366f1; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.8rem; }
+
+        .web-chatwidget { position: fixed; right: 20px; bottom: 20px; z-index: 997; }
+        .web-chatwidget .chat-bubble { width: 56px; height: 56px; border-radius: 50%; background: #6366f1; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; cursor: pointer; box-shadow: 0 6px 18px rgba(99,102,241,0.4); border: none; }
+        .web-chatwidget .chat-panel { display: none; position: absolute; bottom: 68px; right: 0; width: 260px; background: #fff; border-radius: var(--canvas-radius,12px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); padding: 14px; }
+        .web-chatwidget.open .chat-panel { display: block; }
+        .web-chatwidget .chat-msg { background: #f1f5f9; border-radius: 10px; padding: 8px 12px; font-size: 0.8rem; margin-bottom: 8px; }
+
+        .web-gallery { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin: 25px 0; }
+        .web-gallery .gal-item { height: 110px; border-radius: var(--canvas-radius-sm,8px); background: linear-gradient(135deg,#6366f1,#22d3ee); opacity: 0.85; }
+
+        .web-masonry { columns: 3; column-gap: 12px; margin: 25px 0; }
+        .web-masonry .mas-item { break-inside: avoid; margin-bottom: 12px; border-radius: var(--canvas-radius-sm,8px); background: linear-gradient(135deg,#a78bfa,#22d3ee); }
+        .web-masonry .mas-item:nth-child(1) { height: 160px; }
+        .web-masonry .mas-item:nth-child(2) { height: 100px; }
+        .web-masonry .mas-item:nth-child(3) { height: 200px; }
+        .web-masonry .mas-item:nth-child(4) { height: 130px; }
+        .web-masonry .mas-item:nth-child(5) { height: 90px; }
+        .web-masonry .mas-item:nth-child(6) { height: 150px; }
+
+        .web-carousel { margin: 25px 0; position: relative; overflow: hidden; border-radius: var(--canvas-radius,10px); }
+        .web-carousel input[type="radio"] { display: none; }
+        .web-carousel .car-slides { display: flex; width: 300%; transition: transform 0.4s ease; }
+        .web-carousel .car-slide { width: 33.333%; height: 220px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 1.1rem; }
+        .web-carousel .car-slide:nth-child(1) { background: linear-gradient(135deg,#6366f1,#22d3ee); }
+        .web-carousel .car-slide:nth-child(2) { background: linear-gradient(135deg,#f59e0b,#ef4444); }
+        .web-carousel .car-slide:nth-child(3) { background: linear-gradient(135deg,#10b981,#22d3ee); }
+        .web-carousel #cs1:checked ~ .car-slides { transform: translateX(0%); }
+        .web-carousel #cs2:checked ~ .car-slides { transform: translateX(-33.333%); }
+        .web-carousel #cs3:checked ~ .car-slides { transform: translateX(-66.666%); }
+        .web-carousel .car-dots { position: absolute; bottom: 12px; left: 0; right: 0; display: flex; gap: 8px; justify-content: center; }
+        .web-carousel .car-dots label { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; }
+        .web-carousel #cs1:checked ~ .car-dots label[for="cs1"], .web-carousel #cs2:checked ~ .car-dots label[for="cs2"], .web-carousel #cs3:checked ~ .car-dots label[for="cs3"] { background: #fff; }
+
+        .web-beforeafter { position: relative; margin: 25px 0; border-radius: var(--canvas-radius,10px); overflow: hidden; height: 260px; }
+        .web-beforeafter .ba-after, .web-beforeafter .ba-before { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; }
+        .web-beforeafter .ba-after { background: linear-gradient(135deg,#475569,#1e293b); }
+        .web-beforeafter .ba-before { background: linear-gradient(135deg,#6366f1,#22d3ee); clip-path: inset(0 50% 0 0); }
+        .web-beforeafter input[type="range"] { position: absolute; bottom: 14px; left: 14px; right: 14px; width: calc(100% - 28px); }
+
+        .web-mapblock { margin: 25px 0; border-radius: var(--canvas-radius,10px); overflow: hidden; }
+        .web-mapblock iframe { width: 100%; height: 280px; border: 0; display: block; }
+
+        .web-chartblock { margin: 25px 0; border: 1px solid #e2e8f0; border-radius: var(--canvas-radius,10px); padding: 20px; background: #fff; }
+        .web-chartblock .chart-title { font-weight: 700; margin-bottom: 14px; font-size: 0.9rem; }
+
+        .web-socialfeed { display: flex; flex-direction: column; gap: 12px; margin: 25px 0; }
+        .web-socialfeed .sf-post { border: 1px solid #e2e8f0; border-radius: var(--canvas-radius,10px); padding: 16px; background: #fff; }
+        .web-socialfeed .sf-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .web-socialfeed .sf-avatar { width: 34px; height: 34px; border-radius: 50%; background: #e0e7ff; display: flex; align-items: center; justify-content: center; }
+        .web-socialfeed .sf-name { font-weight: 700; font-size: 0.85rem; }
+        .web-socialfeed .sf-time { font-size: 0.72rem; color: #94a3b8; }
+        .web-socialfeed .sf-text { font-size: 0.86rem; color: #475569; line-height: 1.5; }
+
+        @media (max-width: 768px) {
+            .web-pricing, .web-testimonials, .web-team, .web-blogcards, .web-stats { grid-template-columns: 1fr; }
+            .web-gallery { grid-template-columns: repeat(2,1fr); }
+            .web-masonry { columns: 2; }
+            .web-contact-section { grid-template-columns: 1fr; }
+        }
+        .style-darkmode .web-pricing .pricing-card, .style-darkmode .web-faq .faq-item, .style-darkmode .web-accordion .acc-item,
+        .style-darkmode .web-testimonials .testimonial-card, .style-darkmode .web-team .team-card, .style-darkmode .web-blogcards .blog-card,
+        .style-darkmode .web-authform, .style-darkmode .web-chartblock, .style-darkmode .web-socialfeed .sf-post { background: #1e293b; border-color: #334155; color: #f8fafc; }
+        .style-darkmode .web-newsletter { background: #1e293b; border-color: #334155; }
+        .style-darkmode .web-modal-block .modal-panel { background: #1e293b; color: #f8fafc; }
+
         .badge-count { position: absolute; top: -4px; right: -4px; background: var(--danger); color: #fff; font-size: 0.6rem; font-weight: 700; min-width: 14px; height: 14px; border-radius: 7px; display: flex; align-items: center; justify-content: center; padding: 0 3px; }
     </style>
 </head>
@@ -685,6 +857,7 @@
                     <button class="tab-btn" data-tab="media" onclick="switchTab('media')">Medien</button>
                     <button class="tab-btn" data-tab="favs" onclick="switchTab('favs')">⭐ Favoriten</button>
                     <button class="tab-btn" data-tab="frequent" onclick="switchTab('frequent')">🔥 Häufig</button>
+                    <button class="tab-btn" data-tab="sections" onclick="switchTab('sections')">🧩 Sektionen</button>
                 </div>
 
                 <div class="tab-panel active" data-tab="basics">
@@ -715,6 +888,34 @@
                 <div class="tab-panel" data-tab="media">
                     <button class="tool-btn no-drag" data-fav-id="action-image" onclick="addImageComponent()"><span class="ic">🖼️</span>Bild (Suchen/URL)<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="action-image">☆</span></button>
                     <button class="tool-btn no-drag" data-fav-id="action-video" onclick="addVideoComponent()"><span class="ic">🎬</span>Video einbetten<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="action-video">☆</span></button>
+                </div>
+
+                <div class="tab-panel" data-tab="sections">
+                    <button class="tool-btn" draggable="true" data-fav-id="block-pricing" data-type="block" data-key="pricing"><span class="ic">💳</span>Pricing Tabelle<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-pricing">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-faq" data-type="block" data-key="faq"><span class="ic">❓</span>FAQ<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-faq">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-accordion" data-type="block" data-key="accordion"><span class="ic">📂</span>Akkordeon<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-accordion">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-timeline" data-type="block" data-key="timeline"><span class="ic">📅</span>Timeline<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-timeline">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-testimonials" data-type="block" data-key="testimonials"><span class="ic">💬</span>Testimonials<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-testimonials">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-team" data-type="block" data-key="team"><span class="ic">👥</span>Team<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-team">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-blogcards" data-type="block" data-key="blogcards"><span class="ic">📰</span>Blog Cards<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-blogcards">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-newsletter" data-type="block" data-key="newsletter"><span class="ic">✉️</span>Newsletter<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-newsletter">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-loginform" data-type="block" data-key="loginform"><span class="ic">🔐</span>Login Formular<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-loginform">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-registerform" data-type="block" data-key="registerform"><span class="ic">📝</span>Register Formular<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-registerform">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-contactsection" data-type="block" data-key="contactsection"><span class="ic">📍</span>Kontakt + Karte<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-contactsection">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-countdown" data-type="block" data-key="countdown"><span class="ic">⏳</span>Countdown<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-countdown">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-statscounter" data-type="block" data-key="statscounter"><span class="ic">📊</span>Stats Counter<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-statscounter">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-progressbars" data-type="block" data-key="progressbars"><span class="ic">📶</span>Progress Bars<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-progressbars">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-tabs" data-type="block" data-key="tabs"><span class="ic">🗂️</span>Tabs<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-tabs">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-modalblock" data-type="block" data-key="modalblock"><span class="ic">🪟</span>Modal / Pop-up<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-modalblock">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-cookiebanner" data-type="block" data-key="cookiebanner"><span class="ic">🍪</span>Cookie Banner<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-cookiebanner">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-chatwidget" data-type="block" data-key="chatwidget"><span class="ic">💭</span>Chat Widget<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-chatwidget">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-gallery" data-type="block" data-key="gallery"><span class="ic">🖼️</span>Galerie<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-gallery">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-masonry" data-type="block" data-key="masonry"><span class="ic">🧱</span>Masonry Grid<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-masonry">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-carousel" data-type="block" data-key="carousel"><span class="ic">🎠</span>Karussell<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-carousel">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-beforeafter" data-type="block" data-key="beforeafter"><span class="ic">↔️</span>Vorher/Nachher Slider<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-beforeafter">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-mapblock" data-type="block" data-key="mapblock"><span class="ic">🗺️</span>Karte (Map)<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-mapblock">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-chartblock" data-type="block" data-key="chartblock"><span class="ic">📈</span>Diagramm<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-chartblock">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-socialfeed" data-type="block" data-key="socialfeed"><span class="ic">📱</span>Social Feed<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-socialfeed">☆</span></button>
                 </div>
 
                 <div class="tab-panel" data-tab="favs" id="favsTabPanel">
@@ -1850,6 +2051,138 @@
             iconbox: `<div class="web-icon-box" draggable="true"><div class="icon-circle" contenteditable="true">⚡</div><div class="ib-title" contenteditable="true">Schnell</div><div class="ib-text" contenteditable="true">Kurzer Beschreibungstext.</div></div>`,
             form: `<form class="web-form" draggable="true" onsubmit="return false;"><input type="text" placeholder="Name"><input type="email" placeholder="E-Mail"><textarea placeholder="Nachricht" rows="4"></textarea><button type="button" class="form-submit">Absenden</button></form>`,
             footer: `<footer class="web-footer" contenteditable="true" draggable="true">© 2026 Meine Webseite. Alle Rechte vorbehalten.</footer>`,
+pricing: `<div class="web-pricing" draggable="true">
+                <div class="pricing-card"><div class="plan-name" contenteditable="true">Starter</div><div class="plan-price" contenteditable="true">9€<span>/Mon.</span></div><ul class="plan-feat" contenteditable="true"><li>1 Projekt</li><li>5 GB Speicher</li><li>E-Mail Support</li></ul><a href="#" class="plan-btn" contenteditable="true">Auswählen</a></div>
+                <div class="pricing-card featured"><div class="plan-name" contenteditable="true">Pro</div><div class="plan-price" contenteditable="true">29€<span>/Mon.</span></div><ul class="plan-feat" contenteditable="true"><li>10 Projekte</li><li>50 GB Speicher</li><li>Priority Support</li></ul><a href="#" class="plan-btn" contenteditable="true">Auswählen</a></div>
+                <div class="pricing-card"><div class="plan-name" contenteditable="true">Business</div><div class="plan-price" contenteditable="true">79€<span>/Mon.</span></div><ul class="plan-feat" contenteditable="true"><li>Unbegrenzt Projekte</li><li>500 GB Speicher</li><li>24/7 Support</li></ul><a href="#" class="plan-btn" contenteditable="true">Auswählen</a></div>
+            </div>`,
+            faq: `<div class="web-faq" draggable="true">
+                <details class="faq-item" open><summary contenteditable="true">Wie funktioniert die kostenlose Testphase?</summary><p contenteditable="true">Du kannst alle Funktionen 14 Tage lang kostenlos und unverbindlich testen.</p></details>
+                <details class="faq-item"><summary contenteditable="true">Kann ich jederzeit kündigen?</summary><p contenteditable="true">Ja, dein Abo ist monatlich kündbar, ganz ohne Mindestlaufzeit.</p></details>
+                <details class="faq-item"><summary contenteditable="true">Gibt es Rabatte für Teams?</summary><p contenteditable="true">Ab 5 Nutzern bieten wir gestaffelte Team-Rabatte an, kontaktiere uns.</p></details>
+            </div>`,
+            accordion: `<div class="web-accordion" draggable="true">
+                <details class="acc-item" open><summary contenteditable="true">Abschnitt 1</summary><p contenteditable="true">Inhalt des ersten Abschnitts, der bei Klick aufklappt.</p></details>
+                <details class="acc-item"><summary contenteditable="true">Abschnitt 2</summary><p contenteditable="true">Inhalt des zweiten Abschnitts.</p></details>
+                <details class="acc-item"><summary contenteditable="true">Abschnitt 3</summary><p contenteditable="true">Inhalt des dritten Abschnitts.</p></details>
+            </div>`,
+            timeline: `<div class="web-timeline" draggable="true">
+                <div class="tl-item"><div class="tl-date" contenteditable="true">2023</div><div class="tl-title" contenteditable="true">Gründung</div><div class="tl-text" contenteditable="true">Das Unternehmen wurde mit einer kleinen Idee gegründet.</div></div>
+                <div class="tl-item"><div class="tl-date" contenteditable="true">2024</div><div class="tl-title" contenteditable="true">Erstes Produkt</div><div class="tl-text" contenteditable="true">Launch der ersten Version, über 1000 Nutzer in der ersten Woche.</div></div>
+                <div class="tl-item"><div class="tl-date" contenteditable="true">2026</div><div class="tl-title" contenteditable="true">Internationale Expansion</div><div class="tl-text" contenteditable="true">Markteintritt in fünf weiteren Ländern.</div></div>
+            </div>`,
+            testimonials: `<div class="web-testimonials" draggable="true">
+                <div class="testimonial-card"><div class="t-quote" contenteditable="true">„Hat unsere Arbeitsweise komplett verändert, absolut empfehlenswert!“</div><div class="t-person"><div class="t-avatar">👩</div><div><div class="t-name" contenteditable="true">Lena Schmidt</div><div class="t-role" contenteditable="true">Marketing Lead</div></div></div></div>
+                <div class="testimonial-card"><div class="t-quote" contenteditable="true">„Einfache Bedienung und hervorragender Support.“</div><div class="t-person"><div class="t-avatar">👨</div><div><div class="t-name" contenteditable="true">Tom Becker</div><div class="t-role" contenteditable="true">Gründer</div></div></div></div>
+                <div class="testimonial-card"><div class="t-quote" contenteditable="true">„Genau das Tool, nach dem wir gesucht haben.“</div><div class="t-person"><div class="t-avatar">🧑</div><div><div class="t-name" contenteditable="true">Mira Keller</div><div class="t-role" contenteditable="true">Produktmanagerin</div></div></div></div>
+            </div>`,
+            team: `<div class="web-team" draggable="true">
+                <div class="team-card"><div class="team-avatar">👩‍💼</div><div class="team-name" contenteditable="true">Anna Vogel</div><div class="team-role" contenteditable="true">CEO</div><div class="team-bio" contenteditable="true">Leitet das Unternehmen seit der Gründung.</div></div>
+                <div class="team-card"><div class="team-avatar">👨‍💻</div><div class="team-name" contenteditable="true">Jonas Wagner</div><div class="team-role" contenteditable="true">CTO</div><div class="team-bio" contenteditable="true">Verantwortlich für Produkt und Technik.</div></div>
+                <div class="team-card"><div class="team-avatar">👩‍🎨</div><div class="team-name" contenteditable="true">Sara Klein</div><div class="team-role" contenteditable="true">Design Lead</div><div class="team-bio" contenteditable="true">Gestaltet alle visuellen Erlebnisse.</div></div>
+            </div>`,
+            blogcards: `<div class="web-blogcards" draggable="true">
+                <div class="blog-card"><div class="blog-img"></div><div class="blog-body"><div class="blog-date" contenteditable="true">12. Mai 2026</div><div class="blog-title" contenteditable="true">5 Tipps für bessere Webseiten</div><div class="blog-excerpt" contenteditable="true">Kurze Zusammenfassung des Artikelinhalts für die Leser.</div></div></div>
+                <div class="blog-card"><div class="blog-img"></div><div class="blog-body"><div class="blog-date" contenteditable="true">2. Mai 2026</div><div class="blog-title" contenteditable="true">Design-Trends 2026</div><div class="blog-excerpt" contenteditable="true">Ein Überblick über die wichtigsten Trends dieses Jahres.</div></div></div>
+                <div class="blog-card"><div class="blog-img"></div><div class="blog-body"><div class="blog-date" contenteditable="true">28. April 2026</div><div class="blog-title" contenteditable="true">No-Code im Aufwind</div><div class="blog-excerpt" contenteditable="true">Warum immer mehr Teams auf No-Code setzen.</div></div></div>
+            </div>`,
+            newsletter: `<div class="web-newsletter" draggable="true">
+                <div class="nl-title" contenteditable="true">Bleib auf dem Laufenden</div>
+                <div class="nl-text" contenteditable="true">Erhalte die neuesten Updates direkt in dein Postfach.</div>
+                <div class="nl-row"><input type="email" placeholder="Deine E-Mail-Adresse"><button type="button">Abonnieren</button></div>
+            </div>`,
+            loginform: `<div class="web-authform" draggable="true">
+                <div class="auth-title" contenteditable="true">Anmelden</div>
+                <input type="email" placeholder="E-Mail">
+                <input type="password" placeholder="Passwort">
+                <button type="button" class="auth-submit">Einloggen</button>
+                <div class="auth-foot" contenteditable="true">Noch kein Konto? Jetzt registrieren</div>
+            </div>`,
+            registerform: `<div class="web-authform" draggable="true">
+                <div class="auth-title" contenteditable="true">Registrieren</div>
+                <input type="text" placeholder="Name">
+                <input type="email" placeholder="E-Mail">
+                <input type="password" placeholder="Passwort">
+                <button type="button" class="auth-submit">Konto erstellen</button>
+                <div class="auth-foot" contenteditable="true">Bereits registriert? Jetzt anmelden</div>
+            </div>`,
+            contactsection: `<div class="web-contact-section" draggable="true">
+                <iframe src="https://www.google.com/maps?q=Berlin&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <form class="web-form" onsubmit="return false;" style="margin-bottom:0;"><input type="text" placeholder="Name"><input type="email" placeholder="E-Mail"><textarea placeholder="Nachricht" rows="4"></textarea><button type="button" class="form-submit">Absenden</button></form>
+            </div>`,
+            countdown: `<div class="web-countdown" draggable="true">
+                <div class="cd-box"><span class="cd-num" contenteditable="true">12</span><span class="cd-label">Tage</span></div>
+                <div class="cd-box"><span class="cd-num" contenteditable="true">08</span><span class="cd-label">Std</span></div>
+                <div class="cd-box"><span class="cd-num" contenteditable="true">45</span><span class="cd-label">Min</span></div>
+                <div class="cd-box"><span class="cd-num" contenteditable="true">30</span><span class="cd-label">Sek</span></div>
+            </div>`,
+            statscounter: `<div class="web-stats" draggable="true">
+                <div><div class="stat-num" contenteditable="true">12k+</div><div class="stat-label" contenteditable="true">Nutzer</div></div>
+                <div><div class="stat-num" contenteditable="true">99%</div><div class="stat-label" contenteditable="true">Zufriedenheit</div></div>
+                <div><div class="stat-num" contenteditable="true">350+</div><div class="stat-label" contenteditable="true">Projekte</div></div>
+                <div><div class="stat-num" contenteditable="true">24/7</div><div class="stat-label" contenteditable="true">Support</div></div>
+            </div>`,
+            progressbars: `<div class="web-progressbars" draggable="true">
+                <div class="pb-row"><div class="pb-top"><span contenteditable="true">HTML &amp; CSS</span><span contenteditable="true">90%</span></div><div class="pb-track"><div class="pb-fill" style="width:90%"></div></div></div>
+                <div class="pb-row"><div class="pb-top"><span contenteditable="true">JavaScript</span><span contenteditable="true">75%</span></div><div class="pb-track"><div class="pb-fill" style="width:75%"></div></div></div>
+                <div class="pb-row"><div class="pb-top"><span contenteditable="true">Design</span><span contenteditable="true">85%</span></div><div class="pb-track"><div class="pb-fill" style="width:85%"></div></div></div>
+            </div>`,
+            tabs: `<div class="web-tabs" draggable="true">
+                <input type="radio" name="rdtabs1" id="tab1" checked><input type="radio" name="rdtabs1" id="tab2"><input type="radio" name="rdtabs1" id="tab3">
+                <div class="tabs-nav"><label for="tab1" contenteditable="true">Übersicht</label><label for="tab2" contenteditable="true">Funktionen</label><label for="tab3" contenteditable="true">Bewertungen</label></div>
+                <div class="tab-content c1" contenteditable="true">Hier steht der Inhalt zum ersten Tab.</div>
+                <div class="tab-content c2" contenteditable="true">Hier steht der Inhalt zum zweiten Tab.</div>
+                <div class="tab-content c3" contenteditable="true">Hier steht der Inhalt zum dritten Tab.</div>
+            </div>`,
+            modalblock: `<div class="web-modal-block" draggable="true">
+                <label class="modal-open-btn" for="modalToggle1" contenteditable="true">Modal öffnen</label>
+                <input type="checkbox" id="modalToggle1">
+                <div class="modal-overlay"><div class="modal-panel"><label class="modal-close" for="modalToggle1">✕</label><h3 contenteditable="true">Titel des Modals</h3><p contenteditable="true">Hier kannst du beliebigen Inhalt im Pop-up anzeigen.</p></div></div>
+            </div>`,
+            cookiebanner: `<div class="web-cookiebanner" draggable="true">
+                <p contenteditable="true">🍪 Wir verwenden Cookies, um deine Erfahrung zu verbessern.</p>
+                <button type="button" onclick="this.closest('.web-cookiebanner').style.display='none'">Akzeptieren</button>
+            </div>`,
+            chatwidget: `<div class="web-chatwidget" draggable="true" onclick="if(event.target.closest('.chat-bubble')){this.classList.toggle('open')}">
+                <div class="chat-panel"><div class="chat-msg" contenteditable="true">👋 Hallo! Wie können wir dir helfen?</div></div>
+                <button type="button" class="chat-bubble">💬</button>
+            </div>`,
+            gallery: `<div class="web-gallery" draggable="true">
+                <div class="gal-item"></div><div class="gal-item"></div><div class="gal-item"></div><div class="gal-item"></div>
+            </div>`,
+            masonry: `<div class="web-masonry" draggable="true">
+                <div class="mas-item"></div><div class="mas-item"></div><div class="mas-item"></div><div class="mas-item"></div><div class="mas-item"></div><div class="mas-item"></div>
+            </div>`,
+            carousel: `<div class="web-carousel" draggable="true">
+                <input type="radio" name="rdcar1" id="cs1" checked><input type="radio" name="rdcar1" id="cs2"><input type="radio" name="rdcar1" id="cs3">
+                <div class="car-slides"><div class="car-slide" contenteditable="true">Slide 1</div><div class="car-slide" contenteditable="true">Slide 2</div><div class="car-slide" contenteditable="true">Slide 3</div></div>
+                <div class="car-dots"><label for="cs1"></label><label for="cs2"></label><label for="cs3"></label></div>
+            </div>`,
+            beforeafter: `<div class="web-beforeafter" draggable="true">
+                <div class="ba-after" contenteditable="true">Nachher</div>
+                <div class="ba-before" contenteditable="true">Vorher</div>
+                <input type="range" min="0" max="100" value="50" oninput="this.previousElementSibling.style.clipPath = 'inset(0 ' + (100 - this.value) + '% 0 0)'">
+            </div>`,
+            mapblock: `<div class="web-mapblock" draggable="true">
+                <iframe src="https://www.google.com/maps?q=Berlin&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>`,
+            chartblock: `<div class="web-chartblock" draggable="true">
+                <div class="chart-title" contenteditable="true">Umsatz nach Quartal</div>
+                <svg viewBox="0 0 300 140" width="100%" height="140">
+                    <rect x="10" y="60" width="40" height="70" fill="#6366f1" rx="4"></rect>
+                    <rect x="80" y="40" width="40" height="90" fill="#6366f1" rx="4"></rect>
+                    <rect x="150" y="20" width="40" height="110" fill="#22d3ee" rx="4"></rect>
+                    <rect x="220" y="50" width="40" height="80" fill="#6366f1" rx="4"></rect>
+                    <text x="30" y="135" font-size="10" fill="#94a3b8">Q1</text>
+                    <text x="100" y="135" font-size="10" fill="#94a3b8">Q2</text>
+                    <text x="170" y="135" font-size="10" fill="#94a3b8">Q3</text>
+                    <text x="240" y="135" font-size="10" fill="#94a3b8">Q4</text>
+                </svg>
+            </div>`,
+            socialfeed: `<div class="web-socialfeed" draggable="true">
+                <div class="sf-post"><div class="sf-head"><div class="sf-avatar">🙂</div><div><div class="sf-name" contenteditable="true">Max Müller</div><div class="sf-time">vor 2 Std.</div></div></div><div class="sf-text" contenteditable="true">Heute haben wir ein neues Feature gelauncht, schaut es euch an! 🚀</div></div>
+                <div class="sf-post"><div class="sf-head"><div class="sf-avatar">😊</div><div><div class="sf-name" contenteditable="true">Lisa Hoffmann</div><div class="sf-time">vor 5 Std.</div></div></div><div class="sf-text" contenteditable="true">Tolle Erfahrung mit dem Support-Team, danke für die schnelle Hilfe!</div></div>
+            </div>`,
         };
 
         /* ======================================================================
@@ -2244,7 +2577,179 @@
 .anim-slideRight { animation: rd-slideRight ease both; }
 .anim-bounceIn { animation: rd-bounceIn ease both; }
 .anim-zoomIn { animation: rd-zoomIn ease both; }
-.anim-paused { animation-play-state: paused !important; }`;
+.anim-paused { animation-play-state: paused !important; }
+
+        /* ===== V3.1: Erweiterte Komponenten-Bibliothek ===== */
+        .web-pricing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 25px 0; }
+        .web-pricing .pricing-card { border: 1px solid #e2e8f0; border-radius: var(--canvas-radius,10px); padding: 26px 20px; background: #fff; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .web-pricing .pricing-card.featured { border: 2px solid #6366f1; transform: scale(1.04); box-shadow: 0 10px 25px rgba(99,102,241,0.18); }
+        .web-pricing .plan-name { font-weight: 700; font-size: 1rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+        .web-pricing .plan-price { font-size: 2.2rem; font-weight: 800; margin-bottom: 4px; }
+        .web-pricing .plan-price span { font-size: 0.95rem; font-weight: 500; color: #94a3b8; }
+        .web-pricing .plan-feat { list-style: none; padding: 0; margin: 18px 0; font-size: 0.88rem; color: #475569; line-height: 2; }
+        .web-pricing .plan-feat li::before { content: "✓ "; color: #10b981; font-weight: 700; }
+        .web-pricing .plan-btn { display: block; width: 100%; padding: 11px; border-radius: var(--canvas-radius-sm,6px); border: none; background: #1e293b; color: #fff; font-weight: 600; cursor: pointer; text-decoration: none; }
+        .web-pricing .pricing-card.featured .plan-btn { background: #6366f1; }
+
+        .web-faq { margin: 25px 0; display: flex; flex-direction: column; gap: 10px; }
+        .web-faq .faq-item { border: 1px solid #e2e8f0; border-radius: var(--canvas-radius-sm,8px); padding: 4px 18px; background: #fff; }
+        .web-faq .faq-item summary { cursor: pointer; font-weight: 600; padding: 14px 0; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        .web-faq .faq-item summary::-webkit-details-marker { display: none; }
+        .web-faq .faq-item summary::after { content: "+"; font-size: 1.3rem; color: #6366f1; font-weight: 400; }
+        .web-faq .faq-item[open] summary::after { content: "−"; }
+        .web-faq .faq-item p { color: #64748b; font-size: 0.92rem; line-height: 1.6; padding: 0 0 16px; margin: 0; }
+
+        .web-accordion { margin: 25px 0; display: flex; flex-direction: column; gap: 8px; }
+        .web-accordion .acc-item { border: 1px solid #e2e8f0; border-radius: var(--canvas-radius-sm,8px); padding: 4px 16px; background: #fff; }
+        .web-accordion .acc-item summary { cursor: pointer; font-weight: 600; padding: 13px 0; list-style: none; }
+        .web-accordion .acc-item summary::-webkit-details-marker { display: none; }
+        .web-accordion .acc-item p { color: #64748b; font-size: 0.9rem; line-height: 1.6; padding: 0 0 14px; margin: 0; }
+
+        .web-timeline { margin: 30px 0; position: relative; padding-left: 28px; border-left: 2px solid #e2e8f0; }
+        .web-timeline .tl-item { position: relative; padding-bottom: 26px; }
+        .web-timeline .tl-item::before { content: ""; position: absolute; left: -34px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: #6366f1; border: 3px solid #fff; box-shadow: 0 0 0 2px #6366f1; }
+        .web-timeline .tl-date { font-size: 0.75rem; font-weight: 700; color: #6366f1; text-transform: uppercase; letter-spacing: 0.04em; }
+        .web-timeline .tl-title { font-weight: 700; margin: 4px 0; }
+        .web-timeline .tl-text { font-size: 0.88rem; color: #64748b; line-height: 1.5; }
+
+        .web-testimonials { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin: 25px 0; }
+        .web-testimonials .testimonial-card { border: 1px solid #e2e8f0; border-radius: var(--canvas-radius,10px); padding: 22px; background: #fff; }
+        .web-testimonials .t-quote { font-size: 0.92rem; color: #475569; line-height: 1.6; font-style: italic; margin-bottom: 16px; }
+        .web-testimonials .t-person { display: flex; align-items: center; gap: 10px; }
+        .web-testimonials .t-avatar { width: 38px; height: 38px; border-radius: 50%; background: #e0e7ff; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+        .web-testimonials .t-name { font-weight: 700; font-size: 0.85rem; }
+        .web-testimonials .t-role { font-size: 0.75rem; color: #94a3b8; }
+
+        .web-team { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin: 25px 0; }
+        .web-team .team-card { text-align: center; padding: 18px; border: 1px solid #e2e8f0; border-radius: var(--canvas-radius,10px); background: #fff; }
+        .web-team .team-avatar { width: 80px; height: 80px; border-radius: 50%; background: #e0e7ff; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+        .web-team .team-name { font-weight: 700; }
+        .web-team .team-role { color: #6366f1; font-size: 0.82rem; font-weight: 600; margin: 2px 0 8px; }
+        .web-team .team-bio { color: #64748b; font-size: 0.82rem; line-height: 1.5; }
+
+        .web-blogcards { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin: 25px 0; }
+        .web-blogcards .blog-card { border: 1px solid #e2e8f0; border-radius: var(--canvas-radius,10px); overflow: hidden; background: #fff; }
+        .web-blogcards .blog-img { height: 130px; background: linear-gradient(135deg,#6366f1,#22d3ee); }
+        .web-blogcards .blog-body { padding: 16px; }
+        .web-blogcards .blog-date { font-size: 0.72rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
+        .web-blogcards .blog-title { font-weight: 700; margin: 6px 0; font-size: 1rem; }
+        .web-blogcards .blog-excerpt { color: #64748b; font-size: 0.85rem; line-height: 1.5; }
+
+        .web-newsletter { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: var(--canvas-radius,12px); padding: 32px; text-align: center; margin: 25px 0; }
+        .web-newsletter .nl-title { font-weight: 800; font-size: 1.3rem; margin-bottom: 6px; }
+        .web-newsletter .nl-text { color: #64748b; font-size: 0.9rem; margin-bottom: 18px; }
+        .web-newsletter .nl-row { display: flex; gap: 10px; max-width: 420px; margin: 0 auto; }
+        .web-newsletter .nl-row input { flex: 1; padding: 11px 14px; border: 1px solid #cbd5e1; border-radius: var(--canvas-radius-sm,6px); font-family: inherit; }
+        .web-newsletter .nl-row button { background: #6366f1; color: #fff; border: none; padding: 0 22px; border-radius: var(--canvas-radius-sm,6px); font-weight: 600; cursor: pointer; }
+
+        .web-authform { max-width: 360px; margin: 25px auto; border: 1px solid #e2e8f0; border-radius: var(--canvas-radius,12px); padding: 28px; background: #fff; }
+        .web-authform .auth-title { font-weight: 800; font-size: 1.2rem; text-align: center; margin-bottom: 18px; }
+        .web-authform input { width: 100%; box-sizing: border-box; padding: 11px 14px; border: 1px solid #cbd5e1; border-radius: var(--canvas-radius-sm,6px); margin-bottom: 12px; font-family: inherit; }
+        .web-authform button.auth-submit { width: 100%; background: #1e293b; color: #fff; border: none; padding: 12px; border-radius: var(--canvas-radius-sm,6px); font-weight: 700; cursor: pointer; }
+        .web-authform .auth-foot { text-align: center; font-size: 0.78rem; color: #94a3b8; margin-top: 12px; }
+
+        .web-contact-section { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin: 25px 0; align-items: stretch; }
+        .web-contact-section iframe { width: 100%; height: 100%; min-height: 260px; border: 0; border-radius: var(--canvas-radius,10px); }
+
+        .web-countdown { display: flex; gap: 14px; justify-content: center; margin: 28px 0; }
+        .web-countdown .cd-box { background: #1e293b; color: #fff; border-radius: var(--canvas-radius,10px); padding: 16px 18px; text-align: center; min-width: 70px; }
+        .web-countdown .cd-num { font-size: 1.6rem; font-weight: 800; display: block; }
+        .web-countdown .cd-label { font-size: 0.65rem; text-transform: uppercase; color: #94a3b8; letter-spacing: 0.05em; }
+
+        .web-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; text-align: center; margin: 28px 0; }
+        .web-stats .stat-num { font-size: 2rem; font-weight: 800; color: #6366f1; }
+        .web-stats .stat-label { font-size: 0.8rem; color: #64748b; font-weight: 600; }
+
+        .web-progressbars { margin: 25px 0; display: flex; flex-direction: column; gap: 16px; }
+        .web-progressbars .pb-row .pb-top { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; }
+        .web-progressbars .pb-track { background: #e2e8f0; border-radius: 20px; height: 10px; overflow: hidden; }
+        .web-progressbars .pb-fill { background: linear-gradient(90deg,#6366f1,#22d3ee); height: 100%; border-radius: 20px; }
+
+        .web-tabs { margin: 25px 0; }
+        .web-tabs .tabs-nav { display: flex; gap: 6px; border-bottom: 2px solid #e2e8f0; margin-bottom: 16px; }
+        .web-tabs input[type="radio"] { display: none; }
+        .web-tabs .tabs-nav label { padding: 10px 16px; font-size: 0.85rem; font-weight: 600; color: #94a3b8; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; }
+        .web-tabs .tab-content { display: none; color: #475569; font-size: 0.9rem; line-height: 1.6; }
+        .web-tabs #tab1:checked ~ .tabs-nav label[for="tab1"], .web-tabs #tab2:checked ~ .tabs-nav label[for="tab2"], .web-tabs #tab3:checked ~ .tabs-nav label[for="tab3"] { color: #6366f1; border-color: #6366f1; }
+        .web-tabs #tab1:checked ~ .tab-content.c1, .web-tabs #tab2:checked ~ .tab-content.c2, .web-tabs #tab3:checked ~ .tab-content.c3 { display: block; }
+
+        .web-modal-block { margin: 25px 0; text-align: center; }
+        .web-modal-block .modal-open-btn { background: #6366f1; color: #fff; border: none; padding: 12px 24px; border-radius: var(--canvas-radius-sm,6px); font-weight: 600; cursor: pointer; }
+        .web-modal-block input[type="checkbox"] { display: none; }
+        .web-modal-block .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.55); align-items: center; justify-content: center; z-index: 999; }
+        .web-modal-block input:checked ~ .modal-overlay { display: flex; }
+        .web-modal-block .modal-panel { background: #fff; border-radius: var(--canvas-radius,12px); padding: 26px; max-width: 380px; text-align: left; position: relative; }
+        .web-modal-block .modal-close { position: absolute; top: 10px; right: 14px; cursor: pointer; font-size: 1.2rem; color: #94a3b8; }
+        .web-modal-block .modal-panel h3 { margin-top: 0; }
+
+        .web-cookiebanner { position: fixed; left: 18px; right: 18px; bottom: 18px; max-width: 480px; margin: 0 auto; background: #1e293b; color: #fff; padding: 16px 18px; border-radius: var(--canvas-radius,10px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 998; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .web-cookiebanner p { margin: 0; font-size: 0.82rem; flex: 1; min-width: 180px; }
+        .web-cookiebanner button { background: #6366f1; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.8rem; }
+
+        .web-chatwidget { position: fixed; right: 20px; bottom: 20px; z-index: 997; }
+        .web-chatwidget .chat-bubble { width: 56px; height: 56px; border-radius: 50%; background: #6366f1; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; cursor: pointer; box-shadow: 0 6px 18px rgba(99,102,241,0.4); border: none; }
+        .web-chatwidget .chat-panel { display: none; position: absolute; bottom: 68px; right: 0; width: 260px; background: #fff; border-radius: var(--canvas-radius,12px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); padding: 14px; }
+        .web-chatwidget.open .chat-panel { display: block; }
+        .web-chatwidget .chat-msg { background: #f1f5f9; border-radius: 10px; padding: 8px 12px; font-size: 0.8rem; margin-bottom: 8px; }
+
+        .web-gallery { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin: 25px 0; }
+        .web-gallery .gal-item { height: 110px; border-radius: var(--canvas-radius-sm,8px); background: linear-gradient(135deg,#6366f1,#22d3ee); opacity: 0.85; }
+
+        .web-masonry { columns: 3; column-gap: 12px; margin: 25px 0; }
+        .web-masonry .mas-item { break-inside: avoid; margin-bottom: 12px; border-radius: var(--canvas-radius-sm,8px); background: linear-gradient(135deg,#a78bfa,#22d3ee); }
+        .web-masonry .mas-item:nth-child(1) { height: 160px; }
+        .web-masonry .mas-item:nth-child(2) { height: 100px; }
+        .web-masonry .mas-item:nth-child(3) { height: 200px; }
+        .web-masonry .mas-item:nth-child(4) { height: 130px; }
+        .web-masonry .mas-item:nth-child(5) { height: 90px; }
+        .web-masonry .mas-item:nth-child(6) { height: 150px; }
+
+        .web-carousel { margin: 25px 0; position: relative; overflow: hidden; border-radius: var(--canvas-radius,10px); }
+        .web-carousel input[type="radio"] { display: none; }
+        .web-carousel .car-slides { display: flex; width: 300%; transition: transform 0.4s ease; }
+        .web-carousel .car-slide { width: 33.333%; height: 220px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 1.1rem; }
+        .web-carousel .car-slide:nth-child(1) { background: linear-gradient(135deg,#6366f1,#22d3ee); }
+        .web-carousel .car-slide:nth-child(2) { background: linear-gradient(135deg,#f59e0b,#ef4444); }
+        .web-carousel .car-slide:nth-child(3) { background: linear-gradient(135deg,#10b981,#22d3ee); }
+        .web-carousel #cs1:checked ~ .car-slides { transform: translateX(0%); }
+        .web-carousel #cs2:checked ~ .car-slides { transform: translateX(-33.333%); }
+        .web-carousel #cs3:checked ~ .car-slides { transform: translateX(-66.666%); }
+        .web-carousel .car-dots { position: absolute; bottom: 12px; left: 0; right: 0; display: flex; gap: 8px; justify-content: center; }
+        .web-carousel .car-dots label { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; }
+        .web-carousel #cs1:checked ~ .car-dots label[for="cs1"], .web-carousel #cs2:checked ~ .car-dots label[for="cs2"], .web-carousel #cs3:checked ~ .car-dots label[for="cs3"] { background: #fff; }
+
+        .web-beforeafter { position: relative; margin: 25px 0; border-radius: var(--canvas-radius,10px); overflow: hidden; height: 260px; }
+        .web-beforeafter .ba-after, .web-beforeafter .ba-before { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; }
+        .web-beforeafter .ba-after { background: linear-gradient(135deg,#475569,#1e293b); }
+        .web-beforeafter .ba-before { background: linear-gradient(135deg,#6366f1,#22d3ee); clip-path: inset(0 50% 0 0); }
+        .web-beforeafter input[type="range"] { position: absolute; bottom: 14px; left: 14px; right: 14px; width: calc(100% - 28px); }
+
+        .web-mapblock { margin: 25px 0; border-radius: var(--canvas-radius,10px); overflow: hidden; }
+        .web-mapblock iframe { width: 100%; height: 280px; border: 0; display: block; }
+
+        .web-chartblock { margin: 25px 0; border: 1px solid #e2e8f0; border-radius: var(--canvas-radius,10px); padding: 20px; background: #fff; }
+        .web-chartblock .chart-title { font-weight: 700; margin-bottom: 14px; font-size: 0.9rem; }
+
+        .web-socialfeed { display: flex; flex-direction: column; gap: 12px; margin: 25px 0; }
+        .web-socialfeed .sf-post { border: 1px solid #e2e8f0; border-radius: var(--canvas-radius,10px); padding: 16px; background: #fff; }
+        .web-socialfeed .sf-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .web-socialfeed .sf-avatar { width: 34px; height: 34px; border-radius: 50%; background: #e0e7ff; display: flex; align-items: center; justify-content: center; }
+        .web-socialfeed .sf-name { font-weight: 700; font-size: 0.85rem; }
+        .web-socialfeed .sf-time { font-size: 0.72rem; color: #94a3b8; }
+        .web-socialfeed .sf-text { font-size: 0.86rem; color: #475569; line-height: 1.5; }
+
+        @media (max-width: 768px) {
+            .web-pricing, .web-testimonials, .web-team, .web-blogcards, .web-stats { grid-template-columns: 1fr; }
+            .web-gallery { grid-template-columns: repeat(2,1fr); }
+            .web-masonry { columns: 2; }
+            .web-contact-section { grid-template-columns: 1fr; }
+        }
+        .style-darkmode .web-pricing .pricing-card, .style-darkmode .web-faq .faq-item, .style-darkmode .web-accordion .acc-item,
+        .style-darkmode .web-testimonials .testimonial-card, .style-darkmode .web-team .team-card, .style-darkmode .web-blogcards .blog-card,
+        .style-darkmode .web-authform, .style-darkmode .web-chartblock, .style-darkmode .web-socialfeed .sf-post { background: #1e293b; border-color: #334155; color: #f8fafc; }
+        .style-darkmode .web-newsletter { background: #1e293b; border-color: #334155; }
+        .style-darkmode .web-modal-block .modal-panel { background: #1e293b; color: #f8fafc; }
+`;
 
         function buildExportHtml(pageName, data, htmlCode, useExternalCss = false) {
             const rad = data.radius !== undefined ? data.radius : 10;
