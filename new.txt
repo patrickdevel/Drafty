@@ -1,16 +1,18 @@
-#Drafty v.3.3 🚀
+#Darfty v3.4
 ---
 ###Was ist neu?
-- 25 neue Komponenten unter dem Tab "🧩 Sektionen"
 
-- Multi-Select: Shift+Klick fügt Elemente einer Mehrfachauswahl hinzu/entfernt sie wieder (orange gestrichelter Rahmen).
-- Gruppieren/Ungruppieren: Mehrfachauswahl → "📦 Gruppieren" fasst die Elemente in einem Container zusammen; im Rechtsklick-Menü einer Gruppe gibt's "Gruppierung aufheben".
-- Sperren (Lock): Einzeln über die Mini-Toolbar/Kontextmenü oder für mehrere gleichzeitig über die Multi-Select-Leiste. Gesperrte Elemente zeigen ein 🔒-Badge, sind nicht mehr verschieb- oder editierbar.
-- Element verstecken: Blendet das Element im Editor abgedunkelt mit Hinweis-Label ein, im exportierten HTML wird es per display:none komplett ausgeblendet.
-- Rechtsklick-Menü: Echtes Kontextmenü statt der alten Sofort-Löschen-Bestätigung — mit Duplizieren, Sperren/Entsperren, Verstecken/Einblenden, Verschieben, Löschen (und Gruppierung aufheben bei Gruppen).
-- Element duplizieren (Strg+D): War schon vorhanden, jetzt zusätzlich für Mehrfachauswahl nutzbar.
-- Mini-Toolbar direkt am Element: um die neuen Lock/Hide-Buttons erweitert.  
-
+- + öffnet „Element hinzufügen" (Bausteine, alle Tabs/Favoriten/Suche)
+- Pille 1: 📄 Seiten-Manager · 🪄 Vorlagen · 🎨 Design-Thema · 🛠️ Werkzeuge (inkl. SEO, Custom Code, Verlauf, Kommentare, Share-Links)
+- Pille 2 (nur bei Elementauswahl, smooth per grid-template-rows-Animation + Fade/Slide): ⚙️ Inspector · 🔤 Text-Tools · 🖌️ Design (Farben) · 📱 Responsive · 🎬 Animation
+- ⬇️ unten separat für „Exportieren"
 ---
-<img width="446" height="563" alt="image" src="https://github.com/user-attachments/assets/3c002152-a8e9-4cd6-87b7-2caf673183dd" />
-<img width="1087" height="441" alt="image" src="https://github.com/user-attachments/assets/1181273b-52e0-4bef-9d88-2493fdbac7b0" />
+Sonstiges
+---
+- Topbar ist jetzt eine schwebende Pillen-Reihe (Marke, Seite, Undo/Redo, Viewport, Raster/Kommentare/Vorschau/Laden/Speichern) – Funktionen unverändert
+- Popups schließen per orangem X, Klick daneben, oder automatisch beim Wechsel
+- Neuer Tab 🧩 Sektionen neben „Häufig" im „Element hinzufügen"-Popup
+- 6 fertige Sektionen zum Reinziehen: Hero-Sektion, Feature-Grid, Testimonial-Sektion, Preistabelle, CTA-Banner, Footer (3 Spalten)
+- Alle nutzen deine bestehenden Design-Klassen (web-hero-title, web-card, web-icon-box etc.), fügen sich also nahtlos in jedes Theme ein und werden korrekt exportiert
+- Getestet: Einfügen, Drag & Drop, Textbearbeitung — alles ohne Fehler
+<img width="1763" height="844" alt="Bildschirmfoto_2-7-2026_211721_draftywebbuilder vercel app" src="https://github.com/user-attachments/assets/27766e93-33e7-4ba8-a351-c6888459507a" />
