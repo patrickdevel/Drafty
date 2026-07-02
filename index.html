@@ -843,6 +843,7 @@
                     <button class="tab-btn" data-tab="media" onclick="switchTab('media')">Medien</button>
                     <button class="tab-btn" data-tab="favs" onclick="switchTab('favs')">⭐ Favoriten</button>
                     <button class="tab-btn" data-tab="frequent" onclick="switchTab('frequent')">🔥 Häufig</button>
+                    <button class="tab-btn" data-tab="sections" onclick="switchTab('sections')">🧩 Sektionen</button>
                 </div>
 
                 <div class="tab-panel active" data-tab="basics">
@@ -881,6 +882,15 @@
 
                 <div class="tab-panel" data-tab="frequent" id="frequentTabPanel">
                     <div class="empty-fav-hint">Hier erscheinen deine meistgenutzten Bausteine.</div>
+                </div>
+
+                <div class="tab-panel" data-tab="sections">
+                    <button class="tool-btn" draggable="true" data-fav-id="block-sectionHero" data-type="block" data-key="sectionHero"><span class="ic">🌟</span>Hero-Sektion<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-sectionHero">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-sectionFeatures" data-type="block" data-key="sectionFeatures"><span class="ic">🧩</span>Feature-Grid<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-sectionFeatures">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-sectionTestimonial" data-type="block" data-key="sectionTestimonial"><span class="ic">💬</span>Testimonial-Sektion<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-sectionTestimonial">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-sectionPricing" data-type="block" data-key="sectionPricing"><span class="ic">💳</span>Preistabelle<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-sectionPricing">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-sectionCta" data-type="block" data-key="sectionCta"><span class="ic">📣</span>CTA-Banner<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-sectionCta">☆</span></button>
+                    <button class="tool-btn" draggable="true" data-fav-id="block-sectionFooter" data-type="block" data-key="sectionFooter"><span class="ic">🔚</span>Footer (3 Spalten)<span class="fav-star" tabindex="0" role="button" aria-label="Favorit umschalten" onclick="event.stopPropagation(); toggleFavorite(this.dataset.favId)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();event.stopPropagation();toggleFavorite(this.dataset.favId);}" data-fav-id="block-sectionFooter">☆</span></button>
                 </div>
 
                 <div class="tab-panel" data-tab="search" id="searchTabPanel"></div>
@@ -2043,6 +2053,43 @@
             iconbox: `<div class="web-icon-box" draggable="true"><div class="icon-circle" contenteditable="true">⚡</div><div class="ib-title" contenteditable="true">Schnell</div><div class="ib-text" contenteditable="true">Kurzer Beschreibungstext.</div></div>`,
             form: `<form class="web-form" draggable="true" onsubmit="return false;"><input type="text" placeholder="Name"><input type="email" placeholder="E-Mail"><textarea placeholder="Nachricht" rows="4"></textarea><button type="button" class="form-submit">Absenden</button></form>`,
             footer: `<footer class="web-footer" contenteditable="true" draggable="true">© 2026 Meine Webseite. Alle Rechte vorbehalten.</footer>`,
+            sectionHero: `<div class="web-section-hero" draggable="true" style="text-align:center; padding: 30px 0;">
+                <span class="web-badge" contenteditable="true">🚀 Neu</span>
+                <h1 class="web-hero-title" contenteditable="true">Eine kraftvolle Überschrift für diese Sektion</h1>
+                <p class="web-subtitle" contenteditable="true">Beschreibe hier kurz und überzeugend, worum es geht.</p>
+                <a href="#" class="web-btn" contenteditable="true">Jetzt starten →</a>
+            </div>`,
+            sectionFeatures: `<div class="web-section-features" draggable="true">
+                <h2 class="web-hero-title" contenteditable="true" style="font-size:2rem; text-align:center;">Warum uns wählen</h2>
+                <div class="web-columns-3">
+                    <div class="web-col"><div class="web-icon-box"><div class="icon-circle" contenteditable="true">⚡</div><div class="ib-title" contenteditable="true">Schnell</div><div class="ib-text" contenteditable="true">Kurze Beschreibung dieses Vorteils.</div></div></div>
+                    <div class="web-col"><div class="web-icon-box"><div class="icon-circle" contenteditable="true">🔒</div><div class="ib-title" contenteditable="true">Sicher</div><div class="ib-text" contenteditable="true">Kurze Beschreibung dieses Vorteils.</div></div></div>
+                    <div class="web-col"><div class="web-icon-box"><div class="icon-circle" contenteditable="true">🎯</div><div class="ib-title" contenteditable="true">Fokussiert</div><div class="ib-text" contenteditable="true">Kurze Beschreibung dieses Vorteils.</div></div></div>
+                </div>
+            </div>`,
+            sectionTestimonial: `<div class="web-section-testimonial" draggable="true" style="text-align:center; max-width:640px; margin:0 auto;">
+                <blockquote class="web-quote" contenteditable="true">„Ein großartiges Produkt, das unseren Alltag spürbar verbessert hat.“</blockquote>
+                <div contenteditable="true" style="font-weight:600;">Alex Meier, CEO bei Beispiel GmbH</div>
+            </div>`,
+            sectionPricing: `<div class="web-section-pricing" draggable="true">
+                <div class="web-columns-3">
+                    <div class="web-col"><article class="web-card"><div class="card-title" contenteditable="true">Starter</div><div class="card-text" contenteditable="true">Perfekt für den Einstieg. Alle Grundfunktionen inklusive.</div></article></div>
+                    <div class="web-col"><article class="web-card"><div class="card-title" contenteditable="true">Pro</div><div class="card-text" contenteditable="true">Für wachsende Teams mit erweiterten Anforderungen.</div></article></div>
+                    <div class="web-col"><article class="web-card"><div class="card-title" contenteditable="true">Enterprise</div><div class="card-text" contenteditable="true">Individuelle Lösungen für große Organisationen.</div></article></div>
+                </div>
+            </div>`,
+            sectionCta: `<div class="web-section-cta" draggable="true" style="text-align:center; background:#1e293b; color:#fff; padding:40px; border-radius: var(--canvas-radius, 10px);">
+                <h2 contenteditable="true" style="font-size:1.8rem; font-weight:800; margin-bottom:10px;">Bereit loszulegen?</h2>
+                <p contenteditable="true" style="opacity:0.85; margin-bottom:20px;">Starte noch heute kostenlos, keine Kreditkarte nötig.</p>
+                <a href="#" class="web-btn" contenteditable="true" style="background:#fff; color:#1e293b;">Jetzt kostenlos starten →</a>
+            </div>`,
+            sectionFooter: `<footer class="web-section-footer" draggable="true" style="padding-top:20px;">
+                <div class="web-columns-3">
+                    <div class="web-col"><div contenteditable="true" style="font-weight:700; margin-bottom:8px;">Marke</div><div contenteditable="true" style="color:#64748b; font-size:0.88rem;">Kurzer Slogan oder Beschreibung.</div></div>
+                    <div class="web-col"><div contenteditable="true" style="font-weight:700; margin-bottom:8px;">Links</div><div contenteditable="true" style="color:#64748b; font-size:0.88rem;">Start · Über · Kontakt</div></div>
+                    <div class="web-col"><div contenteditable="true" style="font-weight:700; margin-bottom:8px;">Kontakt</div><div contenteditable="true" style="color:#64748b; font-size:0.88rem;">hallo@beispiel.de</div></div>
+                </div>
+            </footer>`,
         };
 
         /* ======================================================================
