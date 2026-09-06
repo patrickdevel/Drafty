@@ -76,10 +76,11 @@ button { font-family: inherit; }
 .maintab-btn {
   background: transparent; border: none; color: var(--text-dim); font-family: var(--font-head);
   font-weight: 600; font-size: .82rem; padding: 8px 18px; border-radius: 6px; cursor: pointer;
-  display: flex; align-items: center; gap: 7px; transition: background .15s, color .15s;
+  display: flex; align-items: center; gap: 7px; transition: background .18s, color .15s, transform .15s;
 }
-.maintab-btn:hover { color: var(--text); }
-.maintab-btn.active { background: var(--accent); color: #fff; }
+.maintab-btn:hover { color: var(--text); transform: translateY(-1px); }
+.maintab-btn:active { transform: translateY(0) scale(.96); }
+.maintab-btn.active { background: var(--accent); color: #fff; animation: railBtnPop .3s cubic-bezier(.34,1.56,.64,1); }
 
 /* =================================================================
    HAUPT-ANSICHTEN
@@ -123,10 +124,12 @@ button { font-family: inherit; }
   background: transparent; border: 1px solid transparent; color: var(--text-dim);
   width: 32px; height: 32px; border-radius: var(--radius-sm); cursor: pointer;
   display: flex; align-items: center; justify-content: center; position: relative;
-  transition: border-color .15s, color .15s, background .15s;
+  transition: border-color .15s, color .15s, background .15s, transform .15s;
 }
-.icon-btn .i { width: 16px; height: 16px; }
-.icon-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--text); background: var(--accent-soft); }
+.icon-btn .i { width: 16px; height: 16px; transition: transform .18s cubic-bezier(.34,1.56,.64,1); }
+.icon-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--text); background: var(--accent-soft); transform: translateY(-1px); }
+.icon-btn:hover:not(:disabled) .i { transform: scale(1.1); }
+.icon-btn:active:not(:disabled) { transform: translateY(0) scale(.9); }
 .icon-btn:disabled { opacity: .3; cursor: not-allowed; }
 .icon-btn[aria-pressed="true"] { border-color: var(--accent); color: var(--text); background: var(--accent-soft); }
 .icon-btn.small { width: 28px; height: 28px; }
@@ -137,9 +140,10 @@ button { font-family: inherit; }
 }
 
 .viewport-toggle { display: flex; gap: 3px; background: var(--surface-2); padding: 3px; border-radius: 7px; }
-.viewport-toggle button { background: transparent; border: none; color: var(--text-dim); width: 28px; height: 26px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.viewport-toggle button { background: transparent; border: none; color: var(--text-dim); width: 28px; height: 26px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .15s, color .15s, transform .15s; }
 .viewport-toggle button .i { width: 14px; height: 14px; }
-.viewport-toggle button.active { background: var(--accent); color: #fff; }
+.viewport-toggle button:hover { color: var(--text); transform: scale(1.1); }
+.viewport-toggle button.active { background: var(--accent); color: #fff; animation: railBtnPop .3s cubic-bezier(.34,1.56,.64,1); }
 
 /* =================================================================
    ICON-RAIL (links)
@@ -148,11 +152,13 @@ button { font-family: inherit; }
 .rail-add-btn {
   width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0; background: var(--accent); border: none;
   color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 10px 22px -8px rgba(59,111,216,.55); transition: background .15s, transform .1s;
+  box-shadow: 0 10px 22px -8px rgba(59,111,216,.55); transition: background .15s, transform .18s cubic-bezier(.34,1.56,.64,1), box-shadow .15s;
 }
-.rail-add-btn .i { width: 20px; height: 20px; }
-.rail-add-btn:hover { background: var(--accent-hover); }
-.rail-add-btn:active { transform: scale(.94); }
+.rail-add-btn .i { width: 20px; height: 20px; transition: transform .25s cubic-bezier(.34,1.56,.64,1); }
+.rail-add-btn:hover { background: var(--accent-hover); transform: scale(1.07); box-shadow: 0 14px 28px -8px rgba(59,111,216,.7); }
+.rail-add-btn:hover .i { transform: rotate(90deg); }
+.rail-add-btn:active { transform: scale(.92); }
+.rail-add-btn:active .i { transform: rotate(135deg); }
 .rail-pill {
   display: flex; flex-direction: column; gap: 4px; background: var(--surface);
   border: 1px solid var(--border-soft); border-radius: 12px; padding: 6px;
@@ -161,11 +167,13 @@ button { font-family: inherit; }
 .rail-icon-btn {
   width: 38px; height: 38px; border-radius: 8px; flex-shrink: 0; background: transparent; border: none;
   color: var(--text-dim); cursor: pointer; display: flex; align-items: center; justify-content: center;
-  transition: background .15s, color .15s;
+  transition: background .15s, color .15s, transform .15s;
 }
-.rail-icon-btn .i { width: 17px; height: 17px; }
-.rail-icon-btn:hover { background: var(--surface-2); color: var(--text); }
-.rail-icon-btn.active { background: var(--accent); color: #fff; }
+.rail-icon-btn .i { width: 17px; height: 17px; transition: transform .18s cubic-bezier(.34,1.56,.64,1); }
+.rail-icon-btn:hover { background: var(--surface-2); color: var(--text); transform: scale(1.08); }
+.rail-icon-btn:hover .i { transform: scale(1.12); }
+.rail-icon-btn:active { transform: scale(.92); }
+.rail-icon-btn.active { background: var(--accent); color: #fff; animation: railBtnPop .3s cubic-bezier(.34,1.56,.64,1); }
 .rail-pill-context-wrap { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s cubic-bezier(.4,0,.2,1); width: 100%; justify-items: center; }
 body.has-selection .rail-pill-context-wrap { grid-template-rows: 1fr; }
 .rail-pill-context-inner { overflow: hidden; min-height: 0; }
@@ -175,28 +183,38 @@ body.has-selection .rail-pill-context-inner .rail-pill { opacity: 1; transform: 
   position: fixed; bottom: 22px; left: 20px; z-index: 130; width: 46px; height: 46px; border-radius: 12px;
   background: var(--surface); border: 1px solid var(--border-soft); color: var(--text); cursor: pointer;
   display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 24px -10px rgba(0,0,0,.5);
+  transition: border-color .15s, color .15s, transform .18s cubic-bezier(.34,1.56,.64,1);
 }
-.rail-download-btn .i { width: 18px; height: 18px; }
-.rail-download-btn:hover { border-color: var(--accent); color: var(--accent-hover); }
+.rail-download-btn .i { transition: transform .2s cubic-bezier(.34,1.56,.64,1); width: 18px; height: 18px; }
+.rail-download-btn:hover { border-color: var(--accent); color: var(--accent-hover); transform: scale(1.08); }
+.rail-download-btn:hover .i { transform: translateY(2px); }
+.rail-download-btn:active { transform: scale(.92); }
 
 /* ============ RAIL POPUPS ============ */
 .rail-popup {
-  display: none; flex-direction: column; gap: 14px; position: fixed; top: 88px; left: 82px; z-index: 160;
+  display: flex; flex-direction: column; gap: 14px; position: fixed; top: 88px; left: 82px; z-index: 160;
   width: 460px; max-width: calc(100vw - 110px); max-height: calc(100vh - 116px);
   background: var(--surface); border: 1px solid var(--border-soft); border-radius: 12px;
-  padding: 18px 18px 20px; box-shadow: 0 34px 70px -20px rgba(0,0,0,.65); overflow-y: auto;
+  padding: 18px 18px 20px; box-shadow: 0 34px 70px -20px rgba(0,0,0,.65); overflow: visible;
+  opacity: 0; visibility: hidden; pointer-events: none; transform-origin: top left;
+  transform: scale(.94) translateY(-8px);
+  transition: opacity .18s ease, transform .2s cubic-bezier(.34,1.56,.64,1), visibility 0s linear .18s;
 }
-.rail-popup.open { display: flex; }
-.rail-popup-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.rail-popup.open {
+  opacity: 1; visibility: visible; pointer-events: auto; transform: scale(1) translateY(0);
+  transition: opacity .18s ease, transform .2s cubic-bezier(.34,1.56,.64,1);
+}
+.rail-popup-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-shrink: 0; }
 .rail-popup-header h3 { margin: 0; font-family: var(--font-head); font-size: 1.02rem; font-weight: 700; display: flex; align-items: center; gap: 9px; }
 .rail-popup-header h3 .i { width: 17px; height: 17px; color: var(--accent-hover); }
 .rail-popup-close {
   width: 30px; height: 30px; border-radius: 7px; flex-shrink: 0; background: var(--surface-2); border: 1px solid var(--border);
   color: var(--text-dim); cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: border-color .15s, color .15s, transform .18s cubic-bezier(.34,1.56,.64,1), background .15s;
 }
 .rail-popup-close .i { width: 14px; height: 14px; }
-.rail-popup-close:hover { border-color: var(--danger); color: var(--danger); }
-.rail-popup-body { display: flex; flex-direction: column; gap: 10px; }
+.rail-popup-close:hover { border-color: var(--danger); color: var(--danger); background: var(--danger-soft); transform: rotate(90deg); }
+.rail-popup-body { display: flex; flex-direction: column; gap: 10px; overflow-y: auto; min-height: 0; flex: 1; }
 .rail-popup .group { border-bottom: none; padding-bottom: 0; }
 .hint { font-size: .68rem; color: var(--text-faint); font-weight: 400; }
 
@@ -217,9 +235,11 @@ label.field-lbl { font-size: .72rem; color: var(--text-dim); font-weight: 500; m
   flex: 1; min-width: 60px; background: transparent; border: none; color: var(--text-dim); padding: 6px 6px;
   border-radius: 5px; cursor: pointer; font-size: .72rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px;
 }
+.tab-btn { transition: background .15s, color .15s, transform .12s; }
 .tab-btn .i { width: 13px; height: 13px; }
 .tab-btn:hover { color: var(--text); }
-.tab-btn.active { background: var(--accent); color: #fff; }
+.tab-btn:active { transform: scale(.95); }
+.tab-btn.active { background: var(--accent); color: #fff; animation: railBtnPop .25s cubic-bezier(.34,1.56,.64,1); }
 .tab-panel { display: none; flex-direction: column; gap: 6px; max-height: 360px; overflow-y: auto; padding-right: 2px; }
 .tab-panel.active { display: flex; }
 .empty-fav-hint { font-size: .78rem; color: var(--text-faint); padding: 14px 4px; text-align: center; }
@@ -228,15 +248,17 @@ label.field-lbl { font-size: .72rem; color: var(--text-dim); font-weight: 500; m
   background: var(--surface-2); color: var(--text); border: 1px solid var(--border); padding: 9px 11px;
   border-radius: var(--radius-sm); cursor: grab; font-weight: 500; font-size: .82rem; text-align: left;
   display: flex; align-items: center; gap: 9px; width: 100%; position: relative;
-  transition: border-color .15s, background .15s;
+  transition: border-color .15s, background .15s, transform .12s;
 }
-.tool-btn .i:first-child { width: 15px; height: 15px; flex-shrink: 0; color: var(--text-dim); }
+.tool-btn .i:first-child { width: 15px; height: 15px; flex-shrink: 0; color: var(--text-dim); transition: color .15s, transform .18s cubic-bezier(.34,1.56,.64,1); }
 .tool-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
-.tool-btn:hover .i:first-child { color: var(--accent-hover); }
+.tool-btn:hover .i:first-child { color: var(--accent-hover); transform: scale(1.12); }
+.tool-btn.no-drag:hover { transform: translateY(-1px); }
+.tool-btn.no-drag:active { transform: translateY(0) scale(.97); }
 .tool-btn:active { cursor: grabbing; }
 .tool-btn span:not(.i):not(.fav-star) { flex: 1; }
-.fav-star { margin-left: auto; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; color: var(--text-faint); cursor: pointer; border-radius: 5px; flex-shrink: 0; }
-.fav-star:hover { background: var(--surface); color: #d8a13d; }
+.fav-star { margin-left: auto; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; color: var(--text-faint); cursor: pointer; border-radius: 5px; flex-shrink: 0; transition: background .15s, color .15s, transform .15s; }
+.fav-star:hover { background: var(--surface); color: #d8a13d; transform: scale(1.15) rotate(-8deg); }
 .fav-star .i { width: 14px; height: 14px; }
 .tool-btn.no-drag { cursor: pointer; }
 .tool-btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; justify-content: center; cursor: pointer; }
@@ -283,8 +305,9 @@ select { appearance: none; cursor: pointer; background-image: url("data:image/sv
 .theme-swatch .preview { height: 30px; border-radius: 4px; margin-bottom: 6px; }
 .theme-swatch.active { border-color: var(--accent); color: var(--text); }
 .harmony-row { display: flex; gap: 6px; margin-top: 6px; }
-.harmony-swatch { flex: 1; height: 32px; border-radius: 6px; cursor: pointer; border: 1px solid var(--border); padding: 0; }
-.harmony-swatch:hover { outline: 2px solid var(--accent-hover); outline-offset: 1px; }
+.harmony-swatch { flex: 1; height: 32px; border-radius: 6px; cursor: pointer; border: 1px solid var(--border); padding: 0; transition: outline-color .15s, transform .15s; }
+.harmony-swatch:hover { outline: 2px solid var(--accent-hover); outline-offset: 1px; transform: translateY(-2px); }
+.harmony-swatch:active { transform: translateY(0) scale(.95); }
 .contrast-readout { display: flex; align-items: center; gap: 8px; font-size: .74rem; margin-top: 8px; flex-wrap: wrap; }
 .contrast-ratio-chip { font-family: var(--font-mono); background: var(--surface-2); border: 1px solid var(--border); padding: 3px 7px; border-radius: 5px; }
 .wcag-badge { font-weight: 700; padding: 2px 7px; border-radius: 5px; font-size: .68rem; }
@@ -434,10 +457,45 @@ body.preview-mode #canvas { border-radius: 0; min-height: 100vh; max-width: 100%
 @keyframes draftyZoomIn { from { opacity: 0; transform: scale(.92) } to { opacity: 1; transform: scale(1) } }
 
 /* =================================================================
+   MIKRO-ANIMATIONEN (UI-weit)
+   ================================================================= */
+@keyframes railBtnPop { 0% { transform: scale(1); } 45% { transform: scale(.9); } 100% { transform: scale(1); } }
+@keyframes toastPulseIn { from { opacity: 0; transform: translateY(10px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes spinLoader { to { transform: rotate(360deg); } }
+
+/* ============ DRAG-HANDLE für Bearbeitungspopups ============ */
+.popup-drag-handle {
+  position: absolute; top: 50%; left: -14px; transform: translateY(-50%);
+  width: 26px; height: 54px; border-radius: 8px; background: var(--surface-2);
+  border: 1px solid var(--border-soft); color: var(--text-faint); z-index: 5;
+  display: flex; align-items: center; justify-content: center; cursor: grab;
+  box-shadow: 0 8px 18px -8px rgba(0,0,0,.55); touch-action: none;
+  transition: color .15s, border-color .15s, background .15s, transform .15s;
+}
+.popup-drag-handle .i { width: 14px; height: 14px; }
+.popup-drag-handle:hover { color: var(--accent-hover); border-color: var(--accent); background: var(--accent-soft); transform: translateY(-50%) scale(1.08); }
+.popup-drag-handle:active, .popup-drag-handle.dragging { cursor: grabbing; color: #fff; background: var(--accent); border-color: var(--accent); }
+body.is-dragging-popup { user-select: none; }
+body.is-dragging-popup * { cursor: grabbing !important; }
+.rail-popup.is-being-dragged, .modal-box.is-being-dragged { transition: none !important; }
+.modal-box.is-being-dragged .popup-drag-handle,
+.rail-popup.is-being-dragged .popup-drag-handle { transform: translateY(-50%) scale(1.08); }
+
+/* =================================================================
    MODALS
    ================================================================= */
-.modal-overlay { position: fixed; inset: 0; background: rgba(10,12,15,.6); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px; }
-.modal-box { background: var(--surface); border: 1px solid var(--border-soft); border-radius: 12px; padding: 22px; width: 420px; max-width: 100%; max-height: 84vh; overflow-y: auto; box-shadow: 0 40px 80px -20px rgba(0,0,0,.6); }
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(10,12,15,.6); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity .18s ease, visibility 0s linear .18s;
+}
+.modal-overlay.open { opacity: 1; visibility: visible; pointer-events: auto; transition: opacity .18s ease; }
+.modal-box {
+  background: var(--surface); border: 1px solid var(--border-soft); border-radius: 12px; padding: 22px; width: 420px; max-width: 100%; max-height: 84vh; overflow-y: auto; box-shadow: 0 40px 80px -20px rgba(0,0,0,.6);
+  position: relative; opacity: 0; transform: scale(.93) translateY(12px);
+  transition: opacity .2s ease, transform .24s cubic-bezier(.34,1.56,.64,1);
+}
+.modal-overlay.open .modal-box { opacity: 1; transform: scale(1) translateY(0); }
 .modal-box.modal-wide { width: 500px; }
 .modal-box h3 { margin: 0 0 8px; font-family: var(--font-head); font-size: 1.05rem; display: flex; align-items: center; gap: 8px; }
 .modal-box h3 .i { width: 17px; height: 17px; color: var(--accent-hover); }
@@ -925,7 +983,7 @@ body.preview-mode #canvas { border-radius: 0; min-height: 100vh; max-width: 100%
 </div>
 
 <!-- ============ MODALE ============ -->
-<div class="modal-overlay" id="modalOverlay" style="display:none;" role="dialog" aria-modal="true">
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true">
   <div class="modal-box">
     <h3 id="modalTitle"><i data-icon="warning"></i>Bestätigen</h3>
     <p id="modalMsg"></p>
@@ -936,7 +994,7 @@ body.preview-mode #canvas { border-radius: 0; min-height: 100vh; max-width: 100%
   </div>
 </div>
 
-<div class="modal-overlay" id="navLinksModalOverlay" style="display:none;" role="dialog" aria-modal="true">
+<div class="modal-overlay" id="navLinksModalOverlay" role="dialog" aria-modal="true">
   <div class="modal-box modal-wide">
     <h3><i data-icon="nav"></i>Navigations-Links verwalten</h3>
     <p>Text und Linkziel je Link (URL oder Seitenname, z.B. <code>kontakt.html</code>).</p>
@@ -949,7 +1007,7 @@ body.preview-mode #canvas { border-radius: 0; min-height: 100vh; max-width: 100%
   </div>
 </div>
 
-<div class="modal-overlay" id="seoModalOverlay" style="display:none;" role="dialog" aria-modal="true">
+<div class="modal-overlay" id="seoModalOverlay" role="dialog" aria-modal="true">
   <div class="modal-box modal-wide">
     <h3><i data-icon="search"></i>SEO &amp; Meta-Tags <span class="kbd-hint" id="seoModalPageLabel">index.html</span></h3>
     <p>Wird beim Export in den <code>&lt;head&gt;</code> geschrieben.</p>
@@ -968,7 +1026,7 @@ body.preview-mode #canvas { border-radius: 0; min-height: 100vh; max-width: 100%
   </div>
 </div>
 
-<div class="modal-overlay" id="historyModalOverlay" style="display:none;" role="dialog" aria-modal="true">
+<div class="modal-overlay" id="historyModalOverlay" role="dialog" aria-modal="true">
   <div class="modal-box modal-wide">
     <h3><i data-icon="clock"></i>Verlauf / Versionen</h3>
     <p>Frühere, lokal gespeicherte Stände dieses Projekts.</p>
@@ -980,7 +1038,7 @@ body.preview-mode #canvas { border-radius: 0; min-height: 100vh; max-width: 100%
   </div>
 </div>
 
-<div class="modal-overlay" id="commentsModalOverlay" style="display:none;" role="dialog" aria-modal="true">
+<div class="modal-overlay" id="commentsModalOverlay" role="dialog" aria-modal="true">
   <div class="modal-box modal-wide">
     <h3><i data-icon="chat"></i>Kommentare-Übersicht</h3>
     <p>Alle Notizen der aktuellen Seite. Werden beim Export automatisch entfernt.</p>
@@ -1319,6 +1377,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updatePageDropdowns();
   initSidebarDragAndDrop();
   initTextToolbar();
+  initPopupDragHandles();
   loadFavoritesAndUsage();
   loadPaletteFromStorage();
   renderPalette();
@@ -1729,6 +1788,73 @@ document.addEventListener('click', (e) => {
 });
 
 /* ---------------------------------------------------------------
+   9b) BEARBEITUNGSPOPUPS PER GRIFF VERSCHIEBEN
+   (nur für die aktuelle Sitzung – wird beim nächsten Besuch NICHT
+   gespeichert, da rein über Inline-Styles im DOM gehalten)
+   --------------------------------------------------------------- */
+function initPopupDragHandles() {
+  document.querySelectorAll('.rail-popup, .modal-box').forEach(setupPopupDragHandle);
+}
+function setupPopupDragHandle(popup) {
+  if (!popup || popup.querySelector(':scope > .popup-drag-handle')) return;
+  const handle = document.createElement('div');
+  handle.className = 'popup-drag-handle';
+  handle.setAttribute('title', 'Ziehen, um dieses Fenster frei zu platzieren');
+  handle.setAttribute('aria-label', 'Fenster verschieben');
+  handle.innerHTML = icon('move');
+  handle.addEventListener('pointerdown', (e) => startPopupDrag(e, popup, handle));
+  popup.appendChild(handle);
+}
+let _popupDrag = null;
+function startPopupDrag(e, popup, handle) {
+  if (e.button !== undefined && e.button !== 0) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const rect = popup.getBoundingClientRect();
+  if (popup.classList.contains('modal-box')) {
+    // Modal-Box aus der zentrierten Flex-Positionierung lösen, sobald sie gezogen wird
+    popup.style.position = 'fixed';
+    popup.style.margin = '0';
+  }
+  popup.style.left = rect.left + 'px';
+  popup.style.top = rect.top + 'px';
+  popup.style.right = 'auto';
+  popup.style.bottom = 'auto';
+  popup.classList.add('is-being-dragged');
+  handle.classList.add('dragging');
+  document.body.classList.add('is-dragging-popup');
+  _popupDrag = {
+    popup, handle,
+    startX: e.clientX, startY: e.clientY,
+    origLeft: rect.left, origTop: rect.top,
+    w: rect.width, h: rect.height,
+  };
+  try { handle.setPointerCapture(e.pointerId); } catch (err) {}
+  window.addEventListener('pointermove', onPopupDragMove);
+  window.addEventListener('pointerup', endPopupDrag);
+}
+function onPopupDragMove(e) {
+  if (!_popupDrag) return;
+  const { popup, startX, startY, origLeft, origTop, w, h } = _popupDrag;
+  const margin = 6;
+  let left = origLeft + (e.clientX - startX);
+  let top = origTop + (e.clientY - startY);
+  left = Math.max(margin, Math.min(left, window.innerWidth - Math.min(w, window.innerWidth - margin * 2) - margin));
+  top = Math.max(margin, Math.min(top, window.innerHeight - Math.min(h, window.innerHeight - margin * 2) - margin));
+  popup.style.left = left + 'px';
+  popup.style.top = top + 'px';
+}
+function endPopupDrag() {
+  if (!_popupDrag) return;
+  _popupDrag.popup.classList.remove('is-being-dragged');
+  _popupDrag.handle.classList.remove('dragging');
+  document.body.classList.remove('is-dragging-popup');
+  window.removeEventListener('pointermove', onPopupDragMove);
+  window.removeEventListener('pointerup', endPopupDrag);
+  _popupDrag = null;
+}
+
+/* ---------------------------------------------------------------
    10) KOMPONENTEN-BIBLIOTHEK: TABS, SUCHE, FAVORITEN
    --------------------------------------------------------------- */
 function switchTab(tab) {
@@ -1965,12 +2091,12 @@ function showToast(msg, kind) {
 function openConfirmModal(title, msg, onConfirm) {
   document.getElementById('modalTitle').textContent = title;
   document.getElementById('modalMsg').textContent = msg;
-  document.getElementById('modalOverlay').style.display = 'flex';
+  document.getElementById('modalOverlay').classList.add('open');
   const btn = document.getElementById('modalConfirmBtn');
   const clone = btn.cloneNode(true); btn.replaceWith(clone);
   clone.addEventListener('click', () => { closeModal(); onConfirm(); });
 }
-function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
 
 /* ---------------------------------------------------------------
    18) BILD / VIDEO EINFÜGEN
@@ -2012,7 +2138,7 @@ function openNavLinksModal() {
   const rows = document.getElementById('navLinksRows');
   rows.innerHTML = '';
   selectedElement.querySelectorAll('.nav-links a').forEach(a => addNavLinkRow(a.textContent, a.getAttribute('href') || ''));
-  document.getElementById('navLinksModalOverlay').style.display = 'flex';
+  document.getElementById('navLinksModalOverlay').classList.add('open');
 }
 function addNavLinkRow(text, href) {
   const rows = document.getElementById('navLinksRows');
@@ -2021,7 +2147,7 @@ function addNavLinkRow(text, href) {
   row.querySelector('.navlink-del').onclick = () => row.remove();
   rows.appendChild(row);
 }
-function closeNavLinksModal() { document.getElementById('navLinksModalOverlay').style.display = 'none'; }
+function closeNavLinksModal() { document.getElementById('navLinksModalOverlay').classList.remove('open'); }
 function saveNavLinksModal() {
   if (!selectedElement) return;
   const linksWrap = selectedElement.querySelector('.nav-links');
@@ -2044,9 +2170,9 @@ function openSeoModal() {
   document.getElementById('seoDescription').value = data.seo.description;
   document.getElementById('seoOgImage').value = data.seo.ogImage;
   document.getElementById('seoFavicon').value = data.seo.favicon;
-  document.getElementById('seoModalOverlay').style.display = 'flex';
+  document.getElementById('seoModalOverlay').classList.add('open');
 }
-function closeSeoModal() { document.getElementById('seoModalOverlay').style.display = 'none'; }
+function closeSeoModal() { document.getElementById('seoModalOverlay').classList.remove('open'); }
 function saveSeoModal() {
   pages[currentPage].seo = {
     title: document.getElementById('seoTitle').value,
@@ -2073,9 +2199,9 @@ function openCommentsModal() {
   const items = Array.from(document.querySelectorAll('#canvas [data-comment]'));
   list.innerHTML = items.length ? items.map((el, i) => `<div class="history-entry"><div>${icon('chat')} ${el.dataset.comment}</div></div>`).join('')
     : '<div class="empty-state-msg">Noch keine Notizen auf dieser Seite.</div>';
-  document.getElementById('commentsModalOverlay').style.display = 'flex';
+  document.getElementById('commentsModalOverlay').classList.add('open');
 }
-function closeCommentsModal() { document.getElementById('commentsModalOverlay').style.display = 'none'; }
+function closeCommentsModal() { document.getElementById('commentsModalOverlay').classList.remove('open'); }
 
 /* ---------------------------------------------------------------
    22) VERLAUF / VERSIONSHISTORIE (lokal gespeichert)
@@ -2103,9 +2229,9 @@ function openHistoryModal() {
     row.querySelector('button.del').onclick = () => deleteHistoryEntry(i);
     list.appendChild(row);
   });
-  document.getElementById('historyModalOverlay').style.display = 'flex';
+  document.getElementById('historyModalOverlay').classList.add('open');
 }
-function closeHistoryModal() { document.getElementById('historyModalOverlay').style.display = 'none'; }
+function closeHistoryModal() { document.getElementById('historyModalOverlay').classList.remove('open'); }
 function restoreHistoryEntry(idx) {
   const entries = getHistoryEntries(); const entry = entries[idx]; if (!entry) return;
   openConfirmModal('Version wiederherstellen?', `Stand vom ${new Date(entry.ts).toLocaleString('de-DE')} laden? Ungespeicherte \u00c4nderungen gehen verloren.`, () => {
