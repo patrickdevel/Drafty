@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drafty · No‑Code Web Builder</title>
+  <link rel="icon" type="image/svg+xml" href="logo.png" />
+
+  <!-- Anthropic‑Fonts (wie im Claude‑Style) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       BASIS – übernimmt die zentralen Design‑Tokens aus dem
+       Claude‑Style (Farben, Abstände, Schriften)
+       ============================================================ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      /* Claude‑Farben (light) */
+      --bg-deep: #0a0e1a;
+      --bg-surface: #fcfcfb;
+      --bg-panel: #f6f6f4;
+      --bg-card: #ffffff;
+      --text-primary: #0b0b0b;
+      --text-secondary: #454442;
+      --text-muted: #898781;
+      --border-soft: #e7e6e1;
+      --border-strong: #d2d1c7;
+      --accent: #d97757;
+      --accent-hover: #c6613f;
+      --accent-soft: rgba(217, 119, 87, 0.12);
+      --shadow-card: 0 4px 24px rgba(11, 11, 11, 0.06);
+      --radius: 12px;
+      --radius-sm: 6px;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --font-serif: Georgia, 'Times New Roman', serif;
+      --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+    }
+
+    body {
+      font-family: var(--font-ui);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ============================================================
+       HEADER
+       ============================================================ */
+    .header {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border-soft);
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--accent), #b8a07c);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 4px;
+    }
+
+    .brand-name {
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-name span {
+      color: var(--accent);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav a {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      transition: color 0.15s ease;
+    }
+
+    .nav a:hover {
+      color: var(--text-primary);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease;
+      box-shadow: 0 4px 12px rgba(217, 119, 87, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border-strong);
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .btn-outline:hover {
+      background: var(--bg-panel);
+      border-color: var(--text-secondary);
+    }
+
+    /* ============================================================
+       HERO
+       ============================================================ */
+    .hero {
+      padding: 80px 0 60px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent);
+      padding: 4px 16px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 8vw, 4.4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, var(--accent), #b8a07c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 640px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .hero-actions .btn-primary {
+      padding: 14px 36px;
+      font-size: 1rem;
+    }
+
+    /* ============================================================
+       FEATURES
+       ============================================================ */
+    .features {
+      padding: 60px 0 80px;
+      background: var(--bg-panel);
+    }
+
+    .features .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 32px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border: 1px solid var(--border-soft);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(11, 11, 11, 0.08);
+    }
+
+    .feature-icon {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .feature-card h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .feature-card p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ============================================================
+       SHOWCASE (Mockup‑Bereich)
+       ============================================================ */
+    .showcase {
+      padding: 80px 0;
+      background: var(--bg-surface);
+    }
+
+    .showcase-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .showcase-text h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .showcase-text p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .showcase-text .btn-primary {
+      padding: 12px 32px;
+    }
+
+    .showcase-image {
+      background: var(--bg-deep);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--border-soft);
+      aspect-ratio: 16 / 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.3);
+      font-size: 1.4rem;
+      font-weight: 500;
+      background-image:
+        linear-gradient(45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.03) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.03) 75%);
+      background-size: 24px 24px;
+      background-position: 0 0, 0 12px, 12px -12px, -12px 0px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .showcase-image .placeholder-ui {
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 20px 30px;
+      width: 80%;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      backdrop-filter: blur(2px);
+    }
+
+    .showcase-image .placeholder-ui strong {
+      color: #fff;
+    }
+
+    /* ============================================================
+       CTA
+       ============================================================ */
+    .cta {
+      padding: 80px 0;
+      background: var(--bg-deep);
+      color: #fff;
+      text-align: center;
+    }
+
+    .cta h2 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .cta p {
+      font-size: 1.1rem;
+      opacity: 0.7;
+      max-width: 500px;
+      margin: 0 auto 32px;
+    }
+
+    .cta .btn-primary {
+      background: #fff;
+      color: var(--bg-deep);
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
+    }
+
+    .cta .btn-primary:hover {
+      background: #f0f0f0;
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--border-soft);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer a {
+      color: var(--text-secondary);
+      transition: color 0.15s ease;
+    }
+
+    .footer a:hover {
+      color: var(--text-primary);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 768px) {
+      .header-inner {
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .nav {
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+      }
+
+      .showcase-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .hero h1 {
+        font-size: 2.4rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .features .container {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .cta h2 {
+        font-size: 1.8rem;
+      }
+
+      .footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .features .container {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-actions .btn-primary,
+      .hero-actions .btn-outline {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ HEADER ============ -->
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="brand-icon">
+          <img src="logo.png" alt="Drafty" />
+        </div>
+        <span class="brand-name">Draft<span>y</span></span>
+      </div>
+      <nav class="nav">
+        <a href="#features">Features</a>
+        <a href="#showcase">Editor</a>
+        <a href="#" class="btn-outline">Login</a>
+        <a href="index-4.html" class="btn-primary">Zum Editor →</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">✨ v3.0 – Jetzt mit Drag &amp; Drop</div>
+      <h1>
+        Bauen ohne Code.<br />
+        <span class="highlight">Einfach. Schnell. Visuell.</span>
+      </h1>
+      <p>
+        Drafty ist der No‑Code‑Web‑Builder, der direkt im Browser läuft.
+        Ziehe Bausteine, gestalte responsive Seiten und exportiere
+        fertigen Code – ganz ohne Installation.
+      </p>
+      <div class="hero-actions">
+        <a href="index-4.html" class="btn-primary">Jetzt starten</a>
+        <a href="#features" class="btn-outline">Mehr erfahren</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="feature-card">
+        <span class="feature-icon">🖱️</span>
+        <h3>Drag &amp; Drop</h3>
+        <p>Füge Bausteine per Drag‑and‑Drop hinzu und ordne sie intuitiv an – ohne eine Zeile Code.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📱</span>
+        <h3>Responsive Vorschau</h3>
+        <p>Wechsle zwischen Desktop, Tablet und Mobile und sieh sofort, wie deine Seite auf jedem Gerät aussieht.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎨</span>
+        <h3>Design‑Themes</h3>
+        <p>Wähle aus verschiedenen Themes (Clean, Dark, Brutal, Soft) und passe Farben, Schriftarten und Abstände an.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🧩</span>
+        <h3>Bausteine &amp; Sektionen</h3>
+        <p>Über 30 vorgefertigte Komponenten – von Navbar über Karten bis hin zu Hero‑Sektionen – machen den Aufbau zum Kinderspiel.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">⚙️</span>
+        <h3>Inspector &amp; Styling</h3>
+        <p>Passe jedes Element individuell an: Farben, Abstände, Schriftarten, Animationen und eigene CSS‑Klassen.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📦</span>
+        <h3>Export &amp; Teilen</h3>
+        <p>Exportiere deine Seite als HTML, CSS oder sogar als ZIP‑Paket mit allen Seiten. Teile sie per Link oder Screenshot.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SHOWCASE ============ -->
+  <section class="showcase" id="showcase">
+    <div class="container showcase-inner">
+      <div class="showcase-text">
+        <h2>Dein Editor –<br />immer bereit.</h2>
+        <p>
+          Der Drafty‑Editor kombiniert eine intuitive Sidebar mit einer
+          Live‑Canvas. Ziehe Bausteine aus der Bibliothek, bearbeite Texte
+          direkt im Canvas und nutze den Inspector für präzises Styling.
+          Alles in Echtzeit, ohne Neuladen.
+        </p>
+        <a href="index-4.html" class="btn-primary">Zum Editor →</a>
+      </div>
+      <div class="showcase-image">
+        <div class="placeholder-ui">
+          <strong>Drafty Editor</strong><br />
+          <span style="font-size:0.85rem;opacity:0.6;">Canvas · Sidebar · Inspector</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="cta">
+    <div class="container">
+      <h2>Bereit loszulegen?</h2>
+      <p>Öffne den Editor, probiere die Bausteine aus und erstelle deine erste Seite – kostenlos und ohne Anmeldung.</p>
+      <a href="index-4.html" class="btn-primary">Zum Editor →</a>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="container footer">
+    <span>© 2026 Drafty · Ein No‑Code‑Web‑Builder von <a href="https://github.com/patrickdevel" target="_blank">@patrickdevel</a></span>
+    <div class="footer-links">
+      <a href="https://github.com/patrickdevel/drafty" target="_blank">GitHub</a>
+      <a href="#">Datenschutz</a>
+      <a href="#">Impressum</a>
+    </div>
+  </footer>
+
+</body>
+</html>
