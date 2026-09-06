@@ -116,22 +116,108 @@
       color: var(--accent);
     }
 
-    .nav {
+    /* ============================================================
+       BURGER MENU
+       ============================================================ */
+    .hamburger {
       display: flex;
-      align-items: center;
-      gap: 24px;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+      z-index: 110;
+      position: relative;
     }
 
-    .nav a {
-      font-size: 0.9rem;
+    .hamburger .line {
+      width: 24px;
+      height: 2px;
+      background: var(--text-primary);
+      transition: 0.3s ease;
+      border-radius: 2px;
+      transform-origin: center;
+    }
+
+    .menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .menu-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .menu-content {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 100%;
+      background: var(--bg-surface);
+      box-shadow: -8px 0 32px rgba(11, 11, 11, 0.08);
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .menu-overlay.open .menu-content {
+      transform: translateX(0);
+    }
+
+    .close-btn {
+      align-self: flex-end;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-secondary);
+      padding: 4px 8px;
+      transition: color 0.15s ease;
+    }
+
+    .close-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .menu-content a {
+      font-size: 1.1rem;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-soft);
       color: var(--text-secondary);
       transition: color 0.15s ease;
     }
 
-    .nav a:hover {
+    .menu-content a:hover {
       color: var(--text-primary);
     }
 
+    .menu-content .btn-primary {
+      border: none;
+      text-align: center;
+      margin-top: 8px;
+      width: 100%;
+      padding: 14px;
+      font-size: 1rem;
+    }
+
+    /* ============================================================
+       BUTTONS
+       ============================================================ */
     .btn-primary {
       background: var(--accent);
       color: #fff;
@@ -143,6 +229,8 @@
       cursor: pointer;
       transition: background 0.15s ease, transform 0.1s ease;
       box-shadow: 0 4px 12px rgba(217, 119, 87, 0.3);
+      display: inline-block;
+      text-align: center;
     }
 
     .btn-primary:hover {
@@ -160,6 +248,8 @@
       font-size: 0.9rem;
       cursor: pointer;
       transition: border-color 0.15s ease, background 0.15s ease;
+      display: inline-block;
+      text-align: center;
     }
 
     .btn-outline:hover {
@@ -413,13 +503,6 @@
         gap: 12px;
       }
 
-      .nav {
-        gap: 16px;
-        flex-wrap: wrap;
-        justify-content: center;
-        width: 100%;
-      }
-
       .showcase-inner {
         grid-template-columns: 1fr;
         gap: 40px;
@@ -477,14 +560,25 @@
         </div>
         <span class="brand-name">Draft<span>y</span></span>
       </div>
-      <nav class="nav">
-        <a href="#features">Features</a>
-        <a href="#showcase">Editor</a>
-        <a href="#" class="btn-outline">Login</a>
-        <a href="index-4.html" class="btn-primary">Zum Editor →</a>
-      </nav>
+
+      <!-- Burger Button -->
+      <button class="hamburger" id="hamburgerBtn" aria-label="Menü öffnen">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </button>
     </div>
   </header>
+
+  <!-- ============ MOBILE MENU OVERLAY ============ -->
+  <div class="menu-overlay" id="menuOverlay">
+    <div class="menu-content">
+      <button class="close-btn" id="closeMenuBtn">✕</button>
+      <a href="#features">Features</a>
+      <a href="#showcase">Editor</a>
+      <a href="overview.html" class="btn-primary">Zum Editor →</a>
+    </div>
+  </div>
 
   <!-- ============ HERO ============ -->
   <section class="hero">
@@ -500,7 +594,7 @@
         fertigen Code – ganz ohne Installation.
       </p>
       <div class="hero-actions">
-        <a href="index-4.html" class="btn-primary">Jetzt starten</a>
+        <a href="overview.html" class="btn-primary">Jetzt starten</a>
         <a href="#features" class="btn-outline">Mehr erfahren</a>
       </div>
     </div>
@@ -553,7 +647,7 @@
           direkt im Canvas und nutze den Inspector für präzises Styling.
           Alles in Echtzeit, ohne Neuladen.
         </p>
-        <a href="index-4.html" class="btn-primary">Zum Editor →</a>
+        <a href="overview.html" class="btn-primary">Zum Editor →</a>
       </div>
       <div class="showcase-image">
         <div class="placeholder-ui">
@@ -569,7 +663,7 @@
     <div class="container">
       <h2>Bereit loszulegen?</h2>
       <p>Öffne den Editor, probiere die Bausteine aus und erstelle deine erste Seite – kostenlos und ohne Anmeldung.</p>
-      <a href="index-4.html" class="btn-primary">Zum Editor →</a>
+      <a href="overview.html" class="btn-primary">Zum Editor →</a>
     </div>
   </section>
 
@@ -582,6 +676,30 @@
       <a href="#">Impressum</a>
     </div>
   </footer>
+
+  <!-- ============ JAVASCRIPT ============ -->
+  <script>
+    const hamburger = document.getElementById('hamburgerBtn');
+    const overlay = document.getElementById('menuOverlay');
+    const closeBtn = document.getElementById('closeMenuBtn');
+
+    function toggleMenu() {
+      overlay.classList.toggle('open');
+    }
+
+    hamburger.addEventListener('click', toggleMenu);
+    closeBtn.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) toggleMenu();
+    });
+
+    // Menü schließen, wenn ein Link geklickt wird
+    document.querySelectorAll('.menu-content a').forEach(link => {
+      link.addEventListener('click', () => {
+        overlay.classList.remove('open');
+      });
+    });
+  </script>
 
 </body>
 </html>
