@@ -1,18 +1,5 @@
-#Darfty v3.4
+#Darfty v3.5
 ---
 ###Was ist neu?
 
-- + öffnet „Element hinzufügen" (Bausteine, alle Tabs/Favoriten/Suche)
-- Pille 1: 📄 Seiten-Manager · 🪄 Vorlagen · 🎨 Design-Thema · 🛠️ Werkzeuge (inkl. SEO, Custom Code, Verlauf, Kommentare, Share-Links)
-- Pille 2 (nur bei Elementauswahl, smooth per grid-template-rows-Animation + Fade/Slide): ⚙️ Inspector · 🔤 Text-Tools · 🖌️ Design (Farben) · 📱 Responsive · 🎬 Animation
-- ⬇️ unten separat für „Exportieren"
----
-Sonstiges
----
-- Topbar ist jetzt eine schwebende Pillen-Reihe (Marke, Seite, Undo/Redo, Viewport, Raster/Kommentare/Vorschau/Laden/Speichern) – Funktionen unverändert
-- Popups schließen per orangem X, Klick daneben, oder automatisch beim Wechsel
-- Neuer Tab 🧩 Sektionen neben „Häufig" im „Element hinzufügen"-Popup
-- 6 fertige Sektionen zum Reinziehen: Hero-Sektion, Feature-Grid, Testimonial-Sektion, Preistabelle, CTA-Banner, Footer (3 Spalten)
-- Alle nutzen deine bestehenden Design-Klassen (web-hero-title, web-card, web-icon-box etc.), fügen sich also nahtlos in jedes Theme ein und werden korrekt exportiert
-- Getestet: Einfügen, Drag & Drop, Textbearbeitung — alles ohne Fehler
-<img width="1763" height="844" alt="Bildschirmfoto_2-7-2026_211721_draftywebbuilder vercel app" src="https://github.com/user-attachments/assets/27766e93-33e7-4ba8-a351-c6888459507a" />
+- Design verbessert
