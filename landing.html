@@ -1,380 +1,705 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Drafty – Moderner No-Code Web-Builder für den Browser</title>
-    
-    <link rel="icon" type="image/png" href="logo.png">
-    <link rel="apple-touch-icon" href="logo.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drafty · No‑Code Web Builder</title>
+  <link rel="icon" type="image/svg+xml" href="logo.png" />
 
-    <meta name="description" content="Drafty ist ein moderner, intuitiver No-Code-Web-Builder für den Browser. Erstelle responsive Websites per Drag-and-Drop ohne Installation.">
-    <meta name="author" content="GitHub: patrickdevel">
-    <meta name="robots" content="index, follow">
-    
-    <meta name="keywords" content="Web Builder, No Code, Drag and Drop Website, HTML Editor, Website Generator, Drafty">
-    
-    <link rel="canonical" href="https://draftywebbuilder.vercel.app//">
+  <!-- Anthropic‑Fonts (wie im Claude‑Style) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet" />
 
-    <meta name="theme-color" content="#0a0e1a">
+  <style>
+    /* ============================================================
+       BASIS – übernimmt die zentralen Design‑Tokens aus dem
+       Claude‑Style (Farben, Abstände, Schriften)
+       ============================================================ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://draftywebbuilder.vercel.app//">
-    <meta property="og:title" content="Drafty v3.0 – Der No-Code-Web-Builder für deinen Browser">
-    <meta property="og:description" content="Erstelle wunderschöne, responsive Websites direkt im Browser per Drag-and-Drop. Kein Setup notwendig.">
-    <meta property="og:image" content="https://draftywebbuilder.vercel.app//logo.png">
-    <meta property="og:site_name" content="Drafty">
+    :root {
+      /* Claude‑Farben (light) */
+      --bg-deep: #0a0e1a;
+      --bg-surface: #fcfcfb;
+      --bg-panel: #f6f6f4;
+      --bg-card: #ffffff;
+      --text-primary: #0b0b0b;
+      --text-secondary: #454442;
+      --text-muted: #898781;
+      --border-soft: #e7e6e1;
+      --border-strong: #d2d1c7;
+      --accent: #d97757;
+      --accent-hover: #c6613f;
+      --accent-soft: rgba(217, 119, 87, 0.12);
+      --shadow-card: 0 4px 24px rgba(11, 11, 11, 0.06);
+      --radius: 12px;
+      --radius-sm: 6px;
+      --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --font-serif: Georgia, 'Times New Roman', serif;
+      --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+    }
 
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://draftywebbuilder.vercel.app//">
-    <meta name="twitter:title" content="Drafty – No-Code Web-Builder im Browser">
-    <meta name="twitter:description" content="Erstelle responsive Websites direkt im Browser per Drag-and-Drop. Ohne Installation, direkt loslegen.">
-    <meta name="twitter:image" content="https://draftywebbuilder.vercel.app//logo.png">
+    body {
+      font-family: var(--font-ui);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
 
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Drafty",
-      "url": "https://draftywebbuilder.vercel.app//",
-      "image": "https://draftywebbuilder.vercel.app//logo.png",
-      "operatingSystem": "All",
-      "applicationCategory": "DesignApplication",
-      "releaseNotes": "https://github.com/patrickdevel/drafty/releases",
-      "version": "3.0",
-      "description": "Ein moderner, browserbasierter No-Code-Web-Builder für responsive Websites.",
-      "offers": {
-        "@type": "Offer",
-        "price": "0.00",
-        "priceCurrency": "EUR"
-      },
-      "author": {
-        "@type": "Person",
-        "name": "patrickdevel"
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ============================================================
+       HEADER
+       ============================================================ */
+    .header {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border-soft);
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--accent), #b8a07c);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      padding: 4px;
+    }
+
+    .brand-name {
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-name span {
+      color: var(--accent);
+    }
+
+    /* ============================================================
+       BURGER MENU
+       ============================================================ */
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+      z-index: 110;
+      position: relative;
+    }
+
+    .hamburger .line {
+      width: 24px;
+      height: 2px;
+      background: var(--text-primary);
+      transition: 0.3s ease;
+      border-radius: 2px;
+      transform-origin: center;
+    }
+
+    .menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .menu-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .menu-content {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 100%;
+      background: var(--bg-surface);
+      box-shadow: -8px 0 32px rgba(11, 11, 11, 0.08);
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .menu-overlay.open .menu-content {
+      transform: translateX(0);
+    }
+
+    .close-btn {
+      align-self: flex-end;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-secondary);
+      padding: 4px 8px;
+      transition: color 0.15s ease;
+    }
+
+    .close-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .menu-content a {
+      font-size: 1.1rem;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-soft);
+      color: var(--text-secondary);
+      transition: color 0.15s ease;
+    }
+
+    .menu-content a:hover {
+      color: var(--text-primary);
+    }
+
+    .menu-content .btn-primary {
+      border: none;
+      text-align: center;
+      margin-top: 8px;
+      width: 100%;
+      padding: 14px;
+      font-size: 1rem;
+    }
+
+    /* ============================================================
+       BUTTONS
+       ============================================================ */
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease;
+      box-shadow: 0 4px 12px rgba(217, 119, 87, 0.3);
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border-strong);
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn-outline:hover {
+      background: var(--bg-panel);
+      border-color: var(--text-secondary);
+    }
+
+    /* ============================================================
+       HERO
+       ============================================================ */
+    .hero {
+      padding: 80px 0 60px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: var(--accent);
+      padding: 4px 16px;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 8vw, 4.4rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, var(--accent), #b8a07c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 640px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .hero-actions .btn-primary {
+      padding: 14px 36px;
+      font-size: 1rem;
+    }
+
+    /* ============================================================
+       FEATURES
+       ============================================================ */
+    .features {
+      padding: 60px 0 80px;
+      background: var(--bg-panel);
+    }
+
+    .features .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 32px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border: 1px solid var(--border-soft);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(11, 11, 11, 0.08);
+    }
+
+    .feature-icon {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .feature-card h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .feature-card p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* ============================================================
+       SHOWCASE (Mockup‑Bereich)
+       ============================================================ */
+    .showcase {
+      padding: 80px 0;
+      background: var(--bg-surface);
+    }
+
+    .showcase-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .showcase-text h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .showcase-text p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .showcase-text .btn-primary {
+      padding: 12px 32px;
+    }
+
+    .showcase-image {
+      background: var(--bg-deep);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--border-soft);
+      aspect-ratio: 16 / 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.3);
+      font-size: 1.4rem;
+      font-weight: 500;
+      background-image:
+        linear-gradient(45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.03) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.03) 75%);
+      background-size: 24px 24px;
+      background-position: 0 0, 0 12px, 12px -12px, -12px 0px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .showcase-image .placeholder-ui {
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 20px 30px;
+      width: 80%;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      backdrop-filter: blur(2px);
+    }
+
+    .showcase-image .placeholder-ui strong {
+      color: #fff;
+    }
+
+    /* ============================================================
+       CTA
+       ============================================================ */
+    .cta {
+      padding: 80px 0;
+      background: var(--bg-deep);
+      color: #fff;
+      text-align: center;
+    }
+
+    .cta h2 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .cta p {
+      font-size: 1.1rem;
+      opacity: 0.7;
+      max-width: 500px;
+      margin: 0 auto 32px;
+    }
+
+    .cta .btn-primary {
+      background: #fff;
+      color: var(--bg-deep);
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
+    }
+
+    .cta .btn-primary:hover {
+      background: #f0f0f0;
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--border-soft);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer a {
+      color: var(--text-secondary);
+      transition: color 0.15s ease;
+    }
+
+    .footer a:hover {
+      color: var(--text-primary);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 768px) {
+      .header-inner {
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .showcase-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .hero h1 {
+        font-size: 2.4rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .features .container {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .cta h2 {
+        font-size: 1.8rem;
+      }
+
+      .footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
       }
     }
-    </script>
 
-    <style>
-        :root {
-            --bg: #020205;
-            --glass-bg: rgba(255, 255, 255, 0.02);
-            --glass-border: rgba(255, 255, 255, 0.07);
-            --glass-glow: rgba(59, 130, 246, 0.15);
-            --text: #ffffff;
-            --text-dim: #8e8e93;
-            --accent: #2f80ed;
-            --accent-gradient: linear-gradient(135deg, #007aff 0%, #2f80ed 100%);
-            --radius-lg: 24px;
-            --radius-md: 16px;
-        }
+    @media (max-width: 480px) {
+      .features .container {
+        grid-template-columns: 1fr;
+      }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; selection-background: var(--accent); }
-        
-        body { 
-            background-color: var(--bg); 
-            color: var(--text); 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            overflow-x: hidden;
-            position: relative;
-            letter-spacing: -0.02em;
-        }
-
-        /* --- Liquid Ambient Layer --- */
-        .ambient-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-        .blur-orb-1 {
-            position: absolute;
-            width: 800px; height: 600px;
-            background: radial-gradient(circle, rgba(0, 122, 255, 0.12) 0%, rgba(0,0,0,0) 70%);
-            top: -200px; left: 50%; transform: translateX(-50%);
-            animation: float 12s ease-in-out infinite alternate;
-        }
-        .blur-orb-2 {
-            position: absolute;
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(47, 128, 237, 0.08) 0%, rgba(0,0,0,0) 60%);
-            bottom: 10%; left: -10%;
-        }
-
-        @keyframes float {
-            0% { transform: translateX(-50%) translateY(0) scale(1); }
-            100% { transform: translateX(-48%) translateY(30px) scale(1.05); }
-        }
-
-        /* --- Global Animations --- */
-        .reveal {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: baseReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        .d-1 { animation-delay: 0.1s; }
-        .d-2 { animation-delay: 0.25s; }
-        .d-3 { animation-delay: 0.4s; }
-
-        @keyframes baseReveal { to { opacity: 1; transform: translateY(0); } }
-
-        /* --- Navigation --- */
-        nav { 
-            padding: 1.25rem 2.5rem; 
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px) saturate(180%);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            background: rgba(2, 2, 5, 0.7);
-            position: sticky; top: 0; z-index: 100;
-        }
-        .logo { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 1.4rem; }
-        .logo img { width: 32px; height: 32px; }
-        
-        .btn-blur {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--text);
-            padding: 10px 20px;
-            border-radius: 40px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-        .btn-blur:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
-
-        /* --- Hero Section --- */
-        .hero { padding: 120px 1.5rem 80px 1.5rem; text-align: center; max-width: 1200px; margin: 0 auto; }
-        
-        .badge {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            color: var(--text-dim);
-            display: inline-block;
-            margin-bottom: 2rem;
-        }
-
-        h1 { 
-            font-size: clamp(3rem, 8vw, 5.5rem); 
-            font-weight: 800; line-height: 1.05; letter-spacing: -0.04em;
-            background: linear-gradient(to bottom, #ffffff 60%, #a1a1aa 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin-bottom: 1.5rem;
-        }
-        
-        .hero p { color: var(--text-dim); font-size: clamp(1.1rem, 2.5vw, 1.4rem); max-width: 700px; margin: 0 auto 3rem auto; font-weight: 400; }
-
-        .btn-primary {
-            background: var(--text-pure, #fff); color: #000;
-            padding: 18px 38px; border-radius: 40px; text-decoration: none;
-            font-weight: 600; font-size: 1rem; display: inline-flex; align-items: center; gap: 8px;
-            box-shadow: 0 10px 30px rgba(255,255,255,0.1); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .btn-primary:hover { transform: scale(1.02); box-shadow: 0 15px 40px rgba(255,255,255,0.2); }
-
-        /* --- The Main Showcase Window --- */
-        .showcase-window {
-            margin-top: 6rem;
-            background: rgba(5, 5, 10, 0.4);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-lg);
-            padding: 8px;
-            backdrop-filter: blur(30px) saturate(200%);
-            box-shadow: 0 50px 100px rgba(0,0,0,0.8), 0 0 80px var(--glass-glow);
-        }
-        .window-top { display: flex; gap: 8px; padding: 12px 18px; }
-        .w-dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.1); }
-        .showcase-img { width: 100%; display: block; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.03); }
-
-        /* --- Bento Grid Section --- */
-        .bento-section { padding: 100px 1.5rem; max-width: 1200px; margin: 0 auto; }
-        .bento-header { text-align: left; margin-bottom: 4rem; }
-        .bento-header h2 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; letter-spacing: -0.03em; }
-
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .bento-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-lg);
-            padding: 40px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        .bento-card:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.04);
-            transform: translateY(-2px);
-        }
-
-        /* Bento Span Layouts */
-        .span-2 { grid-column: span 2; }
-        .span-3 { grid-column: span 3; }
-
-        .bento-card h3 { font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; }
-        .bento-card p { color: var(--text-dim); font-size: 1rem; line-height: 1.6; }
-        
-        .card-icon {
-            color: var(--accent); margin-bottom: 1.5rem; display: flex; align-items: center;
-        }
-
-        /* --- Footer --- */
-        footer { padding: 80px 1.5rem 40px 1.5rem; text-align: center; border-top: 1px solid var(--glass-border); margin-top: 100px; }
-        .footer-link { color: var(--text-dim); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem; transition: color 0.2s; }
-        .footer-link:hover { color: var(--text); }
-
-        /* Responsive Fixes */
-        @media (max-width: 900px) {
-            .bento-grid { grid-template-columns: 1fr; }
-            .span-2, .span-3 { grid-column: span 1; }
-            nav { padding: 1rem 1.5rem; }
-        }
-    </style>
+      .hero-actions .btn-primary,
+      .hero-actions .btn-outline {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="ambient-bg">
-        <div class="blur-orb-1"></div>
-        <div class="blur-orb-2"></div>
+  <!-- ============ HEADER ============ -->
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="brand-icon">
+          <img src="logo.png" alt="Drafty" />
+        </div>
+        <span class="brand-name">Draft<span>y</span></span>
+      </div>
+
+      <!-- Burger Button -->
+      <button class="hamburger" id="hamburgerBtn" aria-label="Menü öffnen">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </button>
     </div>
+  </header>
 
-    <nav>
-        <div class="logo">
-            <img src="logo.png" alt="Drafty">
-            <span>Drafty</span>
+  <!-- ============ MOBILE MENU OVERLAY ============ -->
+  <div class="menu-overlay" id="menuOverlay">
+    <div class="menu-content">
+      <button class="close-btn" id="closeMenuBtn">✕</button>
+      <a href="#features">Features</a>
+      <a href="#showcase">Editor</a>
+      <a href="overview.html" class="btn-primary">Zum Editor →</a>
+    </div>
+  </div>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">✨ v3.0 – Jetzt mit Drag &amp; Drop</div>
+      <h1>
+        Bauen ohne Code.<br />
+        <span class="highlight">Einfach. Schnell. Visuell.</span>
+      </h1>
+      <p>
+        Drafty ist der No‑Code‑Web‑Builder, der direkt im Browser läuft.
+        Ziehe Bausteine, gestalte responsive Seiten und exportiere
+        fertigen Code – ganz ohne Installation.
+      </p>
+      <div class="hero-actions">
+        <a href="overview.html" class="btn-primary">Jetzt starten</a>
+        <a href="#features" class="btn-outline">Mehr erfahren</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="feature-card">
+        <span class="feature-icon">🖱️</span>
+        <h3>Drag &amp; Drop</h3>
+        <p>Füge Bausteine per Drag‑and‑Drop hinzu und ordne sie intuitiv an – ohne eine Zeile Code.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📱</span>
+        <h3>Responsive Vorschau</h3>
+        <p>Wechsle zwischen Desktop, Tablet und Mobile und sieh sofort, wie deine Seite auf jedem Gerät aussieht.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🎨</span>
+        <h3>Design‑Themes</h3>
+        <p>Wähle aus verschiedenen Themes (Clean, Dark, Brutal, Soft) und passe Farben, Schriftarten und Abstände an.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🧩</span>
+        <h3>Bausteine &amp; Sektionen</h3>
+        <p>Über 30 vorgefertigte Komponenten – von Navbar über Karten bis hin zu Hero‑Sektionen – machen den Aufbau zum Kinderspiel.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">⚙️</span>
+        <h3>Inspector &amp; Styling</h3>
+        <p>Passe jedes Element individuell an: Farben, Abstände, Schriftarten, Animationen und eigene CSS‑Klassen.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📦</span>
+        <h3>Export &amp; Teilen</h3>
+        <p>Exportiere deine Seite als HTML, CSS oder sogar als ZIP‑Paket mit allen Seiten. Teile sie per Link oder Screenshot.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SHOWCASE ============ -->
+  <section class="showcase" id="showcase">
+    <div class="container showcase-inner">
+      <div class="showcase-text">
+        <h2>Dein Editor –<br />immer bereit.</h2>
+        <p>
+          Der Drafty‑Editor kombiniert eine intuitive Sidebar mit einer
+          Live‑Canvas. Ziehe Bausteine aus der Bibliothek, bearbeite Texte
+          direkt im Canvas und nutze den Inspector für präzises Styling.
+          Alles in Echtzeit, ohne Neuladen.
+        </p>
+        <a href="overview.html" class="btn-primary">Zum Editor →</a>
+      </div>
+      <div class="showcase-image">
+        <div class="placeholder-ui">
+          <strong>Drafty Editor</strong><br />
+          <span style="font-size:0.85rem;opacity:0.6;">Canvas · Sidebar · Inspector</span>
         </div>
-        <a href="overview.html" class="btn-blur">Editor öffnen</a>
-    </nav>
+      </div>
+    </div>
+  </section>
 
-    <section class="hero">
-        <div class="badge reveal"></div>
-        <h1 class="reveal d-1">Visual Web Design.<br>Reimagined.</h1>
-        <p class="reveal d-2">Drafty bricht die Grenzen zwischen Design-Tool und sauberem Code. Baue komplexe Layouts visuell – exportiere fehlerfreies, natives HTML & CSS.</p>
-        
-        <div class="reveal d-3">
-            <a href="overview.html" class="btn-primary">
-                Workspace starten
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </a>
-        </div>
-        
-        <div class="showcase-window reveal d-3">
-            <div class="window-top">
-                <div class="w-dot"></div><div class="w-dot"></div><div class="w-dot"></div>
-            </div>
-            <img src="image_bd10ff.png" alt="Drafty Architecture Workspace" class="showcase-img">
-        </div>
-    </section>
+  <!-- ============ CTA ============ -->
+  <section class="cta">
+    <div class="container">
+      <h2>Bereit loszulegen?</h2>
+      <p>Öffne den Editor, probiere die Bausteine aus und erstelle deine erste Seite – kostenlos und ohne Anmeldung.</p>
+      <a href="overview.html" class="btn-primary">Zum Editor →</a>
+    </div>
+  </section>
 
-    <section class="bento-section">
-        <div class="bento-header">
-            <h2>Hinter der Oberfläche.</h2>
-        </div>
+  <!-- ============ FOOTER ============ -->
+  <footer class="container footer">
+    <span>© 2026 Drafty · Ein No‑Code‑Web‑Builder von <a href="https://github.com/patrickdevel" target="_blank">@patrickdevel</a></span>
+    <div class="footer-links">
+      <a href="https://github.com/patrickdevel/drafty" target="_blank">GitHub</a>
+      <a href="#">Datenschutz</a>
+      <a href="#">Impressum</a>
+    </div>
+  </footer>
 
-        <div class="bento-grid">
-            <div class="bento-card span-2">
-                <div class="card-icon">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
-                </div>
-                <h3>Die Drag-Matrix Engine</h3>
-                <p>Ziehe Elemente völlig frei auf dein Grid. Unser Algorithmus übersetzt deine visuellen Bewegungen in Echtzeit in perfekt geschachtelte HTML-Strukturen. Kein absolutes Positionierungs-Chaos, sondern sauberer Code-Fluss.</p>
-            </div>
+  <!-- ============ JAVASCRIPT ============ -->
+  <script>
+    const hamburger = document.getElementById('hamburgerBtn');
+    const overlay = document.getElementById('menuOverlay');
+    const closeBtn = document.getElementById('closeMenuBtn');
 
-            <div class="bento-card">
-                <div class="card-icon">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                </div>
-                <h3>Pure Performance</h3>
-                <p>Keine schweren Bibliotheken im Hintergrund. Drafty lädt in Millisekunden und rendert deine Änderungen absolut latenzfrei direkt im Viewport.</p>
-            </div>
+    function toggleMenu() {
+      overlay.classList.toggle('open');
+    }
 
-            <div class="bento-card">
-                <div class="card-icon">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-                </div>
-                <h3>Clean Code Export</h3>
-                <p>Kopiere optimierten Code direkt per Klick. Fertig für dein nächstes Projekt oder Hosting.</p>
-            </div>
+    hamburger.addEventListener('click', toggleMenu);
+    closeBtn.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) toggleMenu();
+    });
 
-            <div class="bento-card span-2">
-                <div class="card-icon">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                </div>
-                <h3>Intelligente Responsivität</h3>
-                <p>Vergiss das mühsame Einstellen von Breakpoints. Die Bausteine verhalten sich von Natur aus elastisch und passen sich flexibel an Smartphones, Tablets und Widescreen-Monitore an.</p>
-            </div>
-
-            <div class="bento-card span-3" style="background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.05), transparent), var(--glass-bg);">
-                <div class="card-icon">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-                </div>
-                <h3>Liquid Glass Interface</h3>
-                <p>Arbeite in einem Interface, das für die Zukunft gebaut wurde. Schwebende, hochgradig gesättigte transluzente Layer sorgen für maximale Übersicht und Fokus während des gesamten Designprozesses.</p>
-            </div>
-
-            <div class="bento-card">
-                <div class="card-icon">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-                </div>
-                <h3>Responsive Viewports</h3>
-                <p>Überprüfe deine Layouts blitzschnell in Echtzeit. Nutze die integrierten Viewport-Toggles für Desktop-, Tablet- und Mobile-Ansichten direkt oben in der Workspace-Statusbar.</p>
-            </div>
-
-            <div class="bento-card span-2">
-                <div class="card-icon">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-                </div>
-                <h3>Erweiterte Navigations-Modi</h3>
-                <p>Wähle flexibel zwischen hochentwickelten Navigations-Layouts wie Classic, Pill, Frosted Glass oder Compact. Alle Stile verfügen über native Fixed- und Sticky-Unterstützung für optimales Scrollverhalten.</p>
-                
-            </div>
-
-            <div class="bento-card span-2">
-                <div class="card-icon">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                </div>
-                <h3>Autosave & Backup</h3>
-                <p>Verliere nie wieder deinen Fortschritt. Ein im Hintergrund aktiver Algorithmus sichert deinen aktuellen Entwurf verschlüsselt im LocalStorage deines Browsers und warnt dich über ein pulsierendes Status-Signal vor ungesicherten Änderungen.</p>
-            </div>
-
-            <div class="bento-card">
-                <div class="card-icon">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                </div>
-                <h3>Instant Screenshots</h3>
-                <p>Erstelle hochauflösende PNG-Abbilder deiner fertigen Seiten mit nur einem Klick. Die integrierte Screenshot-Engine wandelt deinen gerenderten Viewport direkt im Browser um.</p>
-            </div>
-
-            <div class="bento-card span-3" style="background: radial-gradient(circle at bottom left, rgba(34, 211, 238, 0.05), transparent), var(--glass-bg);">
-                <div class="card-icon">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                </div>
-                <h3>Umfangreicher Komponenten-Baukasten</h3>
-                <p>Greife auf eine Bibliothek aus nativen Bausteinen zu: strukturierte 2- & 3-Spalten-Grids, responsive Bild- und Video-Container, interaktive Formulare mit Textareas, Zitate, Badges sowie ein feingranularer Stil-Inspektor zur Modifikation von Eckenradien und vordefinierten Farb-Swatches.</p>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <a href="https://github.com/patrickdevel" target="_blank" class="footer-link">
-            <svg height="18" width="18" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-            </svg>
-            &copy; 2026 - patrickdevel
-        </a>
-    </footer>
+    // Menü schließen, wenn ein Link geklickt wird
+    document.querySelectorAll('.menu-content a').forEach(link => {
+      link.addEventListener('click', () => {
+        overlay.classList.remove('open');
+      });
+    });
+  </script>
 
 </body>
 </html>
