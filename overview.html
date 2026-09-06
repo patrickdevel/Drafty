@@ -533,7 +533,7 @@
       <div class="logo-circle">
         <img src="logo.png" alt="Drafty Logo" />
       </div>
-      <h1 class="greeting">Guten Morgen!</h1>
+      <h1 class="greeting" id="greetingText">Guten Morgen!</h1>
       <p class="subtitle">Was möchtest du tun?</p>
 
       <div class="action-cards">
@@ -573,9 +573,23 @@
   </div>
 
   <!-- ============================================================
-       JAVASCRIPT – Burger Menu + Changelog
+       JAVASCRIPT – Burger Menu, Changelog & dynamische Begrüßung
        ============================================================ -->
   <script>
+    // ---- Tageszeitabhängige Begrüßung ----
+    function setGreeting() {
+      const hour = new Date().getHours();
+      let greeting = '';
+      if (hour < 12) {
+        greeting = 'Guten Morgen!';
+      } else if (hour < 18) {
+        greeting = 'Guten Tag!';
+      } else {
+        greeting = 'Guten Abend!';
+      }
+      document.getElementById('greetingText').textContent = greeting;
+    }
+
     // ---- Burger Menu ----
     const hamburger = document.getElementById('hamburgerBtn');
     const overlay = document.getElementById('menuOverlay');
@@ -617,6 +631,8 @@
       }
     }
 
+    // ---- Beim Laden alles starten ----
+    setGreeting();
     loadChangelog();
   </script>
 
